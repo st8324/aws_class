@@ -95,6 +95,20 @@
 		}else {
 			document.write(`${num1}은 양수가 아닙니다.(else문)<br>`);
 		}
+		/*
+		num1이 양수이면 양수라고 출력하고 
+		num1이 음수이면 음수라고 출력하고 
+		아니면 0이라고 출력하는 코드
+		*/
+		if(num1 > 0){
+			document.write(`${num1}은 양수이다.(else if문)<br>`);
+		}
+		else if(num1 < 0){
+			document.write(`${num1}은 음수이다.(else if문)<br>`);
+		}
+		else{
+			document.write(`${num1}은 0이다.(else if문)<br>`);
+		}
 	</script>
 </body>
 </html>

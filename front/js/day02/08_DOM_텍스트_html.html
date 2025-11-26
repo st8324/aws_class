@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>요소의 텍스트,html 변경/가져오기 예제</title>
+</head>
+<body>
+	<h1>요소의 텍스트 변경/가져오기 예제</h1>
+	<button class="btn" id="btn1">텍스트 가져오기</button>
+	<button class="btn" id="btn2">텍스트 변경하기</button>
+	<div class="box1">안녕하세요.</div>
+	<script>
+		/* 
+		요소.innerText
+		- 요소 안에 있는 글자를 가져오거나 변경
+		- 스타일에 영향을 받음 => 자손 요소에 display : none인 요소가 있으면 글자를 읽어오지 않음
+		요소.textContent
+		- 요소 안에 있는 글자를 가져오거나 변경
+		- 스타일에 영향을 받지 않음
+		*/
+		const btn1 = document.getElementById("btn1");
+
+		btn1.addEventListener("click",()=>{
+			//클래스가 box1인 요소의 글자를 가져와서 alert으로 띄움
+			
+		})
+	</script>
+</body>
+</html>

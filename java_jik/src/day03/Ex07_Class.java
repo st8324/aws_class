@@ -29,12 +29,12 @@ public class Ex07_Class {
 		//스캐너 객체를 생성
 		Scanner scan = new Scanner(System.in);
 		//스캐너를 통해 콘솔에서 정수를 입력 받음. 입력 받음이 기능
-		int num = scan.nextInt();
+		//int num = scan.nextInt();
 		
 		//[콘솔]에 출력하려고 한다.
 		//콘솔에 출력하기 위해 System.out이라는 개체를 이용
 		//해당 객체에서 제공하는 println 기능을 사용
-		System.out.println(num);
+		//System.out.println(num);
 		
 		/* 클래스 p.127
 		 * - 객체를 만들기 위한 설계도 
@@ -72,6 +72,54 @@ public class Ex07_Class {
 		 * 	}
 		 * 
 		 */
+	
+		/* 인스턴스(객체) 생성방법
+		 * - 클래스명 인스턴스명 = new 클래스명();
+		 * - 클래스명 인스턴스명 = new 생성자();
+		 * 
+		 * 인스턴스 필드를 사용하는 방법
+		 * - 인스턴스명.필드명
+		 * - 무조건 가져올 수 있는건 아님. 접근제어자에 따라 가져오지 못할 수도 있음.
+		 * 
+		 */
+		
+		/* 지역 변수
+		 * - 메서드 안에서 사용하는 변수
+		 * - 지역 변수는 자동으로 초기화가 안됨
+		 * 
+		 * 필드(멤버 변수)
+		 * - 클래스 안에서 사용하는 변수
+		 * - 필드는 자동으로 초기화가 됨
+		 *   - 정수 : 0, 실수 : 0.0, 참조변수 : null, 문자 : \u0000, 논리 : false
+		 * */
+		Car car1 = new Car();
+		//필드는 초기화가 되기 때문에 바로 사용할 수 있음
+		System.out.println("자동차 전원 : " + car1.power);
+		int num;
+		//지역 변수는 초기화가 자동으로 안되기 때문에 초기화 하지 않고 사용할 수 없음
+		//System.out.println(num);
 	}
 
 }
+
+class Car{
+	
+	//멤버변수(필드)
+	int wheelCount;
+	String wheelType;//타이어 종류
+	String color;
+	String company;
+	String name;
+	String type;
+	boolean power;
+	int speed;
+	char gear;
+	
+	//메서드
+	
+	//생성자
+}
+
+
+
+

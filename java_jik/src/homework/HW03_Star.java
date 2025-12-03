@@ -1,6 +1,6 @@
-package day02;
+package homework;
 
-public class HW02_Star {
+public class HW03_Star {
 
 	public static void main(String[] args) {
 		/* 샘플 코드를 참고하여 아래와 같이 출력 되도록 코드를 작성하세요. */
@@ -58,7 +58,7 @@ public class HW02_Star {
 		 * */
 		for(int i = 1; i<= row; i++) {
 			//공백 개수만큼 출력
-			for(int j = 1; j <= 5 - i; j++) {
+			for(int j = 1; j <= row - i; j++) {
 				System.out.print(" ");
 			}
 			//* 개수만큼 출력
@@ -84,7 +84,7 @@ public class HW02_Star {
 		 * */
 		for(int i = 1; i<= row; i++) {
 			//공백 개수만큼 출력
-			for(int j = 1; j <= 5 - i; j++) {
+			for(int j = 1; j <= row - i; j++) {
 				System.out.print(" ");
 			}
 			//* 개수만큼 출력

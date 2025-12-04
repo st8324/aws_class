@@ -37,7 +37,7 @@ public class Ex15_Student {
 				count = addStudent(stds, count, scan);
 				break;
 			case '2':
-				System.out.println("학생 성적 수정 기능 구현 예정");
+				updateStudents(stds, count, scan);
 				break;
 			case '3':
 				System.out.println("학생 정보 삭제 기능 구현 예정");
@@ -96,6 +96,47 @@ public class Ex15_Student {
 			System.out.println("등록된 학생이 없습니다.");
 		}
 	}
+	//학생 정보들에서 학년,반,번호를 이용하여 학생의 위치(0,1,2,3..)를 찾는 메서드
+	public static int indexOf(MyStudent [] stds, int count, 
+			int grade, int classNum, int num) {
+		int index = -1; //학생 정보가 있는 위치
+		for(int i = 0; i < count; i++) {
+			MyStudent std = stds[i];
+			if(std.grade == grade && 
+				std.classNum == classNum &&
+				std.num == num) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
+	
+	//학생 정보를 입력받아 학생의 성적을 수정하는 메서드
+	public static void updateStudents(MyStudent[] stds, int count, Scanner scan) {
+		//성적을 수정할 학생 정보를 입력(학년, 반, 번호)
+		System.out.print("수정할 학생의 학년, 반, 번호를 입력하세요 : ");
+		int grade = scan.nextInt();
+		int classNum = scan.nextInt();
+		int num = scan.nextInt();
+		
+		//학생 정보들에서 학년반번호로 검색해서 있으면 위치를 저장
+		int index = indexOf(stds, count, grade, classNum, num);
+						
+		//학생이 없으면 없다고 알리고 종료
+		if(index == -1) {
+			System.out.println("등록된 학생이 아닙니다.");
+			return;
+		}
+		//수정할 성적을 입력(국어,영어,수학)
+		System.out.print("성적 입력(국어,영어,수학 순) : ");
+		int korScore = scan.nextInt();
+		int engScore = scan.nextInt();
+		int mathScore = scan.nextInt();
+		
+		//입력받은 성적을 수정할 학생 정보에 변경
+		stds[index].update(korScore, engScore, mathScore);
+	}
 }
 
 class MyStudent{
@@ -106,7 +147,17 @@ class MyStudent{
 	//학생 정보를 콘솔에 출력하는 기능
 	void print() {
 		System.out.println(grade +"학년 " + classNum+"반 " + num + "번 " + name);
+		System.out.println("국어 : " + korScore);
+		System.out.println("영어 : " + engScore);
+		System.out.println("수학 : " + mathScore);
 	}
+	
+	public void update(int korScore2, int engScore2, int mathScore2) {
+		korScore = korScore2;
+		engScore = engScore2;
+		mathScore = mathScore2;
+	}
+
 	//기본 생성자
 	MyStudent(){}
 	//생성자 오버로딩

@@ -17,6 +17,8 @@ public class Ex15_Student {
 		MyStudent stds[] = new MyStudent[MAX_COUNT];
 		//현재 저장된 학생 수 => 학생을 배열에 추가할 때 사용
 		int count = 0;
+		final char EXIT = '5';
+		
 		//입력받은 학년,반,번호,이름을 저장할 변수
 		int grade, classNum, num;
 		String name;
@@ -41,12 +43,15 @@ public class Ex15_Student {
 				System.out.println("학생 정보 삭제 기능 구현 예정");
 				break;
 			case '4':
+				printStudents(stds, count);
+				break;
+			case EXIT:
 				System.out.println("프로그램을 종료합니다.");
 				break;
 			default:
 				System.out.println("잘못된 메뉴입니다.");
 			}
-		}while(menu != '4');
+		}while(menu != EXIT);
 	}
 
 	public static void printMenu() {
@@ -54,7 +59,8 @@ public class Ex15_Student {
 		System.out.println("1. 학생 추가");
 		System.out.println("2. 학생 성적 수정");
 		System.out.println("3. 학생 삭제");
-		System.out.println("4. 종료");
+		System.out.println("4. 학생 정보 확인");
+		System.out.println("5. 종료");
 		System.out.print("메뉴 입력 : ");
 	}
 	/* 기능 : 학생 정보를 입력받아 학생 배열에 추가하는 메서드
@@ -80,6 +86,15 @@ public class Ex15_Student {
 		stds[count] = std;//배열에 저장
 		count++;//추가된 학생 수 증가
 		return count;
+	}
+	//추가된 학생 정보를 출력하는 메서드
+	public static void printStudents(MyStudent [] stds, int count) {
+		for(int i = 0; i < count; i++) {
+			stds[i].print();
+		}
+		if(count == 0) {
+			System.out.println("등록된 학생이 없습니다.");
+		}
 	}
 }
 

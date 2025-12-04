@@ -106,7 +106,7 @@ public class Ex03_ConditionalStatement {
 		char ch = '+';
 		//변수 == 값
 		switch(ch) {
-		
+		//if(ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%')
 		case '+', '-', '*', '/', '%':
 		/*
 		case '+':

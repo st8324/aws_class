@@ -20,12 +20,45 @@ public class Ex02_AccessModifier {
 		 *   => 보통 IDE에서 getter/setter만드는 기능을 제공
 		 *   => lombok 라이브러리를 이용하면 어노테이션(@)을 이용하여 getter,setter를 쉽게
 		 *      추가할 수 있음
+		 * 캡슐화 p.167
+		 * - 사용자가 필요한 정보만 공개(public)하고 나머지는 숨기는 것(private, protected)
 		 */
-
+		Student std = new Student();
+		std.print();
+		std.setGrade(1);
+		std.print();
+		System.out.println(std.getGrade());
 	}
 }
 class Student{
 	
+	private int grade, classNum, num;
+	private String name;
+	
+	//getter
+	/*public 리턴타입 메서드명() {
+		return 값;
+	}
+	리턴타입 : 필드의 타입과 동일
+	메서드명 : get필드명으로 작성. 필드명은 대문자로 시작
+	값 : 해당 필드
+	*/
+	public int getGrade() {
+		return grade;
+	}
+	//setter
+	/*public void 메서드명(매개변수) {
+		필드 = 매개변수;
+	}
+	메서드명 : set필드명. 필드명은 대문자로
+	매개변수는 보통 필드와 같은 자료형의 변수가 옴
+	*/
+	public void setGrade(int grade1) {
+		grade = grade1;
+	}
+	public void print() {
+		System.out.println(grade + "학년 " + classNum + "반 " + num + "번 " + name);
+	}
 }
 
 

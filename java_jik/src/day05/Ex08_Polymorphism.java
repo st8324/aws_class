@@ -57,10 +57,23 @@ public class Ex08_Polymorphism {
 		printShape(c1);
 		printShape(r1);
 		
-		System.out.println("원 객체는 Circle로 변환이 가능?" + (c1 instanceof Circle));
-		System.out.println("원 객체는 Object로 변환이 가능?" + (c1 instanceof Object));
-		System.out.println("원 객체는 Shape로 변환이 가능?" + (c1 instanceof Shape));
-		
+		printInstanceOf(c1);
+		printInstanceOf(r1);
+		Shape s1 = new Shape();
+		printInstanceOf(s1);
+		printInstanceOf("abc");
+	}
+	
+	public static void printInstanceOf(Object obj) {
+		if(obj instanceof Circle) {
+			System.out.println("객체는 Circle로 변환이 가능합니다.");
+		}else if(obj instanceof Rect) {
+			System.out.println("객체는 Rect로 변환이 가능합니다.");
+		}else if(obj instanceof Shape) {
+			System.out.println("객체는 Shape로 변환이 가능합니다.");
+		}else {
+			System.out.println("객체는 도형으로 변환이 불가능합니다.");
+		}
 	}
 	
 	//사각형이 있으면 사각형을 그리는 메서드

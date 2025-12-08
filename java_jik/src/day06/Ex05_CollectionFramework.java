@@ -52,6 +52,16 @@ public class Ex05_CollectionFramework {
 		 *   - getKeys() : 키값들을 Set으로 만들어서 반환
 		 *     - Map에서 반복문을 이용할 때 활용
 		 */
+		/* - 컬렉션 프레임워크에서 객체를 추가, 삭제할 때 
+		 *  해당 객체가 있는지를 Objects.equals(o1,o2)를 이용하여 확인
+		 * - Objects.equals(o1,o2)
+		 *   - o1과 o2가 다른 클래스이면 false를 반환
+		 *   - o1과 o2중 하나라도 null이면 false를 반환
+		 *   - o1.equals(o2)를 호출
+		 *   => equals를 오버라이딩해야 함
+		 *   
+		 * 
+		 */
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		list.add(1);
 		list.add(2);
@@ -67,6 +77,18 @@ public class Ex05_CollectionFramework {
 		
 		System.out.println("리스트에 1이 있습니까? " + list.contains(1));
 		System.out.println("리스트에 1이 어디에 있습니까? " + list.indexOf(1));
+		
+		ArrayList<Student> stds = new ArrayList<Student>();
+		stds.add(new Student(1, 1, 1, "홍길동"));
+		stds.add(new Student(1, 1, 2, "임꺽정"));
+		stds.add(new Student(1, 1, 3, "고길동"));
+		
+		System.out.println(stds);
+		
+		Student std = new Student(1, 1, 1, "홍길동");
+		stds.remove(std);
+		System.out.println(std + " 학생 삭제 후 ");
+		System.out.println(stds);
 	}
 }
 

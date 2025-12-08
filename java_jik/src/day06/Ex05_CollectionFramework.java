@@ -1,0 +1,74 @@
+package day06;
+
+import java.util.ArrayList;
+
+public class Ex05_CollectionFramework {
+
+	public static void main(String[] args) {
+		/* 컬렉션 프레임워크 p.422
+		 * - 자료를 편하게 관리하기 위해 만들어진 라이브러리
+		 *   - 배열은 기능이 없어 관리가 불편 => 기능이 있는 배열이라고 생각하면 이해가 쉽다
+		 * - 컬렉션 인터페이스와 맵 인터페이스로 구성
+		 * - 컬렉션 프레임워크는 제넥릭 인터페이스로 구성되어 있음
+		 * - 컬렉션 인터페이스
+		 *   - 한 종류의 자료들을 관리
+		 *   - List 인터페이스와 Set 인터페이스
+		 * - Map 인터페이스
+		 *   - 두 종류의 자료들을 관리
+		 *   - Map 인터페이스
+		 *   
+		 * Collection 인터페이스  
+		 * - 기능 
+		 *   - add(값) : 값을 뒤에 추가 
+		 *   - remove(값) : 값과 일치하는 객체를 제거
+		 *   - contains(값) : 값이 있으면 true, 없으면 false를 반환
+		 *   - indexOf(값) : 값이 있으면 위치를 없으면 -1를 반환   
+		 *   
+		 * List p.427
+		 * - 순서를 보장. 중복을 허용
+		 * - 구현 클래스
+		 *   - List 인터페이스에 있는 기능을 공통으로 가지고 있음
+		 *   - ArrayList, Vector(쓰레드 지원), LinkedList
+		 *   - ArrayList : 배열로 구성, 전체 탐색 빠름, 중간 추가 삭제 느림
+		 *   - LinkedList: 링크로 연결, 전체 탐색 느림, 중감 추가 삭제 빠름
+		 * - 기능
+		 *   - get(번지) : 번지에 있는 객체를 반환
+		 *   - remove(번지) : 번지에 있는 객체를 삭제하고 삭제한 객체를 반환
+		 *   - set(번지, 값) : 번지에 있는 객체를 값으로 수정(덮어쓰기)
+		 *   
+		 * 
+		 * Set p.441
+		 * - 순서를 보장하지 않음. 중복을 허용하지 않음
+		 * 
+		 * Map
+		 * - 두 자료형을 관리
+		 * - K(key), V(value)
+		 *   - K는 중복 안됨
+		 *   - V는 중복 허용
+		 * - 기능
+		 *   - get(k) : 키들 중에서 k와 일치하는 객체를 반환
+		 *   - put(k,v) : 키들 중에서 k와 일치하는 객체가 없으면 k와 v를 추가. 있으면 v만 수정
+		 *   - remove(k) : 키들 중에서 k와 일치하는 객체가 있으면 삭제 후 v를 반환
+		 *   - getKeys() : 키값들을 Set으로 만들어서 반환
+		 *     - Map에서 반복문을 이용할 때 활용
+		 */
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(1);
+		System.out.println(list);
+		//2와 일치하는 객체 제거
+		//꼭 Integer 형변환을 해야 하나요?
+		//remove는 메서드 오버로딩에 의해 2개 있음. 하나는 객체, 하나는 정수
+		//아래에서 형변환없이 2를 넣으면 2번지에 있는 객체를 삭제
+		list.remove((Integer)2);
+		
+		System.out.println(list);
+		
+		System.out.println("리스트에 1이 있습니까? " + list.contains(1));
+		System.out.println("리스트에 1이 어디에 있습니까? " + list.indexOf(1));
+	}
+}
+
+
+

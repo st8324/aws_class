@@ -2,7 +2,7 @@ package day06;
 
 import java.util.Objects;
 
-public class Student {
+public class Student implements Comparable<Student> {
 
 	private int grade, classNum, num;
 	private String name;
@@ -67,6 +67,18 @@ public class Student {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public int compareTo(Student s2) {
+		if(this.getGrade() != s2.getGrade()) {
+			return this.getGrade() - s2.getGrade();
+		}
+		if(this.getClassNum() != s2.getClassNum()) {
+			return this.getClassNum() - s2.getClassNum();
+		}
+		return this.getNum() - s2.getNum();
+	}
+
 	
 	
 }

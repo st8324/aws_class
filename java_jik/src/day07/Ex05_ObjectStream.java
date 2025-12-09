@@ -1,6 +1,8 @@
 package day07;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +31,14 @@ public class Ex05_ObjectStream {
 		}catch(Exception e) {
 			System.err.println("예외 발생");
 		}
-		
+		//저장된 리스트를 가져오기
+		try(ObjectInputStream ois 
+				= new ObjectInputStream(new FileInputStream(fileName))){
+			list = (ArrayList<Point>)ois.readObject();
+			System.out.println(list);
+		}catch(Exception e) {
+			System.err.println("예외 발생");
+		}
 	}
 }
 

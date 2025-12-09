@@ -1,5 +1,6 @@
 package day07;
 
+import java.io.IOError;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -51,9 +52,13 @@ public class Ex01_Exception {
 		 * 2. 예외가 발생한 곳에서 처리하지 않고 호출한 메서드에게 넘기는 방법 p.534
 		 * - 예외 처리 미루기, 예외 처리 던지기 
 		 * - 예외가 생길 코드에 예외 던지기
-		 *   - 예외가 발생할 수 있는 상황을 조건문으로 처리하고 throws를 이용하여 예외를 던짐
-		 * - 메서드 선언부에 throw를 입력 후 발생할 수 있는 예외를 적어줌
+		 *   - 예외가 발생할 수 있는 상황을 조건문으로 처리하고 throw를 이용하여 예외를 던짐
+		 * - 메서드 선언부에 throws를 입력 후 발생할 수 있는 예외를 적어줌
 		 *   - 단, RuntimeException과 자손 클래스들은 생략 가능
+		 *   
+		 * 예외 처리를 왜 해야하는가?
+		 * - 예외처리를 하지 않으면 프로그램이 중단됨
+		 * - 예외처리를 해서 프로그램이 중단되는걸 방지 
 		 */
 		int arr [] = new int [3];
 		Scanner scan = new Scanner(System.in);
@@ -71,6 +76,13 @@ public class Ex01_Exception {
 		}
 		
 		exceptionTest();
+		
+		int arr2[] = new int[3];
+		try {
+			throwsTest(arr2);
+		} catch (Exception e) {
+			System.err.println("던지기 예외 발생");
+		}
 	}
 	public static void exceptionTest() {
 		try {
@@ -83,5 +95,8 @@ public class Ex01_Exception {
 		}
 		
 		System.out.println("무조건 실행 되겠지?");
+	}
+	public static void throwsTest(int [] arr)/* throws ArithmeticException */ {
+		System.out.println(1/0);
 	}
 }

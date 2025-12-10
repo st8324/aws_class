@@ -1,5 +1,8 @@
 package homework;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 public class HW09_BaseballGame2 {
 
 	public static void main(String[] args) {
@@ -30,6 +33,16 @@ public class HW09_BaseballGame2 {
 		 *  메뉴 선택 : 3
 		 * */
 
+		int num = HW08_BaseballGame.play();
+		System.out.println(num);
 	}
 
 }
+
+@Data
+@AllArgsConstructor
+class GameRecord{
+	String name;
+	int count;
+}
+

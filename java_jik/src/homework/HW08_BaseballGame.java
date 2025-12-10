@@ -8,6 +8,11 @@ import java.util.Scanner;
 public class HW08_BaseballGame {
 
 	public static void main(String[] args) {
+		
+		play();
+	}
+	
+	public static int play() {
 		/* 1~9사이의 중복되지 않은 3개의 수를생성해서 맞추는 게임
 		 * 규칙
 		 * S : 숫자가 있고 위치가 같음
@@ -33,6 +38,8 @@ public class HW08_BaseballGame {
 		
 		int min = 1, max = 9, size = 3;
 		int strike = 0, ball = 0;
+		int count = 0;
+		
 		//랜덤수 생성
 		try {
 			generateRandomList(com, min, max, size);
@@ -40,7 +47,7 @@ public class HW08_BaseballGame {
 		}catch (Exception e) {
 			System.err.println(e.getMessage());
 			System.out.println("[프로그램 종료]");
-			return;
+			return -1;
 		}
 		
 		//반복문 
@@ -57,13 +64,10 @@ public class HW08_BaseballGame {
 			ball = getBall(com, user);
 			//결과 출력
 			printResult(strike, ball);
+			count++;
 		}while(strike < 3);
 		System.out.println("정답입니다.");
-			
-	}
-	
-	public static int play() {
-		return 0;
+		return count;
 	}
 	
 	private static int getBall(ArrayList<Integer> com, ArrayList<Integer> user) {

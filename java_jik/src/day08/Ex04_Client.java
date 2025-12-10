@@ -1,5 +1,6 @@
 package day08;
 
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -9,15 +10,23 @@ public class Ex04_Client {
 		
 		//ip, port 설정
 		final int PORT = Ex04_Server.PORT;
-		final String IP = "127.0.0.1";
+		final String IP = "192.168.0.191";
 		
 		try {
-			//연결 요청 후 객체 생성
-			Socket socket = new Socket(IP, PORT);
 			//아이디를 입력
 			Scanner scan = new Scanner(System.in);
 			System.out.print("아이디 : ");
 			String id = scan.nextLine();
+			
+			//연결 요청 후 객체 생성
+			Socket socket = new Socket(IP, PORT);
+			
+			//아이디 전송
+			ObjectOutputStream oos 
+				= new ObjectOutputStream(socket.getOutputStream());
+			oos.writeUTF(id);
+			oos.flush();
+			
 			//클라이언트 객체 생성(아이디 추가)
 			Client02 c = new Client02(socket, id);
 			//클라이언트의 전송 기능 실행

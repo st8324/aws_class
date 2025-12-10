@@ -27,7 +27,7 @@ public class Client02 {
 				//메세지를 여러번 전송하기 위한 무한루프
 				while(true) {
 					//메세지 콘솔에서 입력
-					System.out.print("입력 : ");
+
 					String msg = scan.nextLine();
 					//서버로 전송
 					oos.writeUTF(id);

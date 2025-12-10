@@ -5,13 +5,14 @@ import java.net.Socket;
 
 public class Ex01_Server {
 
+	//1. port 지정
+	public final static int PORT = 7000;
+	
 	public static void main(String[] args) {
 		
-		//1. port 지정
-		int port = 7000;
 		
 		//2. port를 이용하여 서버소켓 객체 생성
-		try(ServerSocket serverSocket = new ServerSocket(port)){
+		try(ServerSocket serverSocket = new ServerSocket(PORT)){
 			
 			System.out.println("[연결 대기 중...]");
 			

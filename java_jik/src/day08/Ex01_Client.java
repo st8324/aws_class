@@ -1,6 +1,9 @@
 package day08;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Ex01_Client {
 
@@ -11,12 +14,37 @@ public class Ex01_Client {
 		final int PORT = Ex01_Server.PORT;
 		
 		//2. IP주소와 port를 이용하여 연결 요청후 성공하면 소켓 객체를 생성
-		try(Socket socket = new Socket(ip, PORT)){
+		try{
+			Socket socket = new Socket(ip, PORT);
 			System.out.println("[연결 성공!]");
 			
+			//전송하는 스레드
+			Thread t1 = new Thread(()->{
+				System.out.println("[서버로 전송할 메세지]");
+				
+				Scanner scan = new Scanner(System.in);
+				try {
+					ObjectOutputStream oos
+						= new ObjectOutputStream(socket.getOutputStream());
+					//메세지를 여러번 전송하기 위한 무한루프
+					while(true) {
+						//메세지 콘솔에서 입력
+						System.out.print("입력 : ");
+						String msg = scan.nextLine();
+						//서버로 전송
+						oos.writeUTF(msg);
+						oos.flush();
+					}			
+				} catch (IOException e) {
+					System.err.println("예외 발생");
+				}
+				
+			});
+			t1.start();
 		}catch(Exception e) {
 			System.err.println("예외 발생");
 		}
+		System.out.println("[클라이언트 종료(메인스레드 종료)]");
 	}
 
 }

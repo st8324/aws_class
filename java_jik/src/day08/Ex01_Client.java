@@ -1,9 +1,6 @@
 package day08;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Ex01_Client {
 
@@ -18,29 +15,10 @@ public class Ex01_Client {
 			Socket socket = new Socket(ip, PORT);
 			System.out.println("[연결 성공!]");
 			
-			//전송하는 스레드
-			Thread t1 = new Thread(()->{
-				System.out.println("[서버로 전송할 메세지]");
-				
-				Scanner scan = new Scanner(System.in);
-				try {
-					ObjectOutputStream oos
-						= new ObjectOutputStream(socket.getOutputStream());
-					//메세지를 여러번 전송하기 위한 무한루프
-					while(true) {
-						//메세지 콘솔에서 입력
-						System.out.print("입력 : ");
-						String msg = scan.nextLine();
-						//서버로 전송
-						oos.writeUTF(msg);
-						oos.flush();
-					}			
-				} catch (IOException e) {
-					System.err.println("예외 발생");
-				}
-				
-			});
-			t1.start();
+			Client01 client = new Client01(socket);
+			client.send();
+			client.receive();
+			
 		}catch(Exception e) {
 			System.err.println("예외 발생");
 		}

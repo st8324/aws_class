@@ -1,3 +1,5 @@
+# DDL : DB/테이블 추가,수정,삭제 
+
 # DB 생성
 # create database [if not exists] DB명;
 
@@ -64,7 +66,22 @@ create table if not exists score(
 # drop table if exists student;
 # drop table if exists subject;
 
+# 학생 테이블에 학생 설명을 관리하는 컬럼을 추가 
+alter table student add etc varchar(100);
 
+# 학생 설명 관리하는 컬럼을 100자에서 200자로 수정
+alter table student change etc etc varchar(200);
 
+# 학생 설명 관하는 컬럼을 삭제
+alter table student drop etc;
+
+# 테이블을 초기화 할 때 사용 
+# 데이터들 모두를 제거, auto_increment값을 1로 초기화 
+# truncate table 테이블명;
+
+# truncate vs drop 테이블 vs delete 
+# truncate : 데이터 삭제. 테이블 남음. auto_increment 1로 초기화
+# drop 테이블: 테이블 삭제. 당연히 데이터 삭제
+# delete : 데이터 삭제. auto_increment는 기존 값 유지 
 
 

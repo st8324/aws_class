@@ -105,7 +105,33 @@ select * from student order by grade, class, num;
 # 각 학년별 학생수를 조회
 select grade, count(*) 학생수 from student group by grade;
 
+# 각 과목별 총점을 조회
+select sj_code 과목번호, sum(score) 총점 from score group by sj_code;
 
+# 각 과목별 평균을 조회
+select sj_code 과목번호, avg(score) 평균 from score group by sj_code;
+
+# 각 과목별 최고점, 최하점을 조회 
+select sj_code 과목번호, max(score) 최고점, min(score) 최하점
+from score group by sj_code;
+
+# 1학년 1학기때 들어야 할 과목수를 조회하는 쿼리
+select grade 학년, semester 학기, count(title) 과목수 from subject 
+where grade = 1 and semester = 1;
+
+# 각학년, 학기별 들어야할 과목수를 조회하는 쿼리 
+select grade 학년, semester 학기, count(title) 과목수 from subject
+group by grade, semester;
+
+/*
+select 컬럼1, 컬럼2, ...
+from 테이블명 
+where 조건 
+group by 컬럼명1, ...
+having 조건
+order by 컬럼명1 정렬방법, ...
+limit 시작번지, 개수 
+*/
 
 
 

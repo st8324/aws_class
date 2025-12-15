@@ -13,3 +13,14 @@ join product using(code)
 where id = "abc123";
 
 # abc123회원의 누적 금액을 조회 
+select id, sum(price * buy.amount) 누적금액 
+from buy join product using(code)
+where id ="abc123";
+
+# 회원별 누적 금액을 조회 
+select id, sum(price * buy.amount) 누적금액 
+from buy join product using(code) 
+group by id;
+
+
+

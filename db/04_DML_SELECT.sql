@@ -123,6 +123,13 @@ where grade = 1 and semester = 1;
 select grade 학년, semester 학기, count(title) 과목수 from subject
 group by grade, semester;
 
+# 평균이 각 학년 학기별 평균이 90이상인 과목들을 조회하는 쿼리 
+select sj_code 과목번호, avg(score) 평균 
+from score 
+# where avg(score) >= 90 # 실행 시 에러발생. 집계합수는 where절에서 사용 X
+group by sj_code
+having 평균 >= 90; # 평균대신 avg(score)도 가능 
+
 /*
 select 컬럼1, 컬럼2, ...
 from 테이블명 
@@ -131,9 +138,82 @@ group by 컬럼명1, ...
 having 조건
 order by 컬럼명1 정렬방법, ...
 limit 시작번지, 개수 
+
+실행순서 
+1. from 테이블 
+2. where 절 
+3. group by절
+4. having절
+5. select 컬럼1,... 
+6. order by
+7. limit
+- 예외적인 상황 
+  - MySQL과 Oracle은 편의를 위해 having절에서 select의 별칭을 사용할 수 있도록 허용 
 */
 
+# JOIN 
+# 2개 이상의 테이블을 묶어서 하나의 결과를 만들 때 사용 
+# => 설계할 때 정규화 과정을 통해 테이블을 나누기 때문에 
+#    필요한 데이터들이 여러 테이블에 나눠져 있음 
+# inner join : 두 테이블의 교집합
+# outer join : 두 테이블의 합집합 
+# self join : 자기자신과 join 
 
+# inner join1
+# select * 속성 
+# from 테이블1 
+# inner join 테이블2  # inner는 생략 가능 
+# on 테이블1.컬럼1 = 테이블2.컬럼2;
+
+# inner join2
+# 테이블1의 컬럼1과 테이블2의 컬럼2의 이름이 같은 경우 
+# select * 속성 
+# from 테이블1 
+# inner join 테이블2  # inner는 생략 가능 
+# using(컬럼);
+
+# 과목별 평균(학년, 학기) => 성적이 등록되지 않은 1학년 2학기 과목은 조회가 안됨 
+select subject.*, avg(score) 평균 
+from score 
+join subject on score.sj_code = subject.code
+group by sj_code;
+
+# 학생별 성적 평균을 조회하는 쿼리 
+# 학년, 반, 번호, 이름, 평균이 조회 => 성적이 등록 안된 1학년1반3번 학생은 조회가 안됨 
+select student.*, avg(score) 평균 from score
+join student on score.st_code = student.code
+group by st_code;
+
+# inner join : 두 테이블에 연결된 데이터가 있을 때 조회가 됨. 
+
+# outer join : 두 테이블에 연결된 데이터가 없어도 조회가 필요할 때 사용 
+# 두 테이블을 연결한 후 연결할 데이터가 없는 쪽은 null처리 
+# left join/ right join : 왼쪽/오른쪽 테이블을 기준으로 연결 
+
+# left join : 테이블1을 기준으로 테이블1 옆에 테이블2를 이어 붙임 
+# select * from 테이블1
+# left join 테이블2 on 테이블1.컬럼1 = 테이블2.컬럼2;
+
+# right join : 테이블2을 기준으로 테이블2 옆에 테이블1를 이어 붙임 
+# select * from 테이블1
+# right join 테이블2 on 테이블1.컬럼1 = 테이블2.컬럼2;
+
+# 학생별 평균을 조회(성적이 등록되지 않은 학생도 포함) 
+SELECT 
+    student.*, AVG(score) 평균
+FROM
+    student
+        LEFT JOIN
+    score ON st_code = student.code
+GROUP BY student.code;
+
+# 학생의 성적을 조회(학년,반,번호,이름, 학년, 학기, 과목, 성적) =>등록된 모든학생이 조회 
+select 
+student.grade 학년, student.class 반 , student.num 번호, student.name 이름,
+subject.grade 과목학년, semester 과목학기, title 과목명, score 성적
+ from score
+right join student on st_code = student.code
+left join subject on sj_code = subject.code;
 
 
 

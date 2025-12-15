@@ -77,3 +77,41 @@ select * from student limit 0, 2;
 
 # 2페이지에 조회되는 학생 목록
 select * from student limit 2, 2;
+
+# 학생들이 1학년에 들어야할 과목을 조회하는 쿼리 
+select distinct title from subject where grade = 1;
+
+# 학생들을 학년, 반, 번호를 낮은 학년부터 조회하는 쿼리 
+select * from student order by grade, class, num;
+
+# 그룹화 => group by
+# 레코드(행)들을 그룹으로 묶어서 처리할 때 사용 => 1학년 1반 1학기 수학 평균 
+# 집계함수를 이용하여 조건을 걸 때 having을 사용 
+# select * from 
+# where절 
+# groub by 속성명1, 속성명2,... 
+# having 조건 
+# order by절 
+# limit절
+
+# 집계함수 
+# count(컬럼명) : 개수
+# count(*)인 경우 모두가 null이 아니면 개수를 셈. => 레코드 개수를 셈 
+# count(컬럼명)인 경우 컬럼이 null이면 개수를 안셈 
+# sum(컬럼명) : 합
+# avg(컬럼명) : 평균
+# min(컬럼명) : 최소값
+# max(컬럼명) : 최대값 
+# 각 학년별 학생수를 조회
+select grade, count(*) 학생수 from student group by grade;
+
+
+
+
+
+
+
+
+
+
+

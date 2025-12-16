@@ -53,4 +53,12 @@ delete from cart where id = "abc123" and code = "ACC002";
 update product set amount = amount - 1 where code = "ACC001";
 update product set amount = amount - 1 where code = "ACC002";
 
+# "abc123"회원이 ACC001 제품을 1개 장바구니에 담음
+insert into cart(id, amount, code) values("abc123", 1, "ACC001");
+
+# qweqwe회원 가입 
+insert into user(id, pw, email, phone) 
+values("qweqew", "qweqwe", "qweqwe@naver.com", "011-2233-4444");
+
+
 

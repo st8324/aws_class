@@ -30,5 +30,76 @@ SELECT PRODUCT.*, CASE
     ELSE "적당함"
 END 결과 FROM PRODUCT;
 
+# 문자열 내장함수
+# CHAR_LENGTH(문자열) : 문자열의 길이 
+# LENGTH(문자열) : 문자열의 바이트수 
+SELECT 
+	CHAR_LENGTH("ABC") 'ABC길이', LENGTH("ABC") ABC크기,
+	CHAR_LENGTH("가나다") '가나다길이', LENGTH("가나다") 가나다크기;
+
+# CONCAT(문자열1, 문자열2, ...) : 문자열을 이어 붙임 
+SELECT CONCAT("%", "검색어", "%");
+
+# FIELD(찾을문자열, 문자열1, 문자열2, ...) : 찾을 문자열이 어디 있는지 위치를 반환
+# 1부터 시작, 없으면 0 반환 
+SELECT FIELD("ABC", "ABC123", "123ABC", "ABC");
+
+# INSTR(기준문자열, 부분문자열) : 기준문자열에서 부분문자열을 찾아 시작 위치를 반환 
+# LOCATE(부분만자열, 기준문자열) : 기준문자열에서 부분문자열을 찾아 시작 위치를 반환 
+SELECT INSTR("ABC123", "123"), LOCATE("123", "ABC123");
+
+# FORMAT(숫자, 소수점자리수) : 숫자를 소수점 이하 자리까지 표현. 1000단위마다 ,추가 
+SELECT CONCAT(FORMAT(1000000, 0), "원");
+
+# BIN(숫자), OCT(숫자), HEX(숫자) : 2,8,16진수로 변환 
+SELECT BIN(15), OCT(15), HEX(15);
+
+# INSERT(기준문자열, 위치, 길이, 삽입할문자열) : 기준문자열에서 위치부터 길이만큼 지우고
+# 그 위치에 삽입할문자열을 추가 
+SELECT INSERT("I love JAVA", 8, 4, "PYTHON");
+
+# LEFT(문자열, 길이), RIGHT(문자열, 길이) : 왼쪽/오른쪽부터 길이만큼 문자열을 반환 
+SELECT LEFT("ACC001", 3) 카테고리명, RIGHT("BIRD.JPG", 3) 확장자;
+
+# LOWER(문자열), UPPER(문자열) : 모든 문자열을 소문자/대문자로 
+SELECT LOWER("aBCdef"), UPPER("aBCdef");
+
+# LPAD(문자열, 길이, 채울문자열), RPAD(문자열, 길이, 채울문자열) 
+# - 문자열을 길이만큼 늘리고 왼쪽/오른쪽 빈곳을 채울문자열로 채움 
+SELECT LPAD(1, 3, '0'), RPAD(1, 3, '0');
+SELECT CONCAT('ACC', LPAD(1,3,'0')) 제품코드;
+
+# LTRIM, RTRIM, TRIM(문자열) : 문자열 왼쪽/오른족/양쪽 공백을 제거 
+SELECT 
+	LTRIM("     A B C   "), CHAR_LENGTH(LTRIM("     A B C   ")),
+    RTRIM("     A B C   "), CHAR_LENGTH(RTRIM("     A B C   ")),
+    TRIM("     A B C   "), CHAR_LENGTH(TRIM("     A B C   "));
+
+# REPEAT(문자열, 횟수) : 문자열을 횟수만큼 반복
+SELECT REPEAT("ABC", 3);
+
+# REVERSE(문자열) : 문자열 순서를 반대로
+SELECT REVERSE("ABC");
+
+# REPLACE(문자열, 문자열A, 문자열B) : 문자열에서 문자열A를 찾아 문자열B로 교체 
+SELECT REPLACE("I love JAVA", "JAVA", "PYTHON");
+
+# SUBSTRING(문자열, 시작위치, 길이) : 문자열에서 시작위치부터 길이만큼 부분문자열을 반환
+SELECT SUBSTRING("I love JAVA", 8, 4);
+
+# 날짜/시간 함수 
+# NOW(), SYSDATE() : 현재 시간을 반환 
+SELECT NOW(), SYSDATE();
+
+# ADDDATE/SUBDATE(날짜, 차이)
+# 날짜를 기준으로 차이만큼 일을 더한/뺀 날짜를 반환
+SELECT ADDDATE(NOW(), 2), SUBDATE(NOW(), 2); 
+
+# ADDTIME/SUBTIME(날짜/시간, 차이) 
+# 날짜/시간을 기준으로 차이만큼 더한/뺀 날짜/시간을 반환 
+# 차이에 "시:분:초" 형태로 넣어주어야 함.
+
+
+
 
 

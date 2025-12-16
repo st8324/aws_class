@@ -126,7 +126,86 @@ CALL BUY_CART(3, "경기도");
 # ACC001 제고가 7개로 변경 
 # 장바구니 3번이 삭제 
 
+/* 
+프로시저에서 사용하는 문법 
+1. 변수 선언
+ - 변수선언은 BEGIN 밑에 모아 놓음 
+ - 선언 방법 
+   DECLARE 변수명 타입 [DEFAULT 초기값];
+2. 변수값 수정
+ - =은 기본 비교연산이기 때문에 SET을 이용하여 수정 
+   SET 변수명 = 값;
+   SET 변수명 = (SELECT 쿼리);
+3. 조건문 IF
+  IF 조건식 THEN
+	실행문;
+  ELSEIF 조건식 THEN
+    실행문; 
+  ELSE 
+    실행문;
+  END IF;
+4. 조건문 CASE 
+  CASE 변수
+	WHEN 값 THEN
+	  실행문;
+	WHEN 값2 THEN
+      실행문;
+	ELSE
+	  실행문;
+  END CASE;
+5. 반복문 WHILE 
+  WHILE 조건식 DO
+	실행문;
+  END WHILE;
+6. 반복문 REPEAT 
+  REPEAT
+    실행문;
+  UNTIL 조건식 
+  END REPEAT;
+7. 반복문 CURSOR
+ - 검색 결과를 반복문으로 활용할 때 사용 
+  DELCARE 변수A BOOLEAN DEFAULT FALSE; #반복을 멈출지말지를 결정하는 변수 
+  DECLARE 커서 CURSOR FOR SELECT 컬럼1, 컬럼2, ... FROM 테이블명 [WHERE절];
+  # 더이상 할 내용이 없으면 변수A를 TRUE로 변경 
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET 변수A = TRUE; 
+  OPEN 커서;
+  루프 : LOOP
+  FETCH 커서 INTO 변수1, 변수2, ...;
+  IF 변수A THEN
+	LEAVE 루프;
+  END IF;
+  실행문; 
+  END LOOP;
+  CLOSE 커서; 
+  
+*/
 
+DROP PROCEDURE IF EXISTS PRINT_PRODUCT;
+DELIMITER $$
+CREATE PROCEDURE PRINT_PRODUCT()
+BEGIN
+	DECLARE _DONE BOOLEAN DEFAULT FALSE; # 커서를 멈추기 위한 변수 
+    DECLARE _TITLE VARCHAR(50); #제목 
+    DECLARE _PRICE INT; #가격 
+    
+    DECLARE _CURSOR CURSOR FOR SELECT TITLE, PRICE FROM PRODUCT;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET _DONE = TRUE;
+    
+    OPEN _CURSOR;
+    PRODUCT_LOOP : LOOP
+		# 커서에서 꺼내서 _TITLE, _PRICE에 넣어줌 
+		FETCH _CURSOR INTO _TITLE, _PRICE;
+        # 꺼내올게 없으면 루프 종료 
+        IF _DONE THEN
+			LEAVE PRODUCT_LOOP;
+		END IF;
+        SELECT _TITLE, _PRICE;
+    END LOOP;
+    CLOSE _CURSOR;
+END $$
+DELIMITER ;
+
+CALL PRINT_PRODUCT();
 
 
 

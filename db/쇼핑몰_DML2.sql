@@ -60,5 +60,19 @@ insert into cart(id, amount, code) values("abc123", 1, "ACC001");
 insert into user(id, pw, email, phone) 
 values("qweqew", "qweqwe", "qweqwe@naver.com", "011-2233-4444");
 
+# 악세서리 제품들 추가 
+INSERT INTO PRODUCT(CODE, TITLE, CONTENT, AMOUNT, PRICE, NUM)
+VALUES
+("ACC003", "반빡이는 귀걸이", "", 10, 50000, 1),
+("ACC004", "14K 팔찌", "", 10, 80000, 1),
+("ACC005", "순금 목걸이", "", 10, 150000, 1),
+("ACC006", "순금 반지", "", 10, 250000, 1);
+
+
+
+
+
+
+
 
 

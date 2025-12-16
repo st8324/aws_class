@@ -97,9 +97,44 @@ SELECT ADDDATE(NOW(), 2), SUBDATE(NOW(), 2);
 
 # ADDTIME/SUBTIME(날짜/시간, 차이) 
 # 날짜/시간을 기준으로 차이만큼 더한/뺀 날짜/시간을 반환 
-# 차이에 "시:분:초" 형태로 넣어주어야 함.
+# 차이에 "시:분:초" 형태로 넣어주어야 함. 
+SELECT ADDTIME(NOW(), "3:00:00"), SUBTIME("17:00:00", "2:00:00");
 
+# YEAR/MONTH/DAY(날짜) : 날짜에서 년/월/일을 반환
+SELECT YEAR(NOW()), MONTH(NOW()), DAY(NOW());
 
+# HOUR/MINUTE/SECOND/MICROSECOND(시간) : 시간에서 시/분/처/마이크로초를 반환 
+SELECT 
+	HOUR(NOW()) 시,
+	MINUTE(NOW()) 분,
+    SECOND(NOW()) 초,
+    MICROSECOND("2025-12-16 12:13:12.123") 마이크로초;
 
+# DATE/TIME(날자) : 날짜에서 년-월-일/시:분:초를 추출 
+SELECT DATE(NOW()), TIME(NOW());
+
+# DATEDIFF(날짜1, 날짜2) : 날짜1에서 날짜2의 차이를 일로 반환. 날짜1 - 날짜2 
+SELECT DATEDIFF("2026-06-01", NOW()) 남은수강일;
+
+# TIMEDIFF(날짜1/시간1, 날짜2/시간2) 
+# - 날짜1/시간1에서 날짜/시간2의 차이를 시:분:초로 반환. 날짜1/시간1 - 날짜2/시간2 
+SELECT TIMEDIFF("12:20:00", TIME(NOW()));
+
+# DATE_ADD/DATE_SUB(기준날짜, INTERVAL)
+# - 기준날짜에서 INTERVAL만큼 더한/뺀 날짜 
+# - INTERVAL 종류
+#   - 시간유형
+#     - YEAR/MONTH/DAY : 년/월/일 
+#     - HOUR/MINUTE/SECOND/MICROSECOND : 시/분/초/마이크로초
+#     - QUARTER/WEEK : 분기/주 
+#   - 조합유형
+#     - YEAR_MONTH : 년월 
+#     - DAY_HOUR(일 시간), DAY_MINUTE(일 시간:분), 
+#       DAY_MICROSECOND(일 시간:분:초.마이크로초)
+SELECT 
+	DATE_ADD(NOW(), INTERVAL 1 YEAR) 1년후,
+	DATE_ADD(NOW(), INTERVAL 1 QUARTER) 1분기후,
+    DATE_ADD(NOW(), INTERVAL "1 1" YEAR_MONTH) 1년1달후,
+    DATE_ADD(NOW(), INTERVAL "2 3:00:00.000" DAY_MICROSECOND) 2일3시간후;
 
 

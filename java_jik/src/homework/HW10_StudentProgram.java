@@ -1,7 +1,11 @@
 package homework;
 
+import java.util.Scanner;
+
 public class HW10_StudentProgram {
 
+	private static Scanner scan = new Scanner(System.in);
+	
 	public static void main(String[] args) {
 		/* 학생의 성적을 관리하는 프로그램을 구현하세요.
 		 * - 파일에 저장. 파일에서 불러오기 
@@ -25,7 +29,30 @@ public class HW10_StudentProgram {
 		 *  - 학생의 학년, 반, 번호를 입력받아 있으면 과목 학년, 학기, 과목명을 입력받아 삭제 
 		 * 9. 프로그램 종료 
 		 * */
-
+		int menu = 0;
+		final int EXIT = 9;
+		do {
+			//메뉴 출력
+			printMenu();
+			menu = scan.nextInt();
+			switch(menu) {
+			case 1:	break;
+			case 2: break;
+			case 3: break;
+			case 4: break;
+			case 5: break;
+			case 6: break;
+			case 7: break;
+			case 8: break;
+			case 9: break;
+				
+			}
+		}while(menu != EXIT);
+	}
+	
+	private static void printMenu() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

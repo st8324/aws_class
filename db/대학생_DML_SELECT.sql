@@ -119,8 +119,20 @@ WHERE
         AND CO_SCORE NOT IN ('F' , 'FAIL') # 성적이 나왔지만 이수 못함 
         AND CO_SCORE IS NOT NULL; # 학기 진행 중 
 
-
-
+# 학생별 총 이수학점을 조회 
+# 이수는 성적이 PASS이거나 F가 아니거나 NULL이 아니면 계산 
+SELECT ST_NUM, ST_NAME, IFNULL(SUM(SJ_POINT), 0) 이수총학점
+FROM
+	# 아래 서브쿼리에서 검색 결과는 홍길동 학생의 이수한 수강 정보만 조회 
+    # 다른 학생은 성적을 입력 안해서 
+    (SELECT * FROM COURSE 
+		WHERE
+			CO_SCORE NOT IN ('F' , 'FAIL')
+				AND CO_SCORE IS NOT NULL) C
+        JOIN    LECTURE ON CO_LT_NUM = LT_NUM  
+        JOIN    SUBJECT ON SJ_CODE = LT_SJ_CODE
+		RIGHT JOIN	STUDENT ON ST_NUM = CO_ST_NUM
+    GROUP BY ST_NUM;
 
 
 

@@ -258,22 +258,22 @@ CREATE PROCEDURE SCORE(
 )
 BEGIN
 
-	DECLARE _MID INT;
-    DECLARE _FINAL INT;
-    DECLARE _HW INT;
-    DECLARE _ATT INT;
-    DECLARE _TOTAL DOUBLE;
-    DECLARE _SCORE VARCHAR(2);
+	DECLARE _MID INT; # 중간 100점만점
+    DECLARE _FINAL INT; # 기말 100점만점
+    DECLARE _HW INT; # 과제 100점만점
+    DECLARE _ATT INT; # 출석 100점만점
+    DECLARE _TOTAL DOUBLE; # 성적을 비율로 반영한 총점 
+    DECLARE _SCORE VARCHAR(2); # 학점
     
+    # 예외가 발생하면 이전에 작업한 내용이 반영되지 않게 ROLLBACK 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
 		ROLLBACK;
 	END;
     
-    
-    
     START TRANSACTION;
     
+    # 검색을 통해 중간, 기말, 과제, 출석 점수를 가져와서 각 변수에 저장  
     SET _MID = (SELECT CO_MID FROM COURSE 
 					WHERE CO_ST_NUM = _ST_NUM AND CO_LT_NUM = _LT_NUM);
 	SET _FINAL = (SELECT CO_FINAL FROM COURSE 
@@ -315,11 +315,13 @@ BEGIN
 		SET _SCORE = 'F';
 	END IF;
     
+    # 계산한 학점을 테이블에 업데이트
     UPDATE COURSE
 	SET 
 		CO_SCORE = _SCORE 
 	WHERE 
 		CO_ST_NUM = _ST_NUM AND CO_LT_NUM = _LT_NUM;
+	# 지금까지 작업 내용을 반영 
     COMMIT;
 END $$
 DELIMITER ;

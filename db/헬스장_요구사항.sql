@@ -1,5 +1,6 @@
 /*
 ERD : https://drive.google.com/file/d/1CyEczzs1Pk9I2C4lDGEi0BdbWh0phLA5/view?usp=drive_link
+논리/물리 : https://www.erdcloud.com/d/DK6c9NrTELrQKLFy5
 회원 및 트레이너 관리
 - 센터는 여러 명의 회원을 관리한다. 
 - 회원은 회원번호, 이름, 연락처, 가입일을 저장한다.

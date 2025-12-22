@@ -22,7 +22,7 @@ WHERE
 
 # 사물함 등록 
 # - 사물함은 2군데 : A구역, B구역 
-#   - 사물함 별 번호 : A구역은 1~5번, B구역은 1~10번 
+#   - 사물함 별 번호 : A구역은 1~5번, B구역은 1~15번 
 # - 사물함 이름 : 구역명-번호 
 #   - A구역-01
 INSERT INTO LOCKER(LOCATION) VALUES
@@ -70,7 +70,12 @@ VALUES
 INSERT INTO ATTENDANCE(MEMBER_ID, CLASS_ID)
 VALUES(1, 2);
 
-SELECT * FROM ATTENDANCE;
+# 새로운 강좌를 등록
+# - 강좌명 : 크로스핏 초급반, 정원 : 30, 수강료 : 50,000
+# - 담당 : 김철수(1)
+INSERT INTO CLASS(NAME, CAPACITY, FEE, TRAINER_ID)
+VALUES('크로스핏 초급반', 30, 50000, 1);
+
 
 
 

@@ -108,6 +108,25 @@ public class HW10_StudentProgram {
 			return;
 		}
 		
+		//학생 정보에 성적을 추가해서 성공하면
+		//성적을 추가했습니다.
+		//입력한 학생 정보를 학생 목록에서 가져옴 
+		//student; => 입력한 학년, 반, 번호는 있지만 이름과 성적들이 없음 
+		Student selectedStudent = students.get(index);
+		
+		//강사가 할 방법
+		//학생정보에게 입력한 성적 정보를 주고 추가하라고 요청 후 성공 여부를 알려 달라고 함
+		boolean isAdd = selectedStudent.addSubjectScore(subjectScore);
+		
+		if(isAdd) {
+			println("성적을 추가했습니다.");
+		}
+		
+		//실패하면 성적을 수정했습니다를 출력
+		//실패 => 새로운 추가 실패 => 기존 성적을 수정 
+		else {
+			println("성적을 수정했습니다.");
+		}
 		
 		
 	}

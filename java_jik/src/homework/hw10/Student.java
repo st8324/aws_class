@@ -87,6 +87,11 @@ public class Student {
 				&& grade == other.grade 
 				&& num == other.num;
 	}
+
+	public boolean addSubjectScore(SubjectScore subjectScore) {
+		
+		return false;
+	}
 	
 	
 }

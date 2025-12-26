@@ -64,7 +64,9 @@ public class HW10_StudentProgram {
 			case 7: 
 				addSubjectScore(students, subjects);
 				break;
-			case 8: break;
+			case 8: 
+				removeSubjectScore(students, subjects);
+				break;
 			case EXIT: 
 				exit();
 				break;
@@ -74,6 +76,42 @@ public class HW10_StudentProgram {
 		}while(menu != EXIT);
 	}
 	
+	private static void removeSubjectScore(List<Student> students, List<Subject> subjects) {
+		//성적을 삭제할 학생의 학년, 반, 번호를 입력
+		Student student = inputStudent(false);
+		//일치하는 학생이 없으면 안내문 출력후 종료
+		int index = students.indexOf(student);
+		
+		if(index < 0) {
+			println("일치하는 학생이 없습니다.");
+			return;
+		}
+		
+		//있으면
+		//과목 정보를 입력 
+		Subject subject = inputSubject();
+		
+		//과목 목록에 과목 정보가 없으면 안내문 출력후 종료 
+		if(!subjects.contains(subject)) {
+			println("등록되지 않은 과목입니다.");
+			return ;
+		}
+		
+		//학생 정보에서 과목 정보를 주면서 성적 목록에서 제거하고,
+		//제거 여부를 알려달라고 함
+		Student selectedStudent = students.get(index);
+		
+		//제거 했으면 제거 안내문 출력 
+		if(selectedStudent.removeSubjectScore(subject)) {
+			println("성적을 삭제했습니다.");
+		}
+		//실패했으면 제거 실패 안내문 출력
+		else {
+			println("등록되지 않은 성적입니다.");
+		}
+		
+	}
+
 	private static void addSubjectScore(List<Student> students, List<Subject> subjects) {
 		
 		//성적을 추가할 학생의 학년, 반, 번호를 입력 

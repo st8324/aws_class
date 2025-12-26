@@ -110,6 +110,23 @@ public class Student {
 		//list.set(index, subjectScore);
 		return false;
 	}
+
+	public boolean removeSubjectScore(Subject subject) {
+		
+		//과목 정보를 이용하여 삭제할 성적 정보를 생성
+		//0학년 0학기 (과목명없음) 0점인 성적 정보를 생성
+		SubjectScore subjectScore = new SubjectScore(0, 0, "", 0);
+		//?학년 ?학기 ?? 0점인 성적으로 변경 
+		subjectScore.setSubject(subject);
+		
+		//삭제할 성적 정보를 이용하여 성적 목록에서 제거하고 성공하면 true를 반환
+		//실패하면 false를 반환
+		return list.remove(subjectScore);
+		
+		//아래 코드로 하면 원하는 결과가 안나옴 
+		//remove는 Objects.equals를 호출 => 두 객체의 클래스가 다르면 무조건 false
+		//return list.remove(subject);
+	}
 	
 	
 }

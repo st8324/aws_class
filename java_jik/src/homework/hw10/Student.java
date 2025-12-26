@@ -1,5 +1,6 @@
 package homework.hw10;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,8 +10,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Student {
+public class Student implements Serializable {
 
+	private static final long serialVersionUID = 123L;
+	
 	//다음 필드를 추가하세요.
 	//학생의 학년, 반, 번호, 이름, 과목 성적들 
 	private int grade, classNum, num;

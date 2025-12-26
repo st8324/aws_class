@@ -1,5 +1,9 @@
 package homework.hw10;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,6 +41,22 @@ public class HW10_StudentProgram {
 		List<Student> students = new ArrayList<Student>();
 		//과목 리스트 
 		List<Subject> subjects = new ArrayList<Subject>();
+		String studentsFileName = "student.txt";
+		String subjectsFileName = "subject.txt";
+		
+		try {
+			students = (ArrayList<Student>)load(studentsFileName);
+		}catch(Exception e) {
+			println("학생 목록 불러오기 실패");
+			students = new ArrayList<Student>();
+		}
+		try {
+			subjects = (ArrayList<Subject>)load(subjectsFileName);
+		}catch(Exception e) {
+			println("과목 목록 불러오기 실패");
+			subjects = new ArrayList<Subject>();
+		}
+		
 		do {
 			//메뉴 출력
 			printMenu();
@@ -69,6 +89,8 @@ public class HW10_StudentProgram {
 				break;
 			case EXIT: 
 				exit();
+				save(studentsFileName, students);
+				save(subjectsFileName, subjects);
 				break;
 			default:
 				
@@ -76,6 +98,28 @@ public class HW10_StudentProgram {
 		}while(menu != EXIT);
 	}
 	
+	private static Object load(String fileName) throws Exception {
+
+		try(ObjectInputStream ois = 
+				new ObjectInputStream(new FileInputStream(fileName))){
+			return ois.readObject();
+		}catch(Exception e) {
+			throw e;
+		}
+	}
+
+	private static void save(String fileName, Object obj) {
+		
+		try(ObjectOutputStream oos = 
+				new ObjectOutputStream(new FileOutputStream(fileName))){
+			oos.writeObject(obj);
+			oos.flush();
+		}catch(Exception e) {
+			println("저장에 실패했습니다.");
+		}
+		
+	}
+
 	private static void removeSubjectScore(List<Student> students, List<Subject> subjects) {
 		//성적을 삭제할 학생의 학년, 반, 번호를 입력
 		Student student = inputStudent(false);

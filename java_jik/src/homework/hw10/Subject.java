@@ -1,5 +1,6 @@
 package homework.hw10;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import lombok.Getter;
@@ -7,8 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Subject {
+public class Subject implements Serializable {
 
+	private static final long serialVersionUID = 123L;
+	
 	//학년(grade), 학기(semeter), 과목명(name)을 필드로 선언하세요. 
 	private int grade, semester;
 	private String name;

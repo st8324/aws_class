@@ -1,5 +1,6 @@
 package homework.hw10;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import lombok.Getter;
@@ -7,8 +8,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SubjectScore {
+public class SubjectScore implements Serializable {
 
+
+	private static final long serialVersionUID = 123L;
+	
 	//다음 필드를 선언하세요. 
 	//과목 정보, 성적 
 	private Subject subject;

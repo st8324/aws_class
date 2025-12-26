@@ -1,5 +1,7 @@
 package homework.hw10;
 
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +32,19 @@ public class SubjectScore {
 		subject = new Subject(grade, semester, name);
 		this.score = score;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SubjectScore other = (SubjectScore) obj;
+		return Objects.equals(subject, other.subject);
+	}
+
 }
 
 

@@ -89,7 +89,25 @@ public class Student {
 	}
 
 	public boolean addSubjectScore(SubjectScore subjectScore) {
+		//등록된 성적인지 확인하기 위해 성적 목록에서 몇번지에 있는지 확인 
+		int index = list.indexOf(subjectScore);
 		
+		//없으면(-1번지이면) 성적을 추가 => true를 반환(추가했으니까) 
+		if(index < 0) {
+			list.add(subjectScore);
+			return true;
+			//위 두줄을 아래 한줄로 변경 가능
+			//return list.add(subjectScore);
+		}
+		//있으면 기존 성적에 새 점수로 수정 => false를 반환(추가가 아닌 수정했으니까)
+		
+		//기존 성적 정보 
+		SubjectScore selectedScore = list.get(index);
+		//기존 성적을 새 성적으로 수정
+		selectedScore.setScore(subjectScore.getScore());
+		
+		//위 두줄을 아래 한줄로 변경 가능
+		//list.set(index, subjectScore);
 		return false;
 	}
 	

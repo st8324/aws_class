@@ -1,5 +1,8 @@
 package kr.hi.boot.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +30,17 @@ public class MainController {
 		@RequestParam(name="role", defaultValue="GUEST") String role) {
 		log.info("메인 페이지 : " + role);
 		
+		//th:each를 활용할 샘플 데이터
+		ArrayList<Human> list = new ArrayList<Human>();
+		list.add(new Human("홍길동", 20));
+		list.add(new Human("둘리", 25));
+		list.add(new Human("고길동", 40));
+		
 		model.addAttribute("화면에서 사용할 이름", "데이터");
 		model.addAttribute("data", "홍길동");
 		model.addAttribute("role", role);
+		model.addAttribute("list", list);
+		model.addAttribute("date", new Date());//java.util.Date
 		return "index";
 	}
 	/* 사용자가 요청한 url이 /abc이고,

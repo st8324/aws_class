@@ -69,4 +69,11 @@ public class MainController {
 		return "abc";
 	}
 	
+	@GetMapping("/signup")
+	public String signup() {
+		return "user/signup";
+	}
 }
+
+
+

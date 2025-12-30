@@ -1,6 +1,7 @@
 package kr.hi.boot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.hi.boot.dao.MemberDAO;
@@ -17,6 +18,9 @@ public class MemberService {
 	
 	@Autowired
 	MemberDAO memberDAO;
+	
+	@Autowired
+    private BCryptPasswordEncoder encoder;
 
 	public boolean signup(SignupDTO signupDto) {
 		//아이디, 비번, 이메일 정규표현식 검사
@@ -27,6 +31,10 @@ public class MemberService {
 		if(member != null) {
 			return false;
 		}
+		//암호화 
+		String encodedPw = encoder.encode(signupDto.getPw());
+		//암호화된 비번으로 수정
+		signupDto.setPw(encodedPw);
 		//없으면 => 가입 O => 회원가입 진행 후 true를 반환
 		memberDAO.insertMember(signupDto);
 		return true;

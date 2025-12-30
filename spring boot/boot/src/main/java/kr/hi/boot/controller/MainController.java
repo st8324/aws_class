@@ -90,6 +90,11 @@ public class MainController {
 		boolean res = memberService.signup(signupDto);
 		return "user/signup";
 	}
+	@GetMapping("/login")
+	public String login(){
+		return "user/login";
+	}
+	
 }
 
 

@@ -1,3 +1,4 @@
+# https://www.erdcloud.com/d/PsDTmWwCgyxQgbSxe
 
 DROP DATABASE IF EXISTS COMMUNITY;
 

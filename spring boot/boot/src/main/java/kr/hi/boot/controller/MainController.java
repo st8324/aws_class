@@ -3,12 +3,14 @@ package kr.hi.boot.controller;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.hi.boot.dao.MemberDAO;
 import kr.hi.boot.model.dto.Human;
 import lombok.extern.log4j.Log4j2;
 
@@ -19,6 +21,9 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 @Log4j2
 public class MainController {
+	
+	@Autowired
+	MemberDAO memberDao;
 	
 	/* 주어진 URL이 get 방식일 때 처리 */
 	@GetMapping("/")
@@ -71,6 +76,7 @@ public class MainController {
 	
 	@GetMapping("/signup")
 	public String signup() {
+		log.info(memberDao.getMember("abc123"));
 		return "user/signup";
 	}
 }

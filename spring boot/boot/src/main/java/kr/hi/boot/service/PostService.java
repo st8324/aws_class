@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.hi.boot.dao.PostDAO;
+import kr.hi.boot.model.dto.PostDTO;
+import kr.hi.boot.model.util.CustomUser;
 import kr.hi.boot.model.vo.Board;
+import kr.hi.boot.model.vo.Member;
 import kr.hi.boot.model.vo.Post;
 
 @Service
@@ -57,5 +60,35 @@ public class PostService {
 	public Post getPost(int num) {
 		Post post = postDAO.getPost(num);
 		return post;
+	}
+
+	public void insertPost(PostDTO post, CustomUser cUser) {
+		//제목이 없으면 추가 안함
+		if(post.getTitle().trim().length() == 0) {
+			return;
+		}
+		//내용이 없으면 추가 안함
+		if(post.getContent().trim().length() == 0) {
+			return;
+		}
+		//없는 게시판 번호면 추가 안함
+		//게시판 번호를 이용하여 게시판 정보를 가져옴 
+		Board board = postDAO.getBoard(post.getBoard());
+		//일치하는 게시판이 없으면 종료
+		if(board == null) {
+			return;
+		}
+		//사용자가 로그인 안되어있으면 추가 안함
+		if(cUser == null) {
+			return;
+		}
+		//post에 작성자 정보 추가
+		Member user = cUser.getMember();
+		if(user == null) {
+			return;
+		}
+		post.setId(user.getMe_id());
+		//게시글 등록
+		postDAO.insertPost(post);
 	}
 }

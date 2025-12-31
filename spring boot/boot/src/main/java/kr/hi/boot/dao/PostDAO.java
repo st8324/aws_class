@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.hi.boot.model.dto.PostDTO;
 import kr.hi.boot.model.vo.Board;
 import kr.hi.boot.model.vo.Post;
 
@@ -20,5 +21,9 @@ public interface PostDAO {
 	ArrayList<Post> getPostList();
 
 	Post getPost(@Param("num")int num);
+
+	Board getBoard(@Param("num")int board);
+
+	void insertPost(@Param("post")PostDTO post);
 
 }

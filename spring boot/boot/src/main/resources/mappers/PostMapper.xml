@@ -31,6 +31,14 @@
    	<select id="getPost" resultType="Post">
    		select * from post where po_num = #{num}
    	</select>
+   	<select id="getBoard" resultType="Board" >
+   		select * from board where bo_num = #{num}
+   	</select>
+   	<insert id="insertPost">
+   		insert into post(po_title, po_content, po_me_id, po_bo_num)
+   		values(#{post.title},#{post.content},
+   			#{post.id},#{post.board})
+   	</insert>
 </mapper>
 
 

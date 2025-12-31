@@ -53,4 +53,9 @@ public class PostService {
 	public ArrayList<Post> getPostList() {
 		return postDAO.getPostList();
 	}
+
+	public Post getPost(int num) {
+		Post post = postDAO.getPost(num);
+		return post;
+	}
 }

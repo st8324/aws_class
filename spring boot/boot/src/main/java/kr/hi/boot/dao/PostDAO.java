@@ -19,4 +19,6 @@ public interface PostDAO {
 
 	ArrayList<Post> getPostList();
 
+	Post getPost(@Param("num")int num);
+
 }

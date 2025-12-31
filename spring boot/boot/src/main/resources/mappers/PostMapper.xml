@@ -28,6 +28,9 @@
    	<select id="getPostList" resultType="Post">
    		select * from post
    	</select>
+   	<select id="getPost" resultType="Post">
+   		select * from post where po_num = #{num}
+   	</select>
 </mapper>
 
 

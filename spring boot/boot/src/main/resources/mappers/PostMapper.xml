@@ -25,6 +25,9 @@
    		where
    			bo_num = #{num}
    	</update>
+   	<select id="getPostList" resultType="Post">
+   		select * from post
+   	</select>
 </mapper>
 
 

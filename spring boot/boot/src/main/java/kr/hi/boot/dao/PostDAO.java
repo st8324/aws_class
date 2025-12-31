@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import kr.hi.boot.model.vo.Board;
+import kr.hi.boot.model.vo.Post;
 
 public interface PostDAO {
 
@@ -15,5 +16,7 @@ public interface PostDAO {
 	void deleteBoard(@Param("num")int num);
 
 	void updateBoard(@Param("num")int num, @Param("name")String name);
+
+	ArrayList<Post> getPostList();
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.hi.boot.dao.PostDAO;
 import kr.hi.boot.model.vo.Board;
+import kr.hi.boot.model.vo.Post;
 
 @Service
 public class PostService {
@@ -47,5 +48,9 @@ public class PostService {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ArrayList<Post> getPostList() {
+		return postDAO.getPostList();
 	}
 }

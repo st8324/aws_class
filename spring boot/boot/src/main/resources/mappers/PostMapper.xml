@@ -5,6 +5,26 @@
    	<select id="getBoardList" resultType="Board">
 		select * from board
    	</select>
+   	<!-- 
+   	- select 태그만 resultType 또는 resultMap이 필요
+   	- update, insert, delete는 필요 없음
+   	  - DAO의 리턴타입으로 boolean, int 지정 가능. 
+   	    mapper에서는 따로 지정할 필요 없음 
+   	 -->
+   	<insert id="insertBoard">
+   		insert into board(bo_name) values(#{name})
+   	</insert>
+   	
+   	<delete id="deleteBoard">
+   		delete from board where bo_num = #{num}
+   	</delete>
+   	<update id="updateBoard">
+   		update board
+   		set
+   			bo_name = #{name}
+   		where
+   			bo_num = #{num}
+   	</update>
 </mapper>
 
 

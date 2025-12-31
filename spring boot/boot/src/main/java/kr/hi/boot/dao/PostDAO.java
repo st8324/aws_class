@@ -26,4 +26,6 @@ public interface PostDAO {
 
 	void insertPost(@Param("post")PostDTO post);
 
+	void updatePostView(@Param("num")int num);
+
 }

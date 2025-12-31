@@ -35,6 +35,8 @@ public class PostController {
 	public String postDetail(
 		Model model,
 		@PathVariable("num")int num) {
+		//조회수 증가
+		postService.updatePostView(num);
 		//번호에 맞는 게시글을 가져와서 화면에 전달
 		//컨트롤러, 서비스, 다오, 매퍼
 		Post post = postService.getPost(num);

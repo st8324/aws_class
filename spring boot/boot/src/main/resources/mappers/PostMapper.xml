@@ -39,6 +39,10 @@
    		values(#{post.title},#{post.content},
    			#{post.id},#{post.board})
    	</insert>
+   	<update id="updatePostView">
+   		update post set po_view = po_view + 1 
+   		where po_num = #{num}
+   	</update>
 </mapper>
 
 

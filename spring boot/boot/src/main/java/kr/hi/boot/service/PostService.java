@@ -91,4 +91,8 @@ public class PostService {
 		//게시글 등록
 		postDAO.insertPost(post);
 	}
+
+	public void updatePostView(int num) {
+		postDAO.updatePostView(num);
+	}
 }

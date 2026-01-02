@@ -5,4 +5,18 @@
     <select id="selectMember" resultType="String">
     	select me_role from member where me_id = #{id}
     </select>
+    
+    <insert id="insertMember">
+    	insert into member(me_id, me_pw, me_email)
+    	<!-- 
+    	obj.id는 멤버변수 id를 호출하는 것이 아니라 id의 getter를 호출.
+    	즉 obj.id => obj.getId()가 호출
+    	 -->
+    	values(#{obj.id},#{obj.pw},#{obj.email})
+    </insert>
 </mapper>
+
+
+
+
+

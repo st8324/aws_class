@@ -36,12 +36,17 @@
 		</form>
 		<script type="text/javascript">
 			//https://just-validate.dev/
+			//form태그에 id를 지정하여 적용
 			const validator = new JustValidate('#signupForm');
 
+			//addField('선택자', [{규칙들}])
+			//id가 id인 요소에 규칙 적용
 			validator.addField('#id', [ {
+				//규칙 : 필수항목
 				rule : 'required',
 				errorMessage : '필수항목입니다.'
 			}, {
+				//규칙 : 정규표현식
 				rule : 'customRegexp',
 				value : /^[a-zA-Z0-9!@#$]{6,13}$/,
 				errorMessage : '아이디는 영문,숫자, 특수문자(!@#$)만 가능하며 6~13자입니다.'
@@ -62,11 +67,18 @@
 				rule : 'required',
 				errorMessage : '필수항목입니다.'
 			}, {
+				//비밀번호 확인 입력시 동작
+				//value는 비밀번호에 입력한 문자열
+				//fields는 form태그에 있는 입력 요소들
+				//fields[선택자].elem : 선택자와 일치하는 요소
 				validator: (value, fields) => {
 			        // password 필드의 값과 현재(password_confirm) 값이 일치하는지 비교
+			        // 비밀번호값이 입력되어 있으면
 			        if (fields['#pw'] && fields['#pw'].elem) {
-			          const repeatPasswordValue = fields['#pw'].elem.value;
-			          return value === repeatPasswordValue;
+			        	//비밀번호 값을 가져옴
+			          	const repeatPasswordValue = fields['#pw'].elem.value;
+			        	//비밀번호 확인(value)와 비밀번호를 비교하여 같으면 true
+			          	return value === repeatPasswordValue;
 			        }
 			        return true;
 			      },

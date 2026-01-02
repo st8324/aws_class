@@ -6,11 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
 </head>
 <body >
 	<main layout:fragment="content" class="container">
 		<h1>회원가입</h1>
-		<form action="/signup" method="post">
+		<form action="/signup" method="post" id="signupForm">
 			<div class="mb-3 mt-3">
 				<label for="id" class="form-label">아이디:</label> <input
 					type="text" class="form-control" id="id"
@@ -33,6 +34,45 @@
 			</div>
 			<button type="submit" class="btn btn-primary col-12">회원가입</button>
 		</form>
+		<script type="text/javascript">
+			//https://just-validate.dev/
+			const validator = new JustValidate('#signupForm');
+
+			validator.addField('#id', [ {
+				rule : 'required',
+				errorMessage : '필수항목입니다.'
+			}, {
+				rule : 'customRegexp',
+				value : /^[a-zA-Z0-9!@#$]{6,13}$/,
+				errorMessage : '아이디는 영문,숫자, 특수문자(!@#$)만 가능하며 6~13자입니다.'
+			}]).addField('#pw', [ {
+				rule : 'required',
+				errorMessage : '필수항목입니다.'
+			}, {
+				rule : 'customRegexp',
+				value : /^[a-zA-Z0-9!@#$]{8,13}$/,
+				errorMessage : '아이디는 영문,숫자, 특수문자(!@#$)만 가능하며 8~13자입니다.'
+			}]).addField('#email', [ {
+				rule : 'required',
+				errorMessage : '필수항목입니다.'
+			}, {
+				rule : 'email',
+				errorMessage : '이메일 형식이 아닙니다.'
+			} ]).addField('#pw2', [ {
+				rule : 'required',
+				errorMessage : '필수항목입니다.'
+			}, {
+				validator: (value, fields) => {
+			        // password 필드의 값과 현재(password_confirm) 값이 일치하는지 비교
+			        if (fields['#pw'] && fields['#pw'].elem) {
+			          const repeatPasswordValue = fields['#pw'].elem.value;
+			          return value === repeatPasswordValue;
+			        }
+			        return true;
+			      },
+			      errorMessage: '비밀번호가 일치하지 않습니다.',
+			}]);
+		</script>
 	</main>
 </body>
 </html>

@@ -23,11 +23,14 @@
     		and po_del = 'N' 
     </update>
     
-    <select id="selectPost">
+    <select id="selectPost" resultType="PostVO">
     	select * from post
     	where po_num = #{num}
     	<!-- 삭제가 안된 게시글을 가져옴 --> 
     	and po_del = 'N'
+    </select>
+    <select id="selectBoardList" resultType="BoardVO">
+    	select * from board
     </select>
 </mapper>
 

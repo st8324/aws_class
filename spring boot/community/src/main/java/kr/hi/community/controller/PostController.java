@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
 import kr.hi.community.service.PostService;
 
@@ -50,6 +51,16 @@ public class PostController {
 		//가져온 게시글을 화면에 전달
 		model.addAttribute("post", post);
 		return "post/detail";
+	}
+	
+	@GetMapping("/post/insert")
+	public String postInsert(Model model) {
+		//게시판 목록을 가져옴
+		ArrayList<BoardVO> list = postService.getBoardList();
+		
+		//게시판 목록을 화면에 전송
+		model.addAttribute("list", list);
+		return "post/insert";
 	}
 }
 

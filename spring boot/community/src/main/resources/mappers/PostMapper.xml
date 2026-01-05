@@ -12,6 +12,23 @@
     	<!-- 최신 게시글이 위에 가도록 정렬 -->
     	order by po_num desc
     </select>
+    <update id="updateView">
+    	update post
+    	set
+    		<!-- 조회수 증가 -->
+    		po_view = po_view + 1
+    	where
+    		po_num = #{num} 
+    		<!-- 삭제가 안된 게시글 -->
+    		and po_del = 'N' 
+    </update>
+    
+    <select id="selectPost">
+    	select * from post
+    	where po_num = #{num}
+    	<!-- 삭제가 안된 게시글을 가져옴 --> 
+    	and po_del = 'N'
+    </select>
 </mapper>
 
 

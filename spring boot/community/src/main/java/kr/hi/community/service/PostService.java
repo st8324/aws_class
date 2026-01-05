@@ -20,5 +20,14 @@ public class PostService {
 		//게시글 목록을 반환
 		return list;
 	}
+
+	public void updateView(int po_num) {
+		postDAO.updateView(po_num);
+	}
+
+	public PostVO getPost(int po_num) {
+		PostVO post = postDAO.selectPost(po_num);
+		return post;
+	}
 	
 }

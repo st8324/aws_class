@@ -1,10 +1,16 @@
 package kr.hi.community.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.service.PostService;
 
 @Controller
@@ -15,7 +21,20 @@ public class AdminController {
 	PostService postService;
 
 	@GetMapping("/board/list")//실제 URL : /admin/board/list
-	public String baordList() {
+	public String baordList(Model model) {
+		//서비스에게 게시판 목록을 가져오라고 요청
+		ArrayList<BoardVO> list = postService.getBoardList();
+		//화면에 게시판 목록을 전송
+		model.addAttribute("list", list);
 		return "board/list";
+	}
+	
+	@PostMapping("/board/insert")
+	public String boardInsert(
+		@RequestParam("board") String name) {
+		
+		//서비스에게 name을 주면서 게시판을 등록하라고 요청 
+		postService.insertBoard(name);
+		return "redirect:/admin/board/list";
 	}
 }

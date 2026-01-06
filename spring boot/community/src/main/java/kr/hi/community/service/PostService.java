@@ -78,5 +78,18 @@ public class PostService {
 			return false;
 		}
 	}
+
+	public void insertBoard(String name) {
+		//공백으로 되어 있는 경우
+		if(checkEmpty(name)) {
+			return;
+		}
+		try {
+			postDAO.insertBoard(name);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

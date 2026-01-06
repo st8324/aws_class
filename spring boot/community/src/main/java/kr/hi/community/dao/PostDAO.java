@@ -21,4 +21,6 @@ public interface PostDAO {
 
 	void insertPost(@Param("post")PostDTO post);
 
+	void insertBoard(@Param("name")String name);
+
 }

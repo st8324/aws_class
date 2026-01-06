@@ -14,6 +14,7 @@
 			<thead>
 				<tr>
 					<th>번호</th>
+					<th>게시판</th>
 					<th>제목</th>
 					<th>작성자</th>
 					<th>작성일</th>
@@ -24,6 +25,7 @@
 			<tbody>
 				<tr th:each="post : ${list}">
 					<td th:text="${post.po_num}"></td>
+					<td th:text="${post.po_bo_name}"></td>
 					<td>
 						<a th:href="@{/post/detail/{num}(num=${post.po_num})}" th:text="${post.po_title}">링크</a>
 					</td>

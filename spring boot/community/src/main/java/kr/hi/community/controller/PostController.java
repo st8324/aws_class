@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
@@ -61,6 +62,12 @@ public class PostController {
 		//게시판 목록을 화면에 전송
 		model.addAttribute("list", list);
 		return "post/insert";
+	}
+	
+	@PostMapping("/post/insert")
+	public String postInsertPost() {
+		
+		return "redirect:/post/list";
 	}
 }
 

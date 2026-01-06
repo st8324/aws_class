@@ -11,8 +11,10 @@
 	<main layout:fragment="content" class="container">
 		<h1>게시판 목록</h1>
 		<div th:each="board : ${list}" class="mb-3 d-flex">
-			<form class="input-group">
-				<input type="text" class="form-control" th:value="${board.bo_name}">
+			<form class="input-group" th:action="@{/admin/board/update/{num}(num=${board.bo_num})}"
+				 method="post" >
+				<input type="text" class="form-control" 
+					th:value="${board.bo_name}" name="name">
 				<button class="btn btn-outline-warning">수정</button>
 			</form>
 			<form th:action="@{/admin/board/delete/{num}(num=${board.bo_num})}" method="post">

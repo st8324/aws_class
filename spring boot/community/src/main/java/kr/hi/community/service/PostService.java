@@ -103,5 +103,17 @@ public class PostService {
 			e.printStackTrace();
 		}
 	}
+
+	public void updateBoard(int num, String name) {
+		if(checkEmpty(name)) {
+			return;
+		}
+		try {
+			postDAO.updateBoard(num, name);
+		}catch (Exception e) {
+			//수정하려는 게시판 명이 중복되면 예외 발생
+			e.printStackTrace();
+		}
+	}
 	
 }

@@ -45,6 +45,17 @@ public class AdminController {
 		return "redirect:/admin/board/list";
 	}
 	
+	@PostMapping("/board/update/{num}")
+	public String boardUpdate(
+		@PathVariable("num")int num,
+		//화면에서 보낸 게시판명을 가져옴
+		@RequestParam("name")String name) {
+		//게시판번호, 이름을 이용하여 서비스에게 게시판명을 수정하라고 요청
+		postService.updateBoard(num, name);
+		return "redirect:/admin/board/list";
+	}
+	
+	
 	
 	
 	

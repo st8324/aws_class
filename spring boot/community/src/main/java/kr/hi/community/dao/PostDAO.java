@@ -23,4 +23,6 @@ public interface PostDAO {
 
 	void insertBoard(@Param("name")String name);
 
+	void deleteBoard(@Param("num")int num);
+
 }

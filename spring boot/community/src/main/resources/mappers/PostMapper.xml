@@ -39,6 +39,9 @@
     <insert id="insertBoard">
     	insert into board(bo_name) values(#{name})
     </insert>
+    <delete id="deleteBoard">
+    	delete from board where bo_num = #{num}
+    </delete>
 </mapper>
 
 

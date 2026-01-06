@@ -84,10 +84,22 @@ public class PostService {
 		if(checkEmpty(name)) {
 			return;
 		}
+		//예외 처리 => 게시판명이 중복되면 예외 발생하기 때문에
 		try {
 			postDAO.insertBoard(name);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteBoard(int num) {
+		try {
+			postDAO.deleteBoard(num);
+		}catch(Exception e) {
+			//게시글이 있는 게시판을 삭제하려고 하면 예외가 발생
+			// => 외래키 옵션에서 게시판 번호를 참조하는 게시글이 있는 경우
+			//    해당 게시판을 삭제하지 못하도록(Restrict)로 설정되어 있기 때문에
 			e.printStackTrace();
 		}
 	}

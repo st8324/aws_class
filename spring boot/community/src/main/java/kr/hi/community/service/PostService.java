@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.hi.community.dao.PostDAO;
+import kr.hi.community.model.dto.PostDTO;
+import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
 
@@ -36,6 +38,45 @@ public class PostService {
 		ArrayList<BoardVO> list = postDAO.selectBoardList();
 		//게시판 목록을 반환
 		return list;
+	}
+	
+	private boolean checkEmpty(String str) {
+		//null이거나
+		if(str == null) {
+			return true;
+		}
+		//공백으로 이루어져 있으면 true를 리턴
+		if(str.trim().isEmpty()) {
+			return true;
+		}
+		//공백이 아닌 한글자라도 있는 경우 false를 리턴
+		return false;
+	}
+	
+
+	public boolean insertPost(PostDTO post, CustomUser customUser) {
+		//게시글 정보 확인 => 입력 안된 값 있는지 확인해서 잘못된게 있으면 false를 반환
+		if( checkEmpty(post.getTitle()) || 
+			checkEmpty(post.getContent()) || 
+			post.getBoard() == 0) {
+			return false;
+		}
+		//사용자 정보를 확인 => 로그인 됐는지 확인해서 안햇으면 false를 반환
+		if(customUser == null || customUser.getUser() == null) {
+			return false;
+		}
+		//게시글의 작성자를 로그인한 회원의 아이디로 수정
+		post.setWriter(customUser.getUsername());
+		
+		try {
+			//다오에게 게시글 정보를 주면서 등록하라고 시킴 
+			postDAO.insertPost(post);
+			return true;
+		}catch (Exception e) {
+			//잘못된 게시판 번호를 입력한 경우 게시글 등록에 실패
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 }

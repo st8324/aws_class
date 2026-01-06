@@ -29,7 +29,7 @@ public class SecurityConfig {
         http.csrf(csrf ->csrf.disable())
             .authorizeHttpRequests((requests) -> requests
         		//로그인한 사용자(USER)만 접근할 수 있는 URL 설정
-                .requestMatchers("/post/insert/*").hasAuthority(UserRole.USER.name())
+                .requestMatchers("/post/insert").hasAuthority(UserRole.USER.name())
                 //로그인한 관리자(ADMIN)만 접근할 수 있는 URL 설정
                 .requestMatchers("/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll()  //그 외 나머지 URL은 모든 사용자가 접근

@@ -99,7 +99,7 @@ public class PostController {
 		boolean result = postService.insertPost(post, customUser);
 		//등록에 성공하면 /post/list로 이동, 실패하면 /post/insert로 이동
 		if(result) {
-			return "redirect:/post/list";
+			return "redirect:/post/list/" + post.getBoard();
 		}
 		return "redirect:/post/insert";
 	}

@@ -98,6 +98,11 @@
     		)
     	</if>
     </select>
+    
+    <update id="deletePost">
+    	update post
+    	set po_del = 'Y' where po_num = #{num}
+    </update>
 </mapper>
 
 

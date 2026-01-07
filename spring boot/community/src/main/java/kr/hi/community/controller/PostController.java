@@ -103,6 +103,20 @@ public class PostController {
 		}
 		return "redirect:/post/insert";
 	}
+	
+	@PostMapping("/post/delete/{num}")
+	public String postDelete(
+		@PathVariable("num")int boardNum, 
+		//로그인한 회원 정보를 가져옴
+		@AuthenticationPrincipal CustomUser customUser) {
+		
+		PostVO post = postService.getPost(boardNum);
+		
+		//서비스에게 게시글 번호를 주면서 삭제하라고 요청
+		postService.deletePost(boardNum, customUser);
+		
+		return "redirect:/post/list/" + post.getPo_bo_num();
+	}
 }
 
 

@@ -75,6 +75,29 @@
     	update board
     	set bo_name = #{name} where bo_num = #{num}
     </update>
+    <select id="selectTotalCount" resultType="int">
+   	select count(*) from post 
+    	where po_del = 'N'
+    	<if test="cri.boardNum != 0">
+    		and po_bo_num = #{cri.boardNum}
+    	</if>
+    	<if test="cri.type == 1">
+    		and (
+    			po_title like concat('%', #{cri.search}, '%')
+    			or po_content like concat('%', #{cri.search}, '%')
+    		)
+    	</if>
+    	<if test="cri.type == 2">
+    		and po_me_id = #{cri.search}
+    	</if>
+    	<if test="cri.type == 0">
+    		and (
+    			po_title like concat('%', #{cri.search}, '%')
+    			or po_content like concat('%', #{cri.search}, '%')
+    			or po_me_id = #{cri.search}
+    		)
+    	</if>
+    </select>
 </mapper>
 
 

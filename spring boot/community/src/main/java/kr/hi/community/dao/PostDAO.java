@@ -28,4 +28,6 @@ public interface PostDAO {
 
 	void updateBoard(@Param("num")int num, @Param("name")String name);
 
+	int selectTotalCount(@Param("cri")Criteria cri);
+
 }

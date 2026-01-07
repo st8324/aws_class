@@ -25,11 +25,12 @@
 			th:action="@{/post/list/{num}(num=${boardNum})}" method="get" 
 			class="input-group">
 			<select class="form-control" name="type">
-				<option value="0">전체</option>
-				<option value="1">제목 + 내용</option>
-				<option value="2">작성자</option>
+				<option value="0" th:selected="${pm.cri.type == 0}">전체</option>
+				<option value="1" th:selected="${pm.cri.type == 1}">제목 + 내용</option>
+				<option value="2" th:selected="${pm.cri.type == 2}">작성자</option>
 			</select>
-			<input class="form-control" name="search">
+			<input class="form-control" name="search" 
+				th:value="${pm.cri.search}">
 			<button class="btn btn-outline-success">검색</button>
 		</form>
 		<hr>
@@ -63,17 +64,19 @@
 			</tbody>
 		</table>
 		<ul class="pagination justify-content-center">
-			<li class="page-item">
+			<li class="page-item" th:if="${pm.prev}">
 				<a class="page-link"
-					href="javascript:void(0);">이전</a>
+					th:href="/post/list/{num}(num=${boardNum})">이전</a>
 			</li>
-			<li class="page-item">
+			<li class="page-item" 
+			th:each="num : ${#numbers.sequence(pm.startPage, pm.endPage)}">
 				<a class="page-link"
-					href="javascript:void(0);">1</a>
+					href="javascript:void(0);" 
+					th:text="${num}"></a>
 			</li>
-			<li class="page-item">
+			<li class="page-item" th:if="${pm.next}">
 			<a class="page-link"
-				href="javascript:void(0);">다음</a>
+				th:href="/post/list/{num}(num=${boardNum}, page=${pm.endPage+1}, type=${pm.cri.type}, search=${pm.cri.search})">다음</a>
 			</li>
 		</ul>
 		<a href="/post/insert" class="btn btn-outline-success">게시글 등록</a>

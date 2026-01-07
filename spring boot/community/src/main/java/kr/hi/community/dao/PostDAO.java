@@ -30,6 +30,6 @@ public interface PostDAO {
 
 	int selectTotalCount(@Param("cri")Criteria cri);
 
-	void deletePost(@Param("num")int boardNum);
+	void deletePost(@Param("num")int postNum);
 
 }

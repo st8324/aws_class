@@ -124,13 +124,13 @@ public class PostService {
 		return postDAO.selectTotalCount(cri);
 	}
 
-	public void deletePost(int boardNum, CustomUser customUser) {
+	public void deletePost(int postNum, CustomUser customUser) {
 		//로그인이 안된 경우 종료
 		if(customUser == null || customUser.getUsername() == null) {
 			return ;
 		}
 		//작성자 정보를 가져오기위해 게시글 정보를 가져옴
-		PostVO post = postDAO.selectPost(boardNum);
+		PostVO post = postDAO.selectPost(postNum);
 		
 		//작성자가 다르면 
 		if( post == null || 
@@ -138,7 +138,7 @@ public class PostService {
 			return;
 		}
 		
-		postDAO.deletePost(boardNum);
+		postDAO.deletePost(postNum);
 		
 	}
 	

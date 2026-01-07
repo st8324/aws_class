@@ -66,17 +66,28 @@
 		<ul class="pagination justify-content-center">
 			<li class="page-item" th:if="${pm.prev}">
 				<a class="page-link"
-					th:href="@{/post/list/{num}(num=${boardNum})}">이전</a>
+					th:href="@{/post/list/{num}(num=${boardNum}, 
+					page=${pm.startPage-1}, 
+					type=${pm.cri.type}, 
+					search=${pm.cri.search})}">이전</a>
 			</li>
 			<li class="page-item" 
 			th:each="num : ${#numbers.sequence(pm.startPage, pm.endPage)}">
 				<a class="page-link"
-					href="javascript:void(0);" 
-					th:text="${num}"></a>
+					th:href="@{/post/list/{num}(num=${boardNum}, 
+						page=${num}, 
+						type=${pm.cri.type}, 
+						search=${pm.cri.search})}"
+					th:text="${num}"
+					th:classappend="${num == pm.cri.page}?'active':''"
+					></a>
 			</li>
 			<li class="page-item" th:if="${pm.next}">
 			<a class="page-link"
-				th:href="@{/post/list/{num}(num=${boardNum}, page=${pm.endPage+1}, type=${pm.cri.type}, search=${pm.cri.search})}">다음</a>
+				th:href="@{/post/list/{num}(num=${boardNum}, 
+					page=${pm.endPage+1}, 
+					type=${pm.cri.type}, 
+					search=${pm.cri.search})}">다음</a>
 			</li>
 		</ul>
 		<a href="/post/insert" class="btn btn-outline-success">게시글 등록</a>

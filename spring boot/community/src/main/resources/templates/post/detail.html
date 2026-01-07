@@ -31,7 +31,9 @@
 				th:if="${#authentication.name == post.po_me_id}"
 				th:action="@{/post/delete/{num}(num=${post.po_num})}"
 				method="post">
-				<button class="btn btn-outline-danger">게시글 삭제</button>
+				<button class="btn btn-outline-danger">삭제</button>
+				<a th:href="@{/post/update/{num}(num=${post.po_num})}"
+				   class="btn btn-outline-warning">수정</a>
 			</form>
 		</div>
 		<div th:if="${post == null}">

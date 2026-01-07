@@ -117,6 +117,19 @@ public class PostController {
 		
 		return "redirect:/post/list/" + post.getPo_bo_num();
 	}
+	
+	@GetMapping("/post/update/{num}")
+	public String postUpdate() {
+		
+		return "post/update";
+	}
+	
+	/*
+	@xxxMapping("url")
+	public String 메서드명() {
+		return "";
+	}
+	*/
 }
 
 

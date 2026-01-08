@@ -171,7 +171,24 @@ public class PostService {
 			!post.getPo_me_id().equals(customUser.getUsername())) {
 			return;
 		}
+		//게시글 번호를 이용하여 첨부파일 목록을 가져옴
+		List<FileVO> files = postDAO.selectFileList(postNum);
 		
+		for(FileVO file : files) {
+			if(file == null) {
+				continue;
+			}
+			//첨부파일 삭제
+			//1. 실제 첨부파일을 삭제
+			UploadFileUtils.deleteFile(uploadPath, file.getFi_name());
+			//2. DB에 있는 첨부파일 정보를 삭제 
+			//다오에게 첨부파일 번호를 주면서 첨부파일을 삭제하라고 요청
+			//다오.첨부파일삭제해줘(첨부파일번호)
+			postDAO.deleteFile(file.getFi_num());
+		}
+		
+		
+		//게시글 삭제(실제 삭제하는거 아니고 po_del를 Y로 처리)
 		postDAO.deletePost(postNum);
 		
 	}

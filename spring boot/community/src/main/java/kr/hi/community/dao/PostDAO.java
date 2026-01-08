@@ -40,4 +40,6 @@ public interface PostDAO {
 
 	List<FileVO> selectFileList(@Param("num")int po_num);
 
+	void deleteFile(@Param("fiNum")int fi_num);
+
 }

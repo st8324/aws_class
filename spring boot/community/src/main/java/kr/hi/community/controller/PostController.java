@@ -142,12 +142,16 @@ public class PostController {
 		//- 객체명은 적당히 작성하면 됨
 		PostVO post = postService.getPost(postNum);
 		
+		//서비스에게 게시글 번호를 주면서 첨부파일 목록을 가져오라고 요청
+		List<FileVO> files = postService.getFileList(postNum);
+		
 		//서비스에게 A와 B를 주면서 ~~을 시킴
 		//=> 서비스.메서드명(A, B);
 		//서비스에게 A와 B를 주면서 ~~을 가져오라고 요청
 		//=> 클래스명 객체 = 서비스.메서드(A, B); 
 		
 		model.addAttribute("post", post);
+		model.addAttribute("files", files);
 		return "post/update";
 	}
 	

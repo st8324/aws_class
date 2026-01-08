@@ -1,14 +1,17 @@
 package kr.hi.community.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.hi.community.dao.PostDAO;
 import kr.hi.community.model.dto.PostDTO;
 import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
+import kr.hi.community.model.util.UploadFileUtils;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
 
@@ -55,7 +58,8 @@ public class PostService {
 	}
 	
 
-	public boolean insertPost(PostDTO post, CustomUser customUser) {
+	public boolean insertPost(PostDTO post, CustomUser customUser, 
+			List<MultipartFile> files) {
 		//게시글 정보 확인 => 입력 안된 값 있는지 확인해서 잘못된게 있으면 false를 반환
 		if( checkEmpty(post.getTitle()) || 
 			checkEmpty(post.getContent()) || 
@@ -72,6 +76,16 @@ public class PostService {
 		try {
 			//다오에게 게시글 정보를 주면서 등록하라고 시킴 
 			postDAO.insertPost(post);
+			
+			//게시글 등록 후 첨부파일 추가
+			//첨부파일 목록이 없는 경우
+			if(files == null || files.isEmpty()) {
+				return true;
+			}
+			for(MultipartFile file : files) {
+				UploadFileUtils.uploadFile("C:\\upload\\", file);
+			}
+			
 			return true;
 		}catch (Exception e) {
 			//잘못된 게시판 번호를 입력한 경우 게시글 등록에 실패

@@ -1,6 +1,7 @@
 package kr.hi.community.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.hi.community.model.dto.PostDTO;
 import kr.hi.community.model.util.Criteria;
@@ -94,10 +96,12 @@ public class PostController {
 	public String postInsertPost(
 		//게시글 등록에 필요한 정보를 받아옴
 		PostDTO post, //제목, 내용, 게시판 번호
-		@AuthenticationPrincipal CustomUser customUser //작성자(로그인한사용자) 정보
+		@AuthenticationPrincipal CustomUser customUser, //작성자(로그인한사용자) 정보
+		@RequestParam("files") List<MultipartFile> files
 		) {
-		//게시글 정보와 작성자 정보를 서비스에게 주면서 등록하라고 요청
-		boolean result = postService.insertPost(post, customUser);
+		
+		//게시글 정보와 작성자 정보와 첨부파일 정보를 서비스에게 주면서 등록하라고 요청
+		boolean result = postService.insertPost(post, customUser, files);
 		//등록에 성공하면 /post/list로 이동, 실패하면 /post/insert로 이동
 		if(result) {
 			return "redirect:/post/list/" + post.getBoard();

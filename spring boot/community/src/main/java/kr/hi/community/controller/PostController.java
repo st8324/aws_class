@@ -18,6 +18,7 @@ import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.util.PageMaker;
 import kr.hi.community.model.vo.BoardVO;
+import kr.hi.community.model.vo.FileVO;
 import kr.hi.community.model.vo.PostVO;
 import kr.hi.community.service.PostService;
 
@@ -77,8 +78,13 @@ public class PostController {
 		//기본키이니까 => 기본키의 정의 => 기본키로 검색하면 최대 1행이 조회되는 컬럼
 		PostVO post = postService.getPost(po_num);
 		
+		//서비스에게 게시글 번호를 주면서 첨부파일을 가져오라고 요청
+		List<FileVO> files = postService.getFileList(po_num);
+		
 		//가져온 게시글을 화면에 전달
 		model.addAttribute("post", post);
+		//가져온 첨부파일 목록을 화면에 전달
+		model.addAttribute("files", files);
 		return "post/detail";
 	}
 	

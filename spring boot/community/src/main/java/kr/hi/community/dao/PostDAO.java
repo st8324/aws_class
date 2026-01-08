@@ -1,6 +1,7 @@
 package kr.hi.community.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -36,5 +37,7 @@ public interface PostDAO {
 	void updatePost(@Param("post")PostDTO post);
 
 	void insertFile(@Param("file")FileVO fileVo);
+
+	List<FileVO> selectFileList(@Param("num")int po_num);
 
 }

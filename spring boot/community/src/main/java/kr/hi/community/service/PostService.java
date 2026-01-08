@@ -199,5 +199,9 @@ public class PostService {
 		//- 다오에게 게시글 정보를 주면서 수정하라고 요청
 		postDAO.updatePost(post);
 	}
+
+	public List<FileVO> getFileList(int po_num) {
+		return postDAO.selectFileList(po_num);
+	}
 	
 }

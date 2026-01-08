@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,7 @@ import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.util.UploadFileUtils;
 import kr.hi.community.model.vo.BoardVO;
+import kr.hi.community.model.vo.FileVO;
 import kr.hi.community.model.vo.PostVO;
 
 @Service
@@ -20,6 +22,10 @@ public class PostService {
 
 	@Autowired
 	PostDAO postDAO;
+	
+	//application.properties에 있는 file.upload-dir에 있는 값을 가져와서 저장
+	@Value("${file.upload-dir}")
+	String uploadPath;
 
 	public ArrayList<PostVO> getPostList(Criteria cri) {
 		//다오에게 게시판 번호에 맞는 게시글 목록을 가져오라고 요청
@@ -77,21 +83,35 @@ public class PostService {
 			//다오에게 게시글 정보를 주면서 등록하라고 시킴 
 			postDAO.insertPost(post);
 			
-			//게시글 등록 후 첨부파일 추가
-			//첨부파일 목록이 없는 경우
-			if(files == null || files.isEmpty()) {
-				return true;
-			}
-			for(MultipartFile file : files) {
-				UploadFileUtils.uploadFile("C:\\upload\\", file);
-			}
-			
-			return true;
 		}catch (Exception e) {
 			//잘못된 게시판 번호를 입력한 경우 게시글 등록에 실패
 			e.printStackTrace();
 			return false;
 		}
+		
+		//게시글 등록 후 첨부파일 추가
+		//첨부파일 목록이 없는 경우
+		if(files == null || files.isEmpty()) {
+			return true;
+		}
+		for(MultipartFile file : files) {
+			try {
+			
+				String fileName = 
+					UploadFileUtils.uploadFile(uploadPath, file);
+				String oriFileName = file.getOriginalFilename();
+				
+				FileVO fileVo = 
+					new FileVO(post.getPostNum(), oriFileName, fileName);
+				//DB에 업로드한 파일 정보를 추가
+				postDAO.insertFile(fileVo);
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
 	}
 
 	public void insertBoard(String name) {

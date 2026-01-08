@@ -32,4 +32,6 @@ public interface PostDAO {
 
 	void deletePost(@Param("num")int postNum);
 
+	void updatePost(@Param("post")PostDTO post);
+
 }

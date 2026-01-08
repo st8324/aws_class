@@ -141,5 +141,29 @@ public class PostService {
 		postDAO.deletePost(postNum);
 		
 	}
+
+	public void updatePost(PostDTO post, CustomUser customUser) {
+		//- 사용자가 로그인 안햇으면 종료
+		if(customUser == null || customUser.getUsername().isEmpty()) {
+			return;
+		}
+		//- 게시글 정보가 없거나, 게시글 제목 또는 내용이 비어있으면 종료
+		if(post == null || 
+			checkEmpty(post.getTitle()) ||
+			checkEmpty(post.getContent())) {
+			return;
+		}
+		
+		//- 사용자와 작성자가 같은지 확인해서 다르면 종료
+		//   - 다오에게 게시글 번호를 주면서 게시글을 가져오라고 요청
+		PostVO dbPost = postDAO.selectPost(post.getPostNum());
+		//   - 게시글 없거나 게시글 작성자가 사용자와 다르면 종료 
+		if(dbPost == null || 
+			!dbPost.getPo_me_id().equals(customUser.getUsername())) {
+			return;
+		}
+		//- 다오에게 게시글 정보를 주면서 수정하라고 요청
+		postDAO.updatePost(post);
+	}
 	
 }

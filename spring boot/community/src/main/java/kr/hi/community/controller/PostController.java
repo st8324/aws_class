@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.hi.community.model.dto.PostDTO;
 import kr.hi.community.model.util.Criteria;
@@ -140,6 +141,35 @@ public class PostController {
 		return "post/update";
 	}
 	
+	@PostMapping("/post/update/{num}")
+	public String postUpdatePost(
+		//- 게시글 번호를 가져옴
+		@PathVariable("num")int postNum,
+		//- 화면에서 보낸 제목과 내용을 가져옴
+		//방법1. 각각 가져옴
+		//@RequestParam("title")String title,
+		//@RequestParam("content")String content,
+		//화면에서 보낸 title과 PostDTO에 멤버변수 title이 이름이 같기 때문에
+		//자동으로 화면에서 보낸 제목을 넣어줌
+		//방법2. DTO에 한번에 가져옴
+		PostDTO post,
+		//- 로그인한 사용자 정보를 가져옴
+		@AuthenticationPrincipal CustomUser customUser
+		) {
+		//- 서비스에게 게시글정보와(게시글번호, 제목, 내용) 사용자 정보를 
+		//   주면서 수정하라고 요청
+		//서비스에게 A와 B를 주면서 ~~을 시킴
+		//서비스에게 게시글정보와 사용자 정보를 주면서
+		//서비스.메서드명(게시글정보, 사용자정보);
+		
+		//방법1. 제목, 내용 각각
+		//postService.메서드(postNum, title, content, customUser);
+		
+		//방법2. 제목, 내용을 DTO에 담아서. PostDTO에 postNum을 추가
+		post.setPostNum(postNum);
+		postService.updatePost(post, customUser);
+		return "redirect:/post/detail/{num}";
+	}
 	/*
 	@xxxMapping("url")
 	public String 메서드명() {

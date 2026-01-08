@@ -103,6 +103,12 @@
     	update post
     	set po_del = 'Y' where po_num = #{num}
     </update>
+    
+    <update id="updatePost">
+    	update post
+    	set po_title = #{post.title}, po_content=#{post.content}
+    	where po_num = #{post.postNum}
+    </update>
 </mapper>
 
 

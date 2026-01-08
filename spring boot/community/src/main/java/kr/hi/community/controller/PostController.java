@@ -119,8 +119,24 @@ public class PostController {
 	}
 	
 	@GetMapping("/post/update/{num}")
-	public String postUpdate() {
+	public String postUpdate(
+		@PathVariable("num")int postNum, Model model) {
 		
+		//서비스에게 게시글 번호(postNum)를 주면서 게시글을 가져오라고 요청
+		//게시글 객체 = 서비스.메서드명(게시글번호);
+		//- 게시글에 해당하는 클래스 : PostVO
+		//- 게시글 번호 : postNum
+		//- 메서드명은 적당히 작성하면 되는데, 이미 구현된 getPost를 가져오면 새로 추가
+		//  하지 않아도 됨
+		//- 객체명은 적당히 작성하면 됨
+		PostVO post = postService.getPost(postNum);
+		
+		//서비스에게 A와 B를 주면서 ~~을 시킴
+		//=> 서비스.메서드명(A, B);
+		//서비스에게 A와 B를 주면서 ~~을 가져오라고 요청
+		//=> 클래스명 객체 = 서비스.메서드(A, B); 
+		
+		model.addAttribute("post", post);
 		return "post/update";
 	}
 	

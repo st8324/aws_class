@@ -95,23 +95,28 @@ public class PostService {
 			return true;
 		}
 		for(MultipartFile file : files) {
-			try {
-			
-				String fileName = 
-					UploadFileUtils.uploadFile(uploadPath, file);
-				String oriFileName = file.getOriginalFilename();
-				
-				FileVO fileVo = 
-					new FileVO(post.getPostNum(), oriFileName, fileName);
-				//DB에 업로드한 파일 정보를 추가
-				postDAO.insertFile(fileVo);
-				
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
+			//db에 추가하고 서버에 첨부파일 업로드해
+			insertFile(post.getPostNum(), file);
 		}
 		
 		return true;
+	}
+
+	private void insertFile(int postNum, MultipartFile file) {
+		try {
+			String fileName = 
+				UploadFileUtils.uploadFile(uploadPath, file);
+			String oriFileName = file.getOriginalFilename();
+			
+			FileVO fileVo = 
+				new FileVO(postNum, oriFileName, fileName);
+			//DB에 업로드한 파일 정보를 추가
+			postDAO.insertFile(fileVo);
+			
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
 	}
 
 	public void insertBoard(String name) {
@@ -175,22 +180,25 @@ public class PostService {
 		List<FileVO> files = postDAO.selectFileList(postNum);
 		
 		for(FileVO file : files) {
-			if(file == null) {
-				continue;
-			}
-			//첨부파일 삭제
-			//1. 실제 첨부파일을 삭제
-			UploadFileUtils.deleteFile(uploadPath, file.getFi_name());
-			//2. DB에 있는 첨부파일 정보를 삭제 
-			//다오에게 첨부파일 번호를 주면서 첨부파일을 삭제하라고 요청
-			//다오.첨부파일삭제해줘(첨부파일번호)
-			postDAO.deleteFile(file.getFi_num());
+			deleteFile(file);
 		}
-		
 		
 		//게시글 삭제(실제 삭제하는거 아니고 po_del를 Y로 처리)
 		postDAO.deletePost(postNum);
 		
+	}
+
+	private void deleteFile(FileVO file) {
+		if(file == null) {
+			return;
+		}
+		//첨부파일 삭제
+		//1. 실제 첨부파일을 삭제
+		UploadFileUtils.deleteFile(uploadPath, file.getFi_name());
+		//2. DB에 있는 첨부파일 정보를 삭제 
+		//다오에게 첨부파일 번호를 주면서 첨부파일을 삭제하라고 요청
+		//다오.첨부파일삭제해줘(첨부파일번호)
+		postDAO.deleteFile(file.getFi_num());
 	}
 
 	public void updatePost(PostDTO post, CustomUser customUser) {
@@ -220,5 +228,6 @@ public class PostService {
 	public List<FileVO> getFileList(int po_num) {
 		return postDAO.selectFileList(po_num);
 	}
+	
 	
 }

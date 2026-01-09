@@ -243,6 +243,18 @@ public class PostController {
 		map.put("down", down);
 		return ResponseEntity.ok(map);
 	}
+	
+	@GetMapping("/post/like/check/{num}")
+	public ResponseEntity<Integer> postLikeCheck(
+		@PathVariable("num")int postNum,
+		@AuthenticationPrincipal CustomUser customUser){
+		
+		//서비스에게 게시글 번호와 사용자 정보를 줄테니 해당 게시글의 추천상태를 가져와줘
+		//추천상태 = 서비스야.게시글의추천상태를알려줘(게시글번호, 사용자정보);
+		int state = postService.getLikeState(postNum, customUser);
+		
+		return ResponseEntity.ok(state);
+	}
 }
 
 

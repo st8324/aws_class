@@ -57,6 +57,11 @@
 		</div>
 		
 		<script type="text/javascript">
+		//추천버튼
+		const upBtn = document.querySelector(".btn-up");
+		//비추천버튼
+		const downBtn = document.querySelector(".btn-down");
+		
 		//게시글 번호, 추천상태를 이용하여 추천결과를 알려주는 함수
 		async function setLike(postNum, state) {
 			const postData = {
@@ -122,24 +127,57 @@
 					const up = result.up;
 					const down = result.down;
 					//버튼에 적용
-					//추천버튼
-					const upBtn = document.querySelector(".btn-up");
-					//비추천버튼
-					const downBtn = document.querySelector(".btn-down");
+					
 					//추천 버튼 텍스트 수정
 					upBtn.innerText = `추천(${up})`;
 					//비추천 버튼 텍스트 수정
 					downBtn.innerText = `비추천(${down})`;
+					checkLike();
 					
 				}else{
 					console.log("추천/비추천 수 가져오기 실패");
 				}
 				
 			}catch(error){
-				console.err("예외 발생");
+				console.error("예외 발생");
 			}
 		}
 		loadLikeBtns();
+		//로그인한 사용자의 게시글 추천/비추천여부에 따라 추천/비추천 버튼 색상 변경
+		async function checkLike(){
+			const postNum = [[${post.po_num}]];
+			
+			try{
+				const response = await fetch('/post/like/check/'+postNum);
+				
+				if(response.ok){
+					const result = await response.text();
+					
+					//로그인하지 않았거나 추천/비추천을 안했으면
+					if(result == 0){
+						return;
+					}
+					//로그인한 사용자가 추천/비추천을 했으면 알맞은 버튼 색상을 변경 
+					//1. 기본 버튼으로 설정
+					upBtn.classList.remove('btn-success');
+					upBtn.classList.remove('btn-outline-success');
+					
+					downBtn.classList.remove('btn-danger');
+					downBtn.classList.remove('btn-outline-danger');
+					
+					//2. 상태에 맞게 버튼 색상을 지정
+					upBtn.classList.add
+						(`btn-${result == 1 ? '' : 'outline-'}success`);
+					downBtn.classList.add
+						(`btn-${result == -1 ? '' : 'outline-'}danger`);
+				}else{
+					console.log("불러오기 실패");
+				}
+			}catch(error){
+				console.error(error);
+			}
+		}
+		
 		</script>
 	</main>
 </body>

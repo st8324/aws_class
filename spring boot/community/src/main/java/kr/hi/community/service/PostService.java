@@ -302,6 +302,20 @@ public class PostService {
 	public int getLikeCount(int postNum, int state) {
 		return postDAO.selectLikeCount(postNum, state);
 	}
+
+	public int getLikeState(int postNum, CustomUser customUser) {
+		//사용자가 로그인 안했으면 0을 반환
+		if(customUser == null || customUser.getUsername()== null) {
+			return 0;
+		}
+		LikeDTO likeDto = new LikeDTO(postNum, customUser.getUsername());
+		LikeVO like = postDAO.selectLike(likeDto);
+		//추천/비추천을 한적이 없으면 
+		if(like == null) {
+			return 0;
+		}
+		return like.getLi_state();
+	}
 	
 	
 }

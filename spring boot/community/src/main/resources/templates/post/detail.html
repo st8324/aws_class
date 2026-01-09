@@ -64,8 +64,8 @@
 				// 보낼 데이터 채우기
 				// postNum : postNum 한거와 같음
 				// 왼쪽 이름을 postNum으로 하고 값은 postNum변수에 있는 값을 가져옴
-				postNum,
-				state
+				postNum, //게시글 번호
+				state //추천 상태
 			};
 
 			try {
@@ -92,8 +92,9 @@
 					// 서버가 단순 텍스트를 주면 text(), JSON을 주면 json()
 					// 서버가 보낸 결과를 text() : 텍스트로 가져옴
 					// 서버가 보낸 결과를 json() : json 객체로 가져옴
-					const result = await response.text();
-					console.log("처리 성공: " + result);
+					const result = await response.json();
+
+					
 				} else {
 					// 2. 400, 500 에러 등에 대한 처리
 					const errorText = await response.text();

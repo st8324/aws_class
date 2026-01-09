@@ -132,6 +132,11 @@
     	select * from file where fi_num = #{fiNum}
     </select>
     
+    <select id="selectLike" resultType="LikeVO">
+    	select * from `like` 
+    	where li_po_num = #{like.postNum} and
+    		li_me_id = #{like.id} 
+    </select>
 </mapper>
 
 

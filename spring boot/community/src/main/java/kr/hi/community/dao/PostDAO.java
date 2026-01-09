@@ -56,4 +56,6 @@ public interface PostDAO {
 
 	int selectLikeCount(@Param("postNum")int postNum, @Param("state")int state);
 
+	void updateBoardLike(@Param("postNum")int postNum);
+
 }

@@ -159,6 +159,16 @@
    		select count(*) from `like` 
    		where li_po_num = #{postNum} and li_state = #{state}
    	</select>
+   	<update id="updateBoardLike">
+   		update post
+  		set
+  			po_up = (select count(*) from `like` 
+  						where li_po_num = #{postNum} and li_state = 1),
+  			po_down = (select count(*) from `like` 
+  						where li_po_num = #{postNum} and li_state = -1)
+  		where
+  			po_num = #{postNum}
+   	</update>
 </mapper>
 
 

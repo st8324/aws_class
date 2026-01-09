@@ -214,6 +214,8 @@ public class PostController {
 		//   진행하고 결과를 가져오라고 요청
 		try{
 			String result = postService.updateLike(like, customUser);
+			//게시글의 추천/비추천 수를 계산해서 변경
+			postService.updateBoardLike(like.getPostNum());
 			return ResponseEntity.ok(result);
 		}catch(Exception e) {
 			//로그인 안했을 때 

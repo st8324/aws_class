@@ -92,8 +92,8 @@
 					// 서버가 단순 텍스트를 주면 text(), JSON을 주면 json()
 					// 서버가 보낸 결과를 text() : 텍스트로 가져옴
 					// 서버가 보낸 결과를 json() : json 객체로 가져옴
-					const result = await response.json();
-
+					const result = await response.text();
+					alert(result);
 					
 				} else {
 					// 2. 400, 500 에러 등에 대한 처리

@@ -18,15 +18,14 @@
 			<div class="input-group mb-3">
 				<div class="form-control" th:text="'작성자 : ' + ${post.po_me_id}"></div>
 				<div class="form-control" th:text="'조회수 : ' + ${post.po_view}"></div>
-				<div class="form-control" 
-					th:text="'추/비추 : ' + ${post.po_up} + '/' + ${post.po_down}"></div>
 			</div>
-			<div class="mb-3">
+			<!-- 추천/비추천 버튼 그룹 -->
+			<div class="mb-3 d-flex justify-content-center">
 				<button 
-					class="btn btn-outline-success"
+					class="btn btn-up btn-outline-success me-3"
 					th:onclick="|setLike(${post.po_num}, 1)|">추천</button>
 				<button 
-					class="btn btn-outline-danger"
+					class="btn btn-down btn-outline-danger"
 					th:onclick="|setLike(${post.po_num}, -1)|">비추천</button>
 			</div>
 			<div class="mb-3">
@@ -58,7 +57,7 @@
 		</div>
 		
 		<script type="text/javascript">
-		
+		//게시글 번호, 추천상태를 이용하여 추천결과를 알려주는 함수
 		async function setLike(postNum, state) {
 			const postData = {
 				// 보낼 데이터 채우기
@@ -107,6 +106,30 @@
 				alert("통신에 실패했습니다.");
 			}
 		}
+		//추천/비추천 수를 불러와서 버튼에 적용하는 함수
+		async function loadLikeBtns(){
+			const postNum = [[${post.po_num}]];
+			//게시글 번호를 서버에 보내고, 추천수와 비추천수를 가져와서 버튼에 적용
+			
+			try{
+				//url에 게시글 번호를 전달
+				const response = await fetch('/post/like/count');
+				if(response.ok){
+					//서버에서 보낸 추천, 비추천수 가져옴
+					const result = await response.json();
+					const up = result.up;
+					const down = result.down;
+					//버튼에 적용
+					
+				}else{
+					console.log("추천/비추천 수 가져오기 실패");
+				}
+				
+			}catch(error){
+				console.err("예외 발생");
+			}
+		}
+		loadLikeBtns();
 		</script>
 	</main>
 </body>

@@ -201,7 +201,7 @@ public class PostService {
 		postDAO.deleteFile(file.getFi_num());
 	}
 
-	public void updatePost(PostDTO post, CustomUser customUser) {
+	public void updatePost(PostDTO post, CustomUser customUser, List<MultipartFile> files, List<Integer> delFileNums) {
 		//- 사용자가 로그인 안햇으면 종료
 		if(customUser == null || customUser.getUsername().isEmpty()) {
 			return;
@@ -223,6 +223,20 @@ public class PostService {
 		}
 		//- 다오에게 게시글 정보를 주면서 수정하라고 요청
 		postDAO.updatePost(post);
+		
+		//새 첨부파일을 추가
+		if(files != null) {
+			for(MultipartFile file : files) {
+				insertFile(post.getPostNum(), file);
+			}
+		}
+		if(delFileNums != null) {
+			for(int num : delFileNums) {
+				FileVO fileVo = postDAO.selectFile(num);
+				deleteFile(fileVo);
+			}
+		}
+		
 	}
 
 	public List<FileVO> getFileList(int po_num) {

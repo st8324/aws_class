@@ -168,7 +168,11 @@ public class PostController {
 		//방법2. DTO에 한번에 가져옴
 		PostDTO post,
 		//- 로그인한 사용자 정보를 가져옴
-		@AuthenticationPrincipal CustomUser customUser
+		@AuthenticationPrincipal CustomUser customUser,
+		@RequestParam("files") List<MultipartFile> files,
+		@RequestParam(value="delFileNums", 
+			required = false/*삭제할 첨부가 없는 경우를 처리*/) 
+			List<Integer> delFileNums
 		) {
 		//- 서비스에게 게시글정보와(게시글번호, 제목, 내용) 사용자 정보를 
 		//   주면서 수정하라고 요청
@@ -181,7 +185,7 @@ public class PostController {
 		
 		//방법2. 제목, 내용을 DTO에 담아서. PostDTO에 postNum을 추가
 		post.setPostNum(postNum);
-		postService.updatePost(post, customUser);
+		postService.updatePost(post, customUser, files, delFileNums);
 		return "redirect:/post/detail/{num}";
 	}
 	/*

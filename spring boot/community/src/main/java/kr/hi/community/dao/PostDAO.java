@@ -42,4 +42,6 @@ public interface PostDAO {
 
 	void deleteFile(@Param("fiNum")int fi_num);
 
+	FileVO selectFile(@Param("fiNum")int num);
+
 }

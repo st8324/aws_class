@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.hi.community.model.dto.PostDTO;
@@ -194,6 +195,17 @@ public class PostController {
 		return "";
 	}
 	*/
+	@PostMapping("/post/like")
+	//리턴값을 뷰리졸버로 분석하지 않고 리턴값을 수순하게 화면으로 전송
+	@ResponseBody
+	public PostVO postLike(
+		) {
+		PostVO post = new PostVO();
+		post.setPo_me_id("asdasd");
+		post.setPo_title("제목1");
+		post.setPo_content("내용1");
+		return post;
+	}
 }
 
 

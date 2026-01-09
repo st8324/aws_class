@@ -22,6 +22,14 @@
 					th:text="'추/비추 : ' + ${post.po_up} + '/' + ${post.po_down}"></div>
 			</div>
 			<div class="mb-3">
+				<button 
+					class="btn btn-outline-success"
+					th:onclick="|setLike(${post.po_num}, 1)|">추천</button>
+				<button 
+					class="btn btn-outline-danger"
+					th:onclick="|setLike(${post.po_num}, -1)|">비추천</button>
+			</div>
+			<div class="mb-3">
 				<label>내용 : </label>
 				<div class="form-control" style="min-height: 400px;"
 					th:text="${post.po_content}"></div>
@@ -48,6 +56,57 @@
 		<div th:if="${post == null}">
 			<h1>삭제되거나 등록되지 않은 게시글입니다.</h1>
 		</div>
+		
+		<script type="text/javascript">
+		
+		async function setLike(postNum, state) {
+			const postData = {
+				// 보낼 데이터 채우기
+				// postNum : postNum 한거와 같음
+				// 왼쪽 이름을 postNum으로 하고 값은 postNum변수에 있는 값을 가져옴
+				postNum,
+				state
+			};
+
+			try {
+				const response = 
+					//fetch는 지정된 URL로 비동기 통신요청하는 함수
+					//결과를 Promise객체로 반환
+					await fetch('/post/like',
+					//설정
+					{
+						//전송방식을 post로
+						method : 'POST',
+						//Content-type : 전송할 데이터 타입.
+						//   json으로 전송하는 경우 반드시 작성.
+						headers : {
+							//전송할 데이터가 json타입이다라고 지정
+							'Content-Type' : 'application/json',
+						},
+						//보낼 데이터
+						body : JSON.stringify(postData)
+					});
+
+				// 1. HTTP 응답 상태가 성공인지 확인
+				if (response.ok) {
+					// 서버가 단순 텍스트를 주면 text(), JSON을 주면 json()
+					// 서버가 보낸 결과를 text() : 텍스트로 가져옴
+					// 서버가 보낸 결과를 json() : json 객체로 가져옴
+					const result = await response.text();
+					console.log("처리 성공: " + result);
+				} else {
+					// 2. 400, 500 에러 등에 대한 처리
+					const errorText = await response.text();
+					console.log("서버 오류: " + errorText);
+				}
+
+			} catch (error) {
+				// 3. 네트워크 단절이나 문법 에러 등 아주 예외적인 상황
+				console.error("통신 중 오류 발생:", error);
+				alert("통신에 실패했습니다.");
+			}
+		}
+		</script>
 	</main>
 </body>
 </html>

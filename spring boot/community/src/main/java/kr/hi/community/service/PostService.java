@@ -227,6 +227,7 @@ public class PostService {
 		//새 첨부파일을 추가
 		if(files != null) {
 			for(MultipartFile file : files) {
+				System.out.println(file.getOriginalFilename());
 				insertFile(post.getPostNum(), file);
 			}
 		}

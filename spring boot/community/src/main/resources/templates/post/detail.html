@@ -93,6 +93,7 @@
 					// 서버가 보낸 결과를 json() : json 객체로 가져옴
 					const result = await response.text();
 					alert(result);
+					loadLikeBtns();
 					
 				} else {
 					// 2. 400, 500 에러 등에 대한 처리
@@ -113,13 +114,22 @@
 			
 			try{
 				//url에 게시글 번호를 전달
-				const response = await fetch('/post/like/count');
+				const response = await fetch('/post/like/count/'+postNum);
 				if(response.ok){
 					//서버에서 보낸 추천, 비추천수 가져옴
 					const result = await response.json();
+					
 					const up = result.up;
 					const down = result.down;
 					//버튼에 적용
+					//추천버튼
+					const upBtn = document.querySelector(".btn-up");
+					//비추천버튼
+					const downBtn = document.querySelector(".btn-down");
+					//추천 버튼 텍스트 수정
+					upBtn.innerText = `추천(${up})`;
+					//비추천 버튼 텍스트 수정
+					downBtn.innerText = `비추천(${down})`;
 					
 				}else{
 					console.log("추천/비추천 수 가져오기 실패");

@@ -1,7 +1,9 @@
 package kr.hi.community.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -220,7 +222,34 @@ public class PostController {
 					.body(e.getMessage());
 		}
 	}
+	
+	@GetMapping("/post/like/count/{num}")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> postLikeCount(
+		HashMap<String, Object> map,
+		@PathVariable("num")int postNum) {
+		//HashMap<String, Object> map = new HashMap<String, Object>();
+		//- 서비스에게 게시글  번호와 추천(1)을 주면서 추천수를 가져오라고 요청
+		//- 서비스에게 게시글 번호와 비추천(-1)을 주면서 비추천수를 가져오라고 요청
+		//추천수 = 서비스.추천수가져와(게시글번호);
+		//비추천수 = 서비스.비추천수가져와(게시글번호);
+		
+		//추천수 = 서비스.일치하는추천정보수가져와(게시글번호, 상태(1));
+		int up = postService.getLikeCount(postNum, 1);
+		//비추천수 = 서비스.일치하는추천정보수가져와(게시글번호, 상태(-1));
+		int down = postService.getLikeCount(postNum, -1);
+		
+		map.put("up", up);
+		map.put("down", down);
+		return ResponseEntity.ok(map);
+	}
 }
+
+
+
+
+
+
 
 
 

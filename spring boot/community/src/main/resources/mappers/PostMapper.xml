@@ -155,6 +155,10 @@
    		where
    			li_po_num = #{like.postNum} and li_me_id = #{like.id}
    	</delete>
+   	<select id="selectLikeCount" resultType="int">
+   		select count(*) from `like` 
+   		where li_po_num = #{postNum} and li_state = #{state}
+   	</select>
 </mapper>
 
 

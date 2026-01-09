@@ -298,6 +298,10 @@ public class PostService {
 		}
 		return "비추천을 취소했습니다.";
 	}
+
+	public int getLikeCount(int postNum, int state) {
+		return postDAO.selectLikeCount(postNum, state);
+	}
 	
 	
 }

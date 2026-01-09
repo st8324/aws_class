@@ -54,4 +54,6 @@ public interface PostDAO {
 
 	void deleteLike(@Param("like")LikeDTO like);
 
+	int selectLikeCount(@Param("postNum")int postNum, @Param("state")int state);
+
 }

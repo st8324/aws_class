@@ -1,11 +1,14 @@
 package kr.hi.community.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.hi.community.dao.CommentDAO;
 import kr.hi.community.model.dto.CommentDTO;
 import kr.hi.community.model.util.CustomUser;
+import kr.hi.community.model.vo.CommentVO;
 
 @Service
 public class CommentService {
@@ -37,5 +40,10 @@ public class CommentService {
 			return "댓글을 등록하지 못했습니다.";
 		}
 		
+	}
+
+	public List<CommentVO> getCommentList(int postNum) {
+		List<CommentVO> list = commentDAO.selectCommentList(postNum);
+		return list;
 	}
 }

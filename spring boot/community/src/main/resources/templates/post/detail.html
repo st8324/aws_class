@@ -294,6 +294,27 @@
 					console.error(error);
 				}
 			}
+			//댓글 불러오는 함수
+			async function getCommentList(){
+				try{
+					//서버에 댓글 목록 가져오라고 요청
+					const response = await fetch(
+						`/comment/list/${postNum}`, {
+						//옵션은 페이지네이션 적용할 때 추가
+					});
+					
+					//가져와서 화면에 출력
+					//서버에서 보낸 댓글 목록을 가져옴
+					const result = await response.json();
+					console.log(result);
+					//가져온 댓글 목록을 이용하여 화면을 구성
+				}catch(error){
+					console.log("예외 발생");
+					console.log(error);
+				}
+			}
+			//댓글 불러오도로 호출
+			getCommentList();
 		</script>
 	</main>
 </body>

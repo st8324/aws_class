@@ -119,6 +119,9 @@
 			page : 1, //현재 페이지 정보
 			postNum //게시글 번호
 		}
+		//페이지네이션을 보여줄 요소
+		const commentPagination = 
+			document.querySelector(".comment-pagination");
 		
 		</script>
 		<!-- 추천, 비추천 js -->
@@ -322,7 +325,9 @@
 					const result = await response.json();
 					
 					//가져온 댓글 목록을 이용하여 화면을 구성
-					drawCommentList(result);
+					drawCommentList(result.list);
+					//가져온 페이지네이션 정보를 이용하여 페이지네이션을 구성
+					drawCommentPagination(result.pm);
 				}catch(error){
 					console.log("예외 발생");
 					console.log(error);
@@ -353,6 +358,37 @@
 					`;
 				}
 				listContainer.innerHTML = items;
+			}
+			
+			function drawCommentPagination(pm){
+				let pagination = '';
+				
+				//pm을 이용하여 페이지네이션을 구성
+				//이전 버튼 활성화
+				if(pm.prev){
+					pagination += `
+					<li class="page-item">
+						<a class="page-link" href="javascript:void(0);">이전</a>
+					</li>
+					`
+				}
+				
+				for(i = pm.startPage; i<= pm.endPage; i++){
+					pagination += `
+					<li class="page-item">
+				    	<a class="page-link" href="javascript:void(0);">${i}</a>
+				    </li>
+					`
+				}
+				
+				`
+				
+			    
+			    <li class="page-item">
+			    	<a class="page-link" href="javascript:void(0);">다음</a>
+			    </li>
+				`
+				commentPagination.innerHTML = pagination;
 			}
 			
 			//댓글 불러오도록 호출

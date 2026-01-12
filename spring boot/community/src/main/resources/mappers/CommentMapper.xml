@@ -29,7 +29,7 @@
     
     <select id="selectCommentList" resultType="CommentVO">
     	select * from comment
-    	where co_po_num = #{postNum}
+    	where co_po_num = #{cri.postNum}
     	<!-- 
     	댓글은 최신순으로 정렬하되, 
     	대댓들은 댓글 밑으로 배치하기 위해 원래 댓글 번호 순으로 정렬.
@@ -37,6 +37,11 @@
     	댓글과 대댓글의 순서를 위해 댓글 번호로 정렬하는데, 
     	대댓은 먼저 등록한 순으로 배치하기 위해 오름차순으로 정렬-->
     	order by co_ori_num desc, co_num asc
+    	limit #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+    <select id="selectCommentCount" resultType="int">
+    	select count(*) from comment
+    	where co_po_num = #{cri.postNum}
     </select>
 </mapper>
 

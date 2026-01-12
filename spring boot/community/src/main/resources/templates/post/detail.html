@@ -90,8 +90,10 @@
 				
 				<!-- 댓글 입력 영역 -->
 				<div class="comment-input">
-					<form class="input-group" action="">
-						<textarea class="form-control"></textarea>
+					<form class="input-group" 
+						onsubmit="insertComment(event)">
+						<textarea class="form-control" 
+							onfocus="checkLogin(this)"></textarea>
 						<button class="btn btn-outline-success">등록</button>
 					</form>
 				</div>
@@ -100,12 +102,21 @@
 		<div th:if="${post == null}">
 			<h1>삭제되거나 등록되지 않은 게시글입니다.</h1>
 		</div>
-		
+		<!-- 전역으로 사용하는 변수 모음 -->
 		<script type="text/javascript">
 		//추천버튼
 		const upBtn = document.querySelector(".btn-up");
 		//비추천버튼
 		const downBtn = document.querySelector(".btn-down");
+		//로그인한 아이디값 가져오기
+		const id = '[[${user}]]';
+		//게시글 번호. CommentDTO의 게시글 번호 필드와 이름이 같게 작성
+		const postNum = [[${post.po_num}]];
+		
+		</script>
+		<!-- 추천, 비추천 js -->
+		<script type="text/javascript">
+		
 		
 		//게시글 번호, 추천상태를 이용하여 추천결과를 알려주는 함수
 		async function setLike(postNum, state) {
@@ -223,6 +234,66 @@
 			}
 		}
 		
+		</script>
+		
+		<!-- 댓글 js -->
+		<script type="text/javascript">
+			//로그인 되었는지 확인
+			function checkLogin(element){
+				
+				//로그인이 안되어 있으면(빈문자열이면)
+				if(!id){
+					//포커스 해제
+					element.blur();
+					//로그인페이지로 이동할건지를 물어봄
+					let res = confirm("로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하겠습니까?");
+					if(res){
+						location.href="/login";
+					}
+				}
+			}
+			
+			function insertComment(event){
+				event.preventDefault();
+				
+				//댓글 내용을 가져옴
+				//댓글 입력창 요소를 선택
+				const commentInsertInputEl = 
+					document.querySelector(".comment-input textarea");
+				const content = commentInsertInputEl.value;
+				
+				//댓글이 비어 있으면 알림 처리
+				if(!content.trim()){
+					alert("댓글 내용을 입력하세요.");
+					return;
+				}
+				let comment = {
+					content, //댓글내용. CommentDTO에서 내용을 content로 설정함
+					postNum,//게시글 번호
+				}
+				//비동기통신으로 댓글 내용을 전송 
+				sendInsertComment(comment);
+			}
+			async function sendInsertComment(comment){
+				try{
+					//await는 비동기인 fetch가 다 끝날때까지 기다리게 하는 역할
+					//그래야 밑에서 response를 이용할 때 문제가 안 생김
+					const response = await fetch('/comment/insert', {
+						method : 'post',
+						headers : {
+							'Content-Type' : 'application/json' //보내는 데이터 형태
+						},
+						body : JSON.stringify(comment) //보낼 데이터
+					});
+					//서버에서 댓글 추가 결과를 문자열로 보낼 예정
+					const result = await response.text();
+					//알림창으로 댓글 추가 결과를 알려줌
+					alert(result);
+				}catch(error){
+					console.error("예외 발생");
+					console.error(error);
+				}
+			}
 		</script>
 	</main>
 </body>

@@ -121,7 +121,7 @@
 		}
 		//페이지네이션을 보여줄 요소
 		const commentPagination = 
-			document.querySelector(".comment-pagination");
+			document.querySelector(".comment-pagination .pagination");
 		
 		</script>
 		<!-- 추천, 비추천 js -->
@@ -285,6 +285,7 @@
 				sendInsertComment(comment);
 				//추가한 댓글 내용 삭제
 				commentInsertInputEl.value = '';
+				
 			}
 			async function sendInsertComment(comment){
 				try{
@@ -301,6 +302,11 @@
 					const result = await response.text();
 					//알림창으로 댓글 추가 결과를 알려줌
 					alert(result);
+					
+					//댓글 목록 다시 불러오기
+					cri.page = 1;
+					getCommentList(cri);
+					
 				}catch(error){
 					console.error("예외 발생");
 					console.error(error);
@@ -367,30 +373,39 @@
 				//이전 버튼 활성화
 				if(pm.prev){
 					pagination += `
-					<li class="page-item">
+					<li onclick="changePage(${pm.startPage - 1})"
+						class="page-item">
 						<a class="page-link" href="javascript:void(0);">이전</a>
 					</li>
 					`
 				}
 				
 				for(i = pm.startPage; i<= pm.endPage; i++){
+
 					pagination += `
-					<li class="page-item">
+					<li onclick="changePage(${i})"
+						class="page-item ${pm.cri.page == i ? 'active' : ''}">
 				    	<a class="page-link" href="javascript:void(0);">${i}</a>
+				    </li>
+					`;
+				}
+				
+				if(pm.next){
+					pagination += `
+					<li onclick="changePage(${pm.endPage + 1})"
+						class="page-item">
+				    	<a class="page-link" href="javascript:void(0);">다음</a>
 				    </li>
 					`
 				}
 				
-				`
-				
-			    
-			    <li class="page-item">
-			    	<a class="page-link" href="javascript:void(0);">다음</a>
-			    </li>
-				`
 				commentPagination.innerHTML = pagination;
 			}
 			
+			function changePage(page){
+				cri.page = page;
+				getCommentList(cri);
+			}
 			//댓글 불러오도록 호출
 			getCommentList(cri);
 		</script>

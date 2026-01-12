@@ -75,6 +75,10 @@
 						</div>
 						<hr>
 						<div class="mt-3">댓글 내용</div>
+						<div class="mt-3">
+							<button class="btn-mod btn btn-outline-warning">수정</button>
+							<button class="btn-del btn btn-outline-danger">삭제</button>
+						</div>
 					</div>
 				</div>
 				
@@ -124,6 +128,8 @@
 			document.querySelector(".comment-pagination .pagination");
 		
 		</script>
+		
+		
 		<!-- 추천, 비추천 js -->
 		<script type="text/javascript">
 		
@@ -208,7 +214,7 @@
 				console.error("예외 발생");
 			}
 		}
-		loadLikeBtns();
+		
 		//로그인한 사용자의 게시글 추천/비추천여부에 따라 추천/비추천 버튼 색상 변경
 		async function checkLike(){
 			const postNum = [[${post.po_num}]];
@@ -352,6 +358,14 @@
 				//for in은 key값을 가져와서 활용
 				let items = '';
 				for(comment of list ){
+					
+					let btns = `
+					<div class="mt-3">
+						<button class="btn-mod btn btn-outline-warning">수정</button>
+						<button class="btn-del btn btn-outline-danger" onclick="deleteComment(${comment.co_num})">삭제</button>
+					</div>
+					`;
+					
 					items += `
 					<div class="comment-item mb-3 form-control">
 						<div class="d-flex justify-content-between">
@@ -360,6 +374,7 @@
 						</div>
 						<hr>
 						<div class="mt-3">${comment.co_content}</div>
+						${comment.co_me_id == '[[${user}]]' ? btns : ''}
 					</div>
 					`;
 				}
@@ -406,8 +421,17 @@
 				cri.page = page;
 				getCommentList(cri);
 			}
+			
+			function deleteComment(coNum){
+				console.log(coNum);
+			}
+		</script>
+		<!-- 화면이 처음 로딩될때 호출되는 함수 정리 -->
+		<script type="text/javascript">
 			//댓글 불러오도록 호출
 			getCommentList(cri);
+			//추천/비추천 버튼 불러오기
+			loadLikeBtns();
 		</script>
 	</main>
 </body>

@@ -55,4 +55,33 @@ public class CommentService {
 		int totalcount = commentDAO.selectCommentCount(cri);
 		return new PageMaker(3, cri, totalcount);
 	}
+
+	public String deleteComment(int coNum, CustomUser user) {
+		//- 로그인한 사용자가 아니면 로그인이 필요한 서비스입니다라고 반환
+		if(user == null || user.getUsername() == null) {
+			return "로그인이 필요한 서비스입니다.";
+		}
+		//- 작성자인지 확인
+		//  - 다오에게 댓글 번호를 부면서 댓글 정보를 가져오라고 요청
+		//댓글정보 = 다오야.댓글정보가져와(댓글번호);
+		CommentVO comment = commentDAO.selectComment(coNum);
+		
+		//  - 댓글이 없거나 댓글작성자와 로그인한 사용자 아이디가 다르면 
+		//    작성자가 아닙니다라고 반환
+		if(comment == null || 
+			!comment.getCo_me_id().equals(user.getUsername())) {
+			return "작성자가 아닙니다.";
+		}
+		
+		//- 다오에게 댓글 번호를 주면서 삭제하고 삭제 여부를 가져오라고 요청
+		//삭제여부 = 다오야.댓글삭제해(댓글번호);
+		boolean result = commentDAO.deleteComment(coNum);
+		
+		//- 댓글을 삭제했으면 댓글을 삭제했습니다를 반환
+		if(result) {
+			return "댓글을 삭제했습니다";
+		}
+		//- 삭제하지 못했으면 댓글을 삭제할 수 없습니다를 반환
+		return "댓글을 삭제할 수 없습니다.";
+	}
 }

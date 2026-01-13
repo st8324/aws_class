@@ -43,6 +43,17 @@
     	select count(*) from comment
     	where co_po_num = #{cri.postNum}
     </select>
+    
+    <select id="selectComment" resultType="CommentVO">
+    	select * from comment 
+    	where co_num = #{coNum} and co_del = 'N'
+    </select>
+    
+    <update id="deleteComment">
+    	update comment
+    	set co_del = 'Y'
+    	where co_num = #{coNum} and co_del = 'N'
+    </update>
 </mapper>
 
 

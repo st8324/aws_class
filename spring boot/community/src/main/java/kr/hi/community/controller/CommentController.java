@@ -72,6 +72,20 @@ public class CommentController {
 		
 		return ResponseEntity.ok(result);
 	}
+	
+	@PostMapping("/update")
+	public ResponseEntity<String> update(
+			//- 화면에서 보낸 수정 댓글 정보를 가져옴
+			@RequestBody CommentDTO dto,
+			//- 로그인한 사용자 정보 가져옴
+			@AuthenticationPrincipal CustomUser user
+			){
+		//- 서비스에게 수정 댓글정보와 사용자 정보 주면서 수정하고 결과를 가져오라고 요청
+		//수정결과 = 서비스야.댓글수정해(수정할댓글정보, 사용자정보);
+		String result = commentService.updateComment(dto, user);
+		//- 가져온 결과를 화면에 전달
+		return ResponseEntity.ok(result);
+	}
 }
 
 

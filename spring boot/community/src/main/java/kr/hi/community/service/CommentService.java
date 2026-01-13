@@ -84,4 +84,16 @@ public class CommentService {
 		//- 삭제하지 못했으면 댓글을 삭제할 수 없습니다를 반환
 		return "댓글을 삭제할 수 없습니다.";
 	}
+
+	public String updateComment(CommentDTO dto, CustomUser user) {
+		//- 로그인 안했으면 로그인이 필요한 서비스입니다라고 반환
+		if(user == null || user.getUsername() == null) {
+			return "로그인이 필요한 서비스입니다.";
+		}
+		//- 작성자 확인해서 아니면 작성자가 아닙니다를 반환
+		//- 다오에게 수정댓글정보를 주면서 수정하고 수정여부를 가져오라고 요청
+		//- 수정했으면 수정을 했습니다라고 반환
+		//- 못햇으면 수정을 하지 못했습니다를 반환
+		return null;
+	}
 }

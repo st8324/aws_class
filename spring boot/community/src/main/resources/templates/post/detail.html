@@ -471,10 +471,10 @@
 				let inputBox = `
 				<div class="comment-update-box">
 					<form class="input-group" 
-						onsubmit="insertComment(event)">
+						onsubmit="updateComment(event, this, ${num})">
 						<textarea class="form-control" 
 							onfocus="checkLogin(this)">${content}</textarea>
-						<button class="btn btn-outline-success">등록</button>
+						<button class="btn btn-outline-success">수정</button>
 					</form>
 				</div>	
 				`;
@@ -492,6 +492,44 @@
 				
 				//댓글 내용 입력 창 박스 추가 
 				parent.insertAdjacentHTML('beforeBegin',inputBox);
+			}
+			function updateComment(event, el, num){
+				//form태그의 submit을 막음(서버로 전송하는걸 막음)
+				event.preventDefault();
+				//댓글 입력 요소
+				const textareaEl = el.querySelector("textarea");
+				//입력한 댓글 내용 
+				const content = textareaEl.value;
+				
+				//댓글번호(num)와 댓글내용(content)을 가진 객체를 생성
+				const comment = {
+					coNum : num,
+					content //content : content
+				};
+				
+				// 댓글 수정
+				sendUpdateComment(comment);
+					
+			}
+			async function sendUpdateComment(comment){
+				try{
+					//서버로 수정할 정보를 전송
+					const response = await fetch('/comment/update', {
+						method : 'post',
+						headers : {
+							'Content-Type' : 'application/json'
+						},
+						body : JSON.stringify(comment)
+					});
+					if(response.ok){
+						//서버에서 보낸 값을 문자열로 받아옴
+						const result = await response.text();
+						//받아온 문자열을 alert로 출력
+						alert(result);
+					}
+				}catch(error){
+					console.error(error);
+				}
 			}
 		</script>
 		<!-- 화면이 처음 로딩될때 호출되는 함수 정리 -->

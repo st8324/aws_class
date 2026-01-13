@@ -382,7 +382,7 @@
 					//수정/삭제 버튼
 					let btns = `
 					<button class="btn-mod btn btn-outline-warning" 
-						onclick="changeBox(${comment.co_num}, '${comment.co_content}', this)">수정</button>
+						onclick="changeBox(${comment.co_num}, this)">수정</button>
 					<button class="btn-del btn btn-outline-danger" 
 						onclick="deleteComment(${comment.co_num})">삭제</button>
 					`;
@@ -395,7 +395,7 @@
 								<div>${comment.co_date}</div>
 							</div>
 							<hr>
-							<div class="mt-3">${comment.co_content}</div>
+							<pre class="mt-3">${comment.co_content}</pre>
 							<div class="mt-3">
 								${comment.co_me_id == '[[${user}]]' ? btns : ''}
 								${comment.co_num == comment.co_ori_num ? replyBtn : ''}
@@ -478,11 +478,18 @@
 				}
 			}
 			/**
-			num : 댓글 번호, content : 댓글 내용, el : 수정버튼
+			num : 댓글 번호, el : 수정버튼
 			el은 수정창을 배치할 때 사용할 예정
 			*/
-			function changeBox(num, content, el){
+			function changeBox(num, el){
 				initBox(el);
+				
+				//댓글 하나를 감싸는 박스
+				const item = el.closest(".comment-item");
+				//댓글에 댓글 내용이 있는 pre태그
+				const pre = item.querySelector('pre');
+				//댓글 내용 가져옴
+				const content = pre.textContent;
 				
 				let inputBox = `
 				<div class="comment-update-box">

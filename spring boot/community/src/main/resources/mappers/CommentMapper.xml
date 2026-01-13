@@ -54,6 +54,12 @@
     	set co_del = 'Y'
     	where co_num = #{coNum} and co_del = 'N'
     </update>
+    
+    <update id="updateComment">
+    	update comment
+    	set co_content = #{dto.content}
+    	where co_num = #{dto.coNum} and co_del = 'N'
+    </update>
 </mapper>
 
 

@@ -526,6 +526,8 @@
 						const result = await response.text();
 						//받아온 문자열을 alert로 출력
 						alert(result);
+						//댓글 목록 새로고침
+						getCommentList(cri);
 					}
 				}catch(error){
 					console.error(error);

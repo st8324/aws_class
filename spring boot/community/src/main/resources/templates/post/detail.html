@@ -95,7 +95,7 @@
 				<!-- 댓글 입력 영역 -->
 				<div class="comment-input">
 					<form class="input-group" 
-						onsubmit="insertComment(event)">
+						onsubmit="insertComment(event, this)">
 						<textarea class="form-control" 
 							onfocus="checkLogin(this)"></textarea>
 						<button class="btn btn-outline-success">등록</button>
@@ -269,13 +269,18 @@
 				}
 			}
 			
-			function insertComment(event){
+			function insertComment(event,  el, coNum){
 				event.preventDefault();
-				
+				//댓글 등록일 때 coNum을 안넣어줌
+				//대댓글 등록일 때 coNum을 넣어줌
+				//댓글이면
+				if(!coNum){
+					coNum = 0;
+				}
 				//댓글 내용을 가져옴
 				//댓글 입력창 요소를 선택
 				const commentInsertInputEl = 
-					document.querySelector(".comment-input textarea");
+					el.querySelector("textarea");
 				const content = commentInsertInputEl.value;
 				
 				//댓글이 비어 있으면 알림 처리
@@ -286,6 +291,7 @@
 				let comment = {
 					content, //댓글내용. CommentDTO에서 내용을 content로 설정함
 					postNum,//게시글 번호
+					coNum
 				}
 				//비동기통신으로 댓글 내용을 전송 
 				sendInsertComment(comment);
@@ -368,6 +374,10 @@
 						`;
 						continue;//16:1 Uncaught ReferenceError: changeBox is not defined
 					}
+					let replyBtn = `
+						<button class="btn-reply btn btn-outline-dark" 
+							onclick="changeReplyBox(${comment.co_num}, this)">대댓글</button>
+					`
 					
 					let btns = `
 					<div class="mt-3">
@@ -375,6 +385,7 @@
 							onclick="changeBox(${comment.co_num}, '${comment.co_content}', this)">수정</button>
 						<button class="btn-del btn btn-outline-danger" 
 							onclick="deleteComment(${comment.co_num})">삭제</button>
+						${comment.co_num == comment.co_ori_num ? replyBtn : ''}
 					</div>
 					`;
 					
@@ -532,6 +543,18 @@
 				}catch(error){
 					console.error(error);
 				}
+			}
+			function changeReplyBox(coNum, el){
+				let container = `
+				<div class="comment-reply-input">
+					<form class="input-group" 
+						onsubmit="insertComment(event, ${coNum})">
+						<textarea class="form-control" 
+							onfocus="checkLogin(this)"></textarea>
+						<button class="btn btn-outline-success">등록</button>
+					</form>
+				</div>
+				`
 			}
 		</script>
 		<!-- 화면이 처음 로딩될때 호출되는 함수 정리 -->

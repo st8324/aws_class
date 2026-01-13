@@ -291,7 +291,7 @@
 				let comment = {
 					content, //댓글내용. CommentDTO에서 내용을 content로 설정함
 					postNum,//게시글 번호
-					coNum
+					coOriNum : coNum
 				}
 				//비동기통신으로 댓글 내용을 전송 
 				sendInsertComment(comment);
@@ -374,30 +374,33 @@
 						`;
 						continue;//16:1 Uncaught ReferenceError: changeBox is not defined
 					}
+					//대댓글 버튼
 					let replyBtn = `
 						<button class="btn-reply btn btn-outline-dark" 
 							onclick="changeReplyBox(${comment.co_num}, this)">대댓글</button>
 					`
-					
+					//수정/삭제 버튼
 					let btns = `
-					<div class="mt-3">
-						<button class="btn-mod btn btn-outline-warning" 
-							onclick="changeBox(${comment.co_num}, '${comment.co_content}', this)">수정</button>
-						<button class="btn-del btn btn-outline-danger" 
-							onclick="deleteComment(${comment.co_num})">삭제</button>
-						${comment.co_num == comment.co_ori_num ? replyBtn : ''}
-					</div>
+					<button class="btn-mod btn btn-outline-warning" 
+						onclick="changeBox(${comment.co_num}, '${comment.co_content}', this)">수정</button>
+					<button class="btn-del btn btn-outline-danger" 
+						onclick="deleteComment(${comment.co_num})">삭제</button>
 					`;
-					
+					//댓글 전체
 					items += `
-					<div class="comment-item mb-3 form-control">
-						<div class="d-flex justify-content-between">
-							<div>${comment.co_me_id}</div>
-							<div>${comment.co_date}</div>
+					<div class="${comment.co_num != comment.co_ori_num ? 'ps-5' : ''}">
+						<div class="comment-item mb-3 form-control">
+							<div class="d-flex justify-content-between">
+								<div>${comment.co_me_id}</div>
+								<div>${comment.co_date}</div>
+							</div>
+							<hr>
+							<div class="mt-3">${comment.co_content}</div>
+							<div class="mt-3">
+								${comment.co_me_id == '[[${user}]]' ? btns : ''}
+								${comment.co_num == comment.co_ori_num ? replyBtn : ''}
+							</div>
 						</div>
-						<hr>
-						<div class="mt-3">${comment.co_content}</div>
-						${comment.co_me_id == '[[${user}]]' ? btns : ''}
 					</div>
 					`;
 				}
@@ -479,6 +482,8 @@
 			el은 수정창을 배치할 때 사용할 예정
 			*/
 			function changeBox(num, content, el){
+				initBox(el);
+				
 				let inputBox = `
 				<div class="comment-update-box">
 					<form class="input-group" 
@@ -545,16 +550,38 @@
 				}
 			}
 			function changeReplyBox(coNum, el){
+				//기존에 수정클릭 또는 대댓글 클릭한 상태를 초기화 시키는 함수
+				initBox(el);
+				const parent = el.parentElement;
+				
 				let container = `
-				<div class="comment-reply-input">
+				<div class="comment-reply-input mt-3">
 					<form class="input-group" 
-						onsubmit="insertComment(event, ${coNum})">
+						onsubmit="insertComment(event, this, ${coNum})">
 						<textarea class="form-control" 
 							onfocus="checkLogin(this)"></textarea>
 						<button class="btn btn-outline-success">등록</button>
 					</form>
 				</div>
 				`
+				parent.insertAdjacentHTML('afterend',container);
+			}
+			function initBox(el){
+				//댓글 하나 전체를 감싸는 박스
+				const item = el.closest(".comment-item");
+				
+				//댓글 수정 버튼 클릭 시 추가되는 form태그가 있는 박스
+				const updateBox = item.querySelector('.comment-update-box');
+				
+				if(updateBox){
+					updateBox.remove();
+				}
+				//열려있는 대댓 추가창이 있으면 닫음
+				const replyBox = item.querySelector('.comment-reply-input');
+				if(replyBox){
+					replyBox.remove();
+				}
+				
 			}
 		</script>
 		<!-- 화면이 처음 로딩될때 호출되는 함수 정리 -->

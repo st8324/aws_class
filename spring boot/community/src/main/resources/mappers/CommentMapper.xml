@@ -5,16 +5,21 @@
     <insert id="insertComment">
     	insert into 
     	comment(co_num, co_ori_num, co_po_num, co_me_id, co_content)
-    	<!-- 댓글 등록 -->
-    	<if test="coDto.coOriNum == 0">
     	select 
 			ifnull(max(co_num), 0) + 1,  
-			ifnull(max(co_num), 0) + 1, 
+			
+	    	<!-- 댓글 등록 -->
+	    	<if test="coDto.coOriNum == 0">
+				ifnull(max(co_num), 0) + 1, 
+			</if>
+			<!-- 대댓 등록 -->
+			<if test="coDto.coOriNum != 0">
+				#{coDto.coOriNum}, 
+			</if>	    
 		    #{coDto.postNum}, 
 		    #{coDto.id}, 
 		    #{coDto.content}
 		from comment
-		</if>
     	<!-- 
     	댓글 : co_num == co_ori_num
     	댓글이 0개 등록되어 있고, 댓글을 등록하려고 하면

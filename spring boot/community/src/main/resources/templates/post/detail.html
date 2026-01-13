@@ -422,8 +422,32 @@
 				getCommentList(cri);
 			}
 			
-			function deleteComment(coNum){
-				console.log(coNum);
+			async function deleteComment(coNum){
+				
+				try{
+					//서버로 댓글 번호를 전송
+					const response = await fetch(
+						`/comment/delete/${coNum}`, {
+						//보내는 방식
+						method : 'post',
+						headers : {
+							//보낼 데이터의 종류
+							//'Content-Type' : ''
+						},
+						//보낼 데이터
+						//body : ''
+					});
+					
+					//서버에서 보낸 문자열을 alert로 출력
+					if(response.ok){
+						const result = await response.text();
+						alert(result);
+					}
+					
+				}catch(error){
+					console.error("예외 발생");
+					console.error(error);
+				}
 			}
 		</script>
 		<!-- 화면이 처음 로딩될때 호출되는 함수 정리 -->

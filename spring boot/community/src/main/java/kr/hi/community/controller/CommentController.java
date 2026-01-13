@@ -20,7 +20,7 @@ import kr.hi.community.model.vo.CommentVO;
 import kr.hi.community.service.CommentService;
 
 @RestController //@ResponseBody + @Controller
-@RequestMapping("/comment")
+@RequestMapping("/comment") //이 컨트롤러에 있는 모든 메서드는 /comment로 시작
 public class CommentController {
 	
 	@Autowired
@@ -57,6 +57,12 @@ public class CommentController {
 		return ResponseEntity.ok(map);
 	}
 	
+	@PostMapping("/delete/{coNum}")
+	//@ResponseBody //@RestController일때는 생략
+	public ResponseEntity<String> delete() {
+		
+		return ResponseEntity.ok("test");
+	}
 }
 
 

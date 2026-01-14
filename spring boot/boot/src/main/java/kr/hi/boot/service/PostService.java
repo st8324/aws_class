@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.hi.boot.dao.PostDAO;
 import kr.hi.boot.model.dto.PostDTO;
+import kr.hi.boot.model.util.Criteria;
 import kr.hi.boot.model.util.CustomUser;
 import kr.hi.boot.model.vo.Board;
 import kr.hi.boot.model.vo.Member;
@@ -53,8 +54,8 @@ public class PostService {
 		}
 	}
 
-	public ArrayList<Post> getPostList() {
-		return postDAO.getPostList();
+	public ArrayList<Post> getPostList(Criteria cri) {
+		return postDAO.getPostList(cri);
 	}
 
 	public Post getPost(int num) {

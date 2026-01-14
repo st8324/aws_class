@@ -26,7 +26,10 @@
    			bo_num = #{num}
    	</update>
    	<select id="getPostList" resultType="Post">
-   		select * from post
+   		select * from post 
+   		where po_del = 'N'
+   		order by po_num desc
+   		limit #{cri.pageStart}, #{cri.perPageNum}
    	</select>
    	<select id="getPost" resultType="Post">
    		select * from post where po_num = #{num}

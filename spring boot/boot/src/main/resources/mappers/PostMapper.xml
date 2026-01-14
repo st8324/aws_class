@@ -46,6 +46,10 @@
    		update post set po_view = po_view + 1 
    		where po_num = #{num}
    	</update>
+   	<select id="selectPostListCount" resultType="int">
+   		select count(*) from post 
+   		where po_del = 'N'
+   	</select>
 </mapper>
 
 

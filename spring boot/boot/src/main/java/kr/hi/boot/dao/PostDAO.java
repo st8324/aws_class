@@ -29,4 +29,6 @@ public interface PostDAO {
 
 	void updatePostView(@Param("num")int num);
 
+	int selectPostListCount(@Param("cri")Criteria cri);
+
 }

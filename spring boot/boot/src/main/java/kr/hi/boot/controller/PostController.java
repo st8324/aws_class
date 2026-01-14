@@ -1,6 +1,7 @@
 package kr.hi.boot.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.hi.boot.model.dto.PostDTO;
-import kr.hi.boot.model.util.Criteria;
 import kr.hi.boot.model.util.CustomUser;
 import kr.hi.boot.model.util.PageMaker;
+import kr.hi.boot.model.util.PostCriteria;
 import kr.hi.boot.model.vo.Board;
 import kr.hi.boot.model.vo.Post;
 import kr.hi.boot.service.PostService;
@@ -27,7 +28,7 @@ public class PostController {
 	@GetMapping("/post/list")
 	public String postList(Model model,
 			//화면에서 보낸 페이지 정보를 가져옴
-			Criteria cri) {
+			PostCriteria cri) {
 		//한페이지에 게시글 10개
 		cri.setPerPageNum(3);
 		
@@ -39,9 +40,14 @@ public class PostController {
 		//PageMaker객체 = 서비스야.PageMaker객체가져와(현재페이지정보);
 		PageMaker pm = postService.getPageMaker(cri);
 		
+		//- 서비스에게 게시판 목록 전체를 가져오라고 요청
+		//게시판목록 = 서비스야.게시판목록가져와()
+		List<Board> boardList = postService.getBoardList();
+		
 		//가져온 게시글 목록을 화면에 전달 
 		model.addAttribute("list", list);
 		model.addAttribute("pm", pm);
+		model.addAttribute("bList", boardList);
 		return "post/list";
 	}
 	

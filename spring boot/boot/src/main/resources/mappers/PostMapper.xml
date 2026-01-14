@@ -27,7 +27,11 @@
    	</update>
    	<select id="getPostList" resultType="Post">
    		select * from post 
-   		where po_del = 'N'
+   		where 
+   			po_del = 'N'
+   			<if test="cri.boNum != 0">
+   			and po_bo_num = #{cri.boNum}
+   			</if>
    		order by po_num desc
    		limit #{cri.pageStart}, #{cri.perPageNum}
    	</select>
@@ -49,6 +53,9 @@
    	<select id="selectPostListCount" resultType="int">
    		select count(*) from post 
    		where po_del = 'N'
+   		<if test="cri.boNum != 0">
+   		and po_bo_num = #{cri.boNum}
+   		</if>
    	</select>
 </mapper>
 

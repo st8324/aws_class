@@ -34,6 +34,28 @@
 		<a 
 			th:href="@{/post/list}"
 			class="btn btn-outline-success mt-3">목록으로</a>
+			
+		<script type="text/javascript">
+		const postNum = [[${post.po_num}]];
+
+		/*댓글 목록 가져오기 */
+		async function getComments(){
+			
+			try{
+				const response = 
+					await fetch(`/api/v1/posts/${postNum}/comments`);
+				
+				if(response.ok){
+					const comments = await response.json();
+					console.log(comments);
+				}
+			}catch(error){
+				console.error(error)
+			}
+		}
+		/* 댓글 목록 호출 */
+		getComments();
+		</script>
 	</main>
 </body>
 </html>

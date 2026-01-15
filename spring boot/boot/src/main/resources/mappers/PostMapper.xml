@@ -29,9 +29,32 @@
    		select * from post 
    		where 
    			po_del = 'N'
+   			<!-- 게시판에 맞는 게시글 목록 조회 -->
    			<if test="cri.boNum != 0">
    			and po_bo_num = #{cri.boNum}
    			</if>
+   			<!-- 검색 조건에 맞는 게시글 목록 조회 -->
+   			<choose>
+   				<!-- 전체 검색 -->
+   				<when test='cri.type == "A"'>
+   				and (
+   					po_title like concat('%', #{cri.search}, '%') or
+   					po_content like concat('%', #{cri.search}, '%') or
+   					po_me_id = #{cri.search}
+   				)
+   				</when>
+   				<!-- 제목+내용 검색 -->
+   				<when test='cri.type == "TC"'>
+   				and (
+   					po_title like concat('%', #{cri.search}, '%') or
+   					po_content like concat('%', #{cri.search}, '%') 
+   				)
+   				</when>
+   				<!-- 작성자 검색 -->
+   				<when test='cri.type == "W"'>
+   				and po_me_id = #{cri.search}
+   				</when>
+   			</choose>
    		order by po_num desc
    		limit #{cri.pageStart}, #{cri.perPageNum}
    	</select>
@@ -52,10 +75,34 @@
    	</update>
    	<select id="selectPostListCount" resultType="int">
    		select count(*) from post 
-   		where po_del = 'N'
-   		<if test="cri.boNum != 0">
-   		and po_bo_num = #{cri.boNum}
-   		</if>
+   		where 
+   			po_del = 'N'
+   			<!-- 게시판 조건 -->
+	   		<if test="cri.boNum != 0">
+	   		and po_bo_num = #{cri.boNum}
+	   		</if>
+   			<!-- 검색 조건에 맞는 게시글 목록 조회 -->
+   			<choose>
+   				<!-- 전체 검색 -->
+   				<when test='cri.type == "A"'>
+   				and (
+   					po_title like concat('%', #{cri.search}, '%') or
+   					po_content like concat('%', #{cri.search}, '%') or
+   					po_me_id = #{cri.search}
+   				)
+   				</when>
+   				<!-- 제목+내용 검색 -->
+   				<when test='cri.type == "TC"'>
+   				and (
+   					po_title like concat('%', #{cri.search}, '%') or
+   					po_content like concat('%', #{cri.search}, '%') 
+   				)
+   				</when>
+   				<!-- 작성자 검색 -->
+   				<when test='cri.type == "W"'>
+   				and po_me_id = #{cri.search}
+   				</when>
+   			</choose>
    	</select>
 </mapper>
 

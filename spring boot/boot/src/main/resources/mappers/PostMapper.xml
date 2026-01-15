@@ -112,6 +112,15 @@
    		where
    			po_num = #{poNum}
    	</update>
+   	
+   	<update id="updatePost">
+   		update post
+   		set
+   			po_title = #{dto.title},
+   			po_content = #{dto.content}
+   		where 
+   			po_num = #{poNum}
+   	</update>
 </mapper>
 
 

@@ -113,4 +113,38 @@ public class PostService {
 			new PageMaker(displayPageNum, cri, count);
 		return pm;
 	}
+
+	public void deletePost(int poNum, CustomUser user) {
+		//사용자 정보가 로그인이 안되어 있으면 종료
+		if(user == null) {
+			return;
+		}
+		//사용자가 작성자인지 확인
+		//게시글 번호를 이용하여 게시글을 가져옴
+		//=>다오에게 게시글 번호를 주면서 게시글을 가져오라고 요청
+		//게시글 = 다오야.게시글가져와(게시글번호);
+		Post post = postDAO.getPost(poNum);
+		
+		//게시글이 없으면 종료
+		//if(게시글이 없다) {
+		if(post == null) {
+			return;
+		}
+		
+		//게시글 작성자와 사용자아이디를 비교하여 다르면 종료
+		//게시글 작성자 아이디 
+		String writer = post.getPo_me_id();
+		//사용자 아이디
+		String id = user.getUsername();
+		
+		//if(게시글작성자아이디와 사용자아이디가 다르다){
+		//if(!게시글작성자아이디.equals(사용자아이디)){
+		if(!writer.equals(id)) {
+			return;
+		}
+		
+		//다오에게 게시글 번호를 주면서 삭제하라고 요청
+		//다오야.게시글삭제해(게시글번호);
+		postDAO.deletePost(poNum);
+	}
 }

@@ -81,6 +81,17 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 	
+	@PostMapping("/post/delete/{num}")
+	public String postDelete(
+			//URL로 넘겨준 게시글 번호를 가져옴
+			@PathVariable("num")int poNum,
+			//로그인한 사용자 정보를 가져옴
+			@AuthenticationPrincipal CustomUser user) {
+		//서비스에게 게시글 번호와 사용자 정보를 주면서 삭제하라고 요청
+		//서비스야.게시글삭제해(게시글번호, 사용자정보);
+		postService.deletePost(poNum, user);
+		return "redirect:/post/list";
+	}
 }
 
 

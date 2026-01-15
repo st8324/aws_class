@@ -31,4 +31,6 @@ public interface PostDAO {
 
 	int selectPostListCount(@Param("cri")Criteria cri);
 
+	void deletePost(@Param("poNum")int poNum);
+
 }

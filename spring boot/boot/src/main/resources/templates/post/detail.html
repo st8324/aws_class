@@ -26,6 +26,8 @@
 			method="post" onsubmit="return confirm('게시글을 삭제하겠습니까?');"
 			th:if="${#authentication.name == post.po_me_id}">
 			<button class="btn btn-danger" >삭제</button>
+			<a th:href="@{/post/update/{num}(num=${post.po_num})}"
+				class="btn btn-warning">수정</a>
 		</form>
 		<hr>
 		<a 

@@ -92,6 +92,10 @@ public class PostController {
 		postService.deletePost(poNum, user);
 		return "redirect:/post/list";
 	}
+	@GetMapping("/post/update/{num}")
+	public String postUpdate() {
+		return "post/update";
+	}
 }
 
 

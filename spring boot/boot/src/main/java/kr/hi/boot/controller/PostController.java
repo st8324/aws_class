@@ -93,7 +93,15 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 	@GetMapping("/post/update/{num}")
-	public String postUpdate() {
+	public String postUpdate(
+			//- 화면에서 보낸 게시글 번호를 가져옴
+			@PathVariable("num")int poNum,
+			Model model) {
+		//- 서비스에게 게시글 번호를 주면서 게시글을 가져오라고 요청
+		//게시글 = 서비스야.게시글가져와(게시글번호);
+		Post post = postService.getPost(poNum);
+		//- 가져온 게시글을 화면에 전달
+		model.addAttribute("post", post);
 		return "post/update";
 	}
 }

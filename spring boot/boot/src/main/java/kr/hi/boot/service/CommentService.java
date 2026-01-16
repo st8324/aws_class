@@ -61,6 +61,41 @@ public class CommentService {
 		//- 못했으면 댓글을 등록하지 못했습니다라고 반환
 		return "댓글을 등록하지 못했습니다.";
 	}
+
+	public String deleteComment(int coNum, CustomUser user) {
+		//- 사용자가 로그인되어 있지 않으면 "로그인이 필요한 서비스입니다" 반환
+		if(user == null) {
+			return "로그인이 필요한 서비스입니다.";
+		}
+		//- 댓글 작성자가 아니면 "작성자가 아닙니다" 반환
+		String id = user.getUsername();
+		if(!isWriter(coNum, id)) {
+			return "작성자가 아닙니다.";
+		}
+		   
+		//- 다오에게 댓글 번호를 주면서 삭제하고 결과를 알려달라고 요청
+		//결과 = 다오야.댓글삭제해(댓글번호);
+		boolean res = commentDAO.deleteComment(coNum);
+		//- 삭제했으면 "댓글을 삭제했습니다"를 반환
+		if(res) {
+			return "댓글을 삭제했습니다";
+		}
+		//- 못했으면 " 댓글을 삭제하지 못했습니다"를 반환
+		return "댓글을 삭제하지 못했습니다";
+	}
+	private boolean isWriter(int coNum, String id) {
+		//- 다오에게 댓글번호 주면서 댓글 정보 가져오라고 요청
+		//댓글 = 다오야.댓글가져와(댓글번호);
+		Comment comment = commentDAO.selectComment(coNum);
+		
+		//- 가져온 댓글 정보가 없으면 false를 반환
+		if(comment == null) {
+			return false;
+		}
+		String writer = comment.getId();
+		//- 작성자와 아이디가 같으면 true, 다르면 false를 반환
+		return writer.equals(id);
+	}
 }
 
 

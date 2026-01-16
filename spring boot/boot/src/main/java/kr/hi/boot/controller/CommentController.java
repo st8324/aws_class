@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,6 +68,19 @@ public class CommentController {
 		//결과 = 서비스야.댓글등록해(게시글번호와댓글내용, 사용자정보);
 		String result = commentService.insertComment(comment, user);
 		//- 가져온 결과를 화면에 전송
+		return ResponseEntity.ok(result);
+	}
+	@DeleteMapping("/posts/{postNum}/comments/{coNum}")
+	public ResponseEntity<String> postsCommentsDelete(
+			//- 화면에서 보낸 댓글 번호를 가져옴
+			@PathVariable("coNum") int coNum,
+			//- 로그인한 사용자 정보를 가져옴
+			@AuthenticationPrincipal CustomUser user
+			){
+		//- 서비스에게 댓글 번호와 로그인한 사용자 정보를 주면서 댓글을 삭제하고 결과를 알려달라고 요청
+		//결과 = 서비스야.댓글삭제해(댓글번호, 사용자정보);
+		String result = commentService.deleteComment(coNum, user);
+		//- 결과를 화면에 전달
 		return ResponseEntity.ok(result);
 	}
 }

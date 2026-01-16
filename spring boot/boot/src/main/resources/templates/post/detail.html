@@ -139,7 +139,7 @@
 			/* 이전 페이지 활성화 */
 			if(pm.prev){
 				pagination += `
-				<li class="page-item" onclick="getComments(${pm.startPage - 1})">
+				<li class="page-item" onclick="getComments(page=${pm.startPage - 1})">
 					<a href="javascript:void(0);" class="page-link">이전</a>
 				</li>
 				`;
@@ -155,7 +155,7 @@
 				//let active = `${i == pm.cri.page ? 'actvie' : ''}`;
 				
 				pagination += `
-				<li class="page-item ${active}" onclick="getComments(${i})">
+				<li class="page-item ${active}" onclick="getComments(page=${i})">
 					<a href="javascript:void(0);" class="page-link">${i}</a>
 				</li>
 				`;
@@ -164,7 +164,7 @@
 			/* 다음 페이지 활성화 */
 			if(pm.next){
 				pagination += `
-				<li class="page-item" onclick="getComments(${pm.endPage + 1})">
+				<li class="page-item" onclick="getComments(page=${pm.endPage + 1})">
 					<a href="javascript:void(0);" class="page-link">다음</a>
 				</li>
 				`;
@@ -201,6 +201,7 @@
 				let replyBtn = '';
 				let ps = '';
 				
+				
 				/* 댓글인 경우 : 대댓글이 보여야함 */
 				if(comment.oriNum == comment.num){
 					replyBtn = `
@@ -211,12 +212,26 @@
 				else{
 					ps = 'ps-5';
 				}
+				
+				/* 댓글이 삭제된 경우 */
+				if(comment.del == 'Y'){
+					commentsItems += `
+						<div class="comments-item ${ps}">
+							<div class="comments-wrap form-control mb-3">
+							삭제된 댓글입니다.
+							</div>
+						</div>
+					`;
+					commnetsContainer.innerHTML = commentsItems;
+					continue;
+				}
+				
 				let udBtns = '';
 				/* 작성자인 경우 수정 삭제 버튼을 추가 */
 				if(comment.id == '[[${#authentication.name}]]'){
 					udBtns = `
 						<button class="btn btn-outline-warning">수정</button>
-						<button class="btn btn-outline-danger">삭제</button>
+						<button class="btn btn-outline-danger" onclick="deleteComments(${comment.num})">삭제</button>
 					`
 				}
 				
@@ -292,6 +307,29 @@
 					console.error(error);
 				}
 				
+			}
+		</script>
+	
+		<!-- 댓글 삭제 -->
+		<script type="text/javascript">
+			async function deleteComments(num){
+				
+				try{
+					const response = await fetch(`/api/v1/posts/${postNum}/comments/${num}`, {
+						method : 'delete',
+						headers : {
+							//'Content-Type' : ''
+						},
+						//body : ''
+					})
+					if(response.ok){
+						const result = await response.text();
+						alert(result);
+						getComments();
+					}
+				}catch(error){
+					console.error(error);
+				}
 			}
 		</script>
 	</main>

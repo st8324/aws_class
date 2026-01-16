@@ -71,14 +71,17 @@
 		</div>
 		
 		<script type="text/javascript">
+		/* 전역변수 : 게시글 번호 */
 		const postNum = [[${post.po_num}]];
-
+		/* 전역변수 : 댓글 페이지 */
+		let page = 1;
+		
 		/*댓글 목록 가져오기 */
 		async function getComments(){
 			
 			try{
 				const response = 
-					await fetch(`/api/v1/posts/${postNum}/comments`);
+					await fetch(`/api/v1/posts/${postNum}/comments?page=${page}`);
 				
 				if(response.ok){
 					const comments = await response.json();
@@ -111,9 +114,32 @@
 			/* 댓글이 있는 경우 */
 			//자바에서 향상된 for문과 같은 역할 
 			for(comment of comments){
+				
+				let replyBtn = '';
+				let ps = '';
+				
+				/* 댓글인 경우 : 대댓글이 보여야함 */
+				if(comment.oriNum == comment.num){
+					replyBtn = `
+						<button class="btn btn-outline-dark">대댓글</button>
+					`;
+				}
+				/* 대댓인 경우 : 대댓글이 안보이고, 왼쪽 여백을 추가 */
+				else{
+					ps = 'ps-5';
+				}
+				let udBtns = '';
+				/* 작성자인 경우 수정 삭제 버튼을 추가 */
+				if(comment.id == '[[${#authentication.name}]]'){
+					udBtns = `
+						<button class="btn btn-outline-warning">수정</button>
+						<button class="btn btn-outline-danger">삭제</button>
+					`
+				}
+				
 				commentsItems += 
 				`
-				<div class="comments-item">
+				<div class="comments-item ${ps}">
 					<div class="comments-wrap form-control mb-3">
 						<!-- 작성자와 작성일 -->
 						<div class="comments-header d-flex justify-content-between mt-3">
@@ -126,9 +152,8 @@
 						<hr>
 						<!-- 수정,삭제,대댓글 버튼 -->
 						<div class="comments-footer">
-							<button class="btn btn-outline-dark">대댓글</button>
-							<button class="btn btn-outline-warning">수정</button>
-							<button class="btn btn-outline-danger">삭제</button>
+							${replyBtn}
+							${udBtns}
 						</div>
 					</div>
 				</div>

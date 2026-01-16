@@ -34,7 +34,42 @@
 		<a 
 			th:href="@{/post/list}"
 			class="btn btn-outline-success mt-3">목록으로</a>
-			
+		
+		<hr>
+		<h1>댓글 목록</h1>
+		<!-- 댓글 목록 박스 -->
+		<div class="comments-container mt-3">
+			<!-- 댓글이 없는 경우 -->
+			<div class="comments-item">
+				<div class="comments-wrap form-control mb-3 text-center py-5">
+					등록된 댓글이 없습니다.
+				</div>
+			</div>
+			<!-- 댓글 박스 -->
+			<div class="comments-item">
+				<div class="comments-wrap form-control mb-3">
+					<!-- 작성자와 작성일 -->
+					<div class="comments-header d-flex justify-content-between mt-3">
+						<div>아이디</div>
+						<div>2026.01.06. 09:47</div>
+					</div>
+					<hr>
+					<!-- 댓글 내용 -->
+					<pre class="comments-body">
+						댓글 내용입니다.
+						엔터가 잘 쳐지나요?
+					</pre>
+					<hr>
+					<!-- 수정,삭제,대댓글 버튼 -->
+					<div class="comments-footer">
+						<button class="btn btn-outline-dark">대댓글</button>
+						<button class="btn btn-outline-warning">수정</button>
+						<button class="btn btn-outline-danger">삭제</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<script type="text/javascript">
 		const postNum = [[${post.po_num}]];
 
@@ -47,11 +82,60 @@
 				
 				if(response.ok){
 					const comments = await response.json();
-					console.log(comments);
+					renderComments(comments);
 				}
 			}catch(error){
 				console.error(error)
 			}
+		}
+		/* 댓글 목록 화면에 배치 */
+		function renderComments(comments){
+			const commnetsContainer 
+				= document.querySelector(".comments-container")
+			
+			let commentsItems = '';
+			
+			/* 댓글이 없는 경우 */
+			if(comments.length == 0){
+				commentsItems =
+					`
+					<div class="comments-item">
+						<div class="comments-wrap form-control mb-3 text-center py-5">
+							등록된 댓글이 없습니다.
+						</div>
+					</div>
+					`;
+				commnetsContainer.innerHTML = commentsItems;
+				return;
+			}
+			/* 댓글이 있는 경우 */
+			//자바에서 향상된 for문과 같은 역할 
+			for(comment of comments){
+				commentsItems += 
+				`
+				<div class="comments-item">
+					<div class="comments-wrap form-control mb-3">
+						<!-- 작성자와 작성일 -->
+						<div class="comments-header d-flex justify-content-between mt-3">
+							<div>${comment.id}</div>
+							<div>${comment.date}</div>
+						</div>
+						<hr>
+						<!-- 댓글 내용 -->
+						<pre class="comments-body">${comment.content}</pre>
+						<hr>
+						<!-- 수정,삭제,대댓글 버튼 -->
+						<div class="comments-footer">
+							<button class="btn btn-outline-dark">대댓글</button>
+							<button class="btn btn-outline-warning">수정</button>
+							<button class="btn btn-outline-danger">삭제</button>
+						</div>
+					</div>
+				</div>
+				`;
+			}
+			
+			commnetsContainer.innerHTML = commentsItems;
 		}
 		/* 댓글 목록 호출 */
 		getComments();

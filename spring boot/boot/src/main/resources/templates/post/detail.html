@@ -70,6 +70,24 @@
 			</div>
 		</div>
 		
+		<!-- 댓글 페이지네이션 박스 -->
+		<div class="comments-pagination-container">
+			<ul class="pagination justify-content-center">
+				<!-- 이전페이지 -->
+				<li class="page-item">
+					<a href="javascript:void(0);" class="page-link">이전</a>
+				</li>
+				<!-- 숫자페이지 -->
+				<li class="page-item">
+					<a href="javascript:void(0);" class="page-link">1</a>
+				</li>
+				<!-- 다음페이지 -->
+				<li class="page-item">
+					<a href="javascript:void(0);" class="page-link">다음</a>
+				</li>
+			</ul>
+		</div>
+		
 		<script type="text/javascript">
 		/* 전역변수 : 게시글 번호 */
 		const postNum = [[${post.po_num}]];
@@ -77,20 +95,75 @@
 		let page = 1;
 		
 		/*댓글 목록 가져오기 */
-		async function getComments(){
-			
+		async function getComments(currentPage){
+			//댓글 목록 조회할 때 페이지 정보를 안넘겨주면  
+			if(!currentPage){
+				//전역변수로 선언된 page를 가져옴
+				currentPage = page;
+			}
 			try{
 				const response = 
-					await fetch(`/api/v1/posts/${postNum}/comments?page=${page}`);
+					await fetch(`/api/v1/posts/${postNum}/comments?page=${currentPage}`);
 				
 				if(response.ok){
-					const comments = await response.json();
+					const result = await response.json();
+					const comments = result.list;
+					const pm = result.pm;
 					renderComments(comments);
+					renderPagination(pm);
 				}
 			}catch(error){
 				console.error(error)
 			}
 		}
+		/* 댓글 페이지네이션 화면에 배치 */
+		function renderPagination(pm){
+			let pagination = '';
+			const container 
+				= document.querySelector('.comments-pagination-container>.pagination')
+			/* 댓글이 없으면 페이지네이션 없앰. */
+			if(pm.endPage == 0){
+				container.innerHTML = '';
+				return;
+			}
+			/* 이전 페이지 활성화 */
+			if(pm.prev){
+				pagination += `
+				<li class="page-item">
+					<a href="javascript:void(0);" class="page-link">이전</a>
+				</li>
+				`;
+			}
+			/* 숫자 페이지 */
+			for(i = pm.startPage; i <= pm.endPage; i++){
+				
+				/* 현재 페이지에 색상 추가 */
+				let active = '';
+				if(i == pm.cri.page){
+					active = 'active';	
+				}
+				//let active = `${i == pm.cri.page ? 'actvie' : ''}`;
+				
+				pagination += `
+				<li class="page-item ${active}">
+					<a href="javascript:void(0);" class="page-link">${i}</a>
+				</li>
+				`;
+			}
+			
+			/* 다음 페이지 활성화 */
+			if(pm.next){
+				pagination += `
+				<li class="page-item">
+					<a href="javascript:void(0);" class="page-link">다음</a>
+				</li>
+				`;
+			}
+			/* 페이지네이션 컨테이너에 페이지네이션을 추가 */
+			container.innerHTML = pagination;
+			console.log(pm)
+		}
+		
 		/* 댓글 목록 화면에 배치 */
 		function renderComments(comments){
 			const commnetsContainer 

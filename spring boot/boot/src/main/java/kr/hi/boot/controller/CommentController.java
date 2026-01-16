@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.hi.boot.model.dto.CommentResponseDTO;
 import kr.hi.boot.model.util.Criteria;
 import kr.hi.boot.model.util.PageMaker;
 import kr.hi.boot.model.vo.Comment;
@@ -26,7 +27,7 @@ public class CommentController {
 	}
 	
 	@GetMapping("/posts/{num}/comments")
-	public ResponseEntity<List<Comment>> getComments(
+	public ResponseEntity<CommentResponseDTO> getComments(
 			//화면에서 보낸 게시글 번호를 가져옴 
 			@PathVariable("num")int poNum,
 			//화면에서 보낸 페이지 정보를 가져옴
@@ -42,8 +43,9 @@ public class CommentController {
 		//PageMaker객체 = 서비스야.PageMaker객체가져와(게시글번호, 페이지정보)
 		PageMaker pm = commentService.getPageMaker(poNum, cri);
 		
-		//가져온 댓글 목록을 화면에 전달
-		return ResponseEntity.ok(list);
+		//가져온 댓글 목록과 페이지네이션정보를 화면에 전달
+		CommentResponseDTO dto = new CommentResponseDTO(list, pm);
+		return ResponseEntity.ok(dto);
 	}
 	
 }

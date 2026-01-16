@@ -32,6 +32,13 @@
     	limit #{cri.pageStart}, #{cri.perPageNum}
     </select>
     
+    <select id="selectCommentsCount" resultType="int">
+    	<!-- 게시글 번호에 맞게 댓글 수를 가져오는 쿼리 -->
+    	select count(*) 
+    	from comment
+    	where
+    		co_po_num = #{poNum} and co_del = 'N'
+    </select>
 </mapper>
 
 

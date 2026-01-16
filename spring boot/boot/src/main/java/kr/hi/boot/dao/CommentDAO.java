@@ -11,4 +11,6 @@ public interface CommentDAO {
 
 	List<Comment> selectComments(@Param("poNum")int poNum, @Param("cri")Criteria cri);
 
+	int selectCommentsCount(@Param("poNum")int poNum);
+
 }

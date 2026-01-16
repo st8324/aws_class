@@ -13,4 +13,6 @@ public interface CommentDAO {
 
 	int selectCommentsCount(@Param("poNum")int poNum);
 
+	boolean insertComment(@Param("comment")Comment comment);
+
 }

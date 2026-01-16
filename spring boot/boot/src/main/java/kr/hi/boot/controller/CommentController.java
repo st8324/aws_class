@@ -3,13 +3,17 @@ package kr.hi.boot.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.hi.boot.model.dto.CommentResponseDTO;
 import kr.hi.boot.model.util.Criteria;
+import kr.hi.boot.model.util.CustomUser;
 import kr.hi.boot.model.util.PageMaker;
 import kr.hi.boot.model.vo.Comment;
 import kr.hi.boot.service.CommentService;
@@ -48,4 +52,21 @@ public class CommentController {
 		return ResponseEntity.ok(dto);
 	}
 	
+	@PostMapping("/posts/{num}/comments")
+	public ResponseEntity<String> getCommentsPost(
+			//- 화면에서 보낸 게시글 번호를 가져옴
+			@PathVariable("num")int postNum,
+			//- 화면에서 보낸 댓글 내용을 가져옴
+			@RequestBody Comment comment,
+			//- 로그인한 사용자 정보 가져옴
+			@AuthenticationPrincipal CustomUser user
+			){
+		//- 서비스에게 게시글번호와 댓글내용, 사용자정보를 주면서 댓글을 등록하고 결과를 문자열로 가져오라고 요청
+		comment.setPostNum(postNum);
+		
+		//결과 = 서비스야.댓글등록해(게시글번호와댓글내용, 사용자정보);
+		String result = commentService.insertComment(comment, user);
+		//- 가져온 결과를 화면에 전송
+		return ResponseEntity.ok(result);
+	}
 }

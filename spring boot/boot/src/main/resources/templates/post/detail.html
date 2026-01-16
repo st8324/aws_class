@@ -88,6 +88,16 @@
 			</ul>
 		</div>
 		
+		<!-- 댓글 등록 박스 -->
+		<hr>
+		<div class="comments-input-container">
+			<form class="input-group" onsubmit="insertComment(event, this)" >
+				<textarea name="content" class="form-control"></textarea>
+				<button class="btn btn-success">등록</button>
+			</form>
+		</div>
+		
+		<!-- 댓글목록 -->
 		<script type="text/javascript">
 		/* 전역변수 : 게시글 번호 */
 		const postNum = [[${post.po_num}]];
@@ -161,7 +171,7 @@
 			}
 			/* 페이지네이션 컨테이너에 페이지네이션을 추가 */
 			container.innerHTML = pagination;
-			console.log(pm)
+			
 		}
 		
 		/* 댓글 목록 화면에 배치 */
@@ -237,6 +247,52 @@
 		}
 		/* 댓글 목록 호출 */
 		getComments();
+		</script>
+		
+		<!-- 댓글 등록 -->
+		<script type="text/javascript">
+			/* 댓글을 등록하는 함수 */
+			async function insertComment(event, el){
+				/* form태그 기본 이벤트를 막음 */
+				event.preventDefault();
+				
+				/* textarea 요소 선택 */
+				const textareaEl = el.querySelector("[name=content]");
+				
+				/* textarea에서 value값을 가져옴 */
+				const content = textareaEl.value;
+				
+				// 가져온 댓글을 객체로 변환
+				let obj = {
+					content,
+				};
+  				
+				try{
+					/* 비동기 통신으로 댓글을 서버에 전송 */
+					const response = await fetch(`/api/v1/posts/${postNum}/comments`, {
+						method : 'post',
+						headers : {
+							//댓글 내용을 서버로 JSON으로 보냄
+							'Content-Type' : 'application/json'
+						},
+						//댓글 내용이 있는 객체를 JSON 문자열로 변환
+						body : JSON.stringify(obj)
+					});
+					
+					if(response.ok){
+						//서버에서 보낸 결과를 가져옴
+						const result = await response.text();
+						//댓글 입력창을 비움
+						textareaEl.value = '';
+						//댓글 목록 새로고침
+						getComments(1);
+						alert(result);
+					}
+				}catch(error){
+					console.error(error);
+				}
+				
+			}
 		</script>
 	</main>
 </body>

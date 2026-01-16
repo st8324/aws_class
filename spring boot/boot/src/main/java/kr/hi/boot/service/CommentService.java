@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kr.hi.boot.dao.CommentDAO;
 import kr.hi.boot.model.util.Criteria;
+import kr.hi.boot.model.util.CustomUser;
 import kr.hi.boot.model.util.PageMaker;
 import kr.hi.boot.model.vo.Comment;
 
@@ -37,6 +38,28 @@ public class CommentService {
 		PageMaker pm = new PageMaker(pageCount, cri, count);
 		//생성된 객체를 반환
 		return pm;
+	}
+
+	public String insertComment(Comment comment, CustomUser user) {
+		//- 사용자가 로그인 안했으면 "로그인이 필요한 서비스입니다."라고 반환
+		if(user == null) {
+			return "로그인이 필요한 서비스입니다.";
+		}
+		//댓글 내용이 비었으면 "댓글을 입력하세요."라고 반환
+		if(comment.getContent() == null || 
+			comment.getContent().isBlank()) {
+			return "댓글을 입력하세요.";
+		}
+		//- 다오에게 게시글 번호, 댓글 내용, 사용자아이디를 주면서 게시글을 등록하라고 요청후 등록 여부를 알려달라고 요청
+		comment.setId(user.getUsername());
+		//등록결과 = 다오야.게시글등록해(댓글정보);
+		boolean result = commentDAO.insertComment(comment);
+		//- 등록햇으면 "댓글을 등록했습니다."라고 반환하고
+		if(result) {
+			return "댓글을 등록했습니다.";
+		}
+		//- 못했으면 댓글을 등록하지 못했습니다라고 반환
+		return "댓글을 등록하지 못했습니다.";
 	}
 }
 

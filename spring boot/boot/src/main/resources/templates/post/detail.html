@@ -230,7 +230,7 @@
 				/* 작성자인 경우 수정 삭제 버튼을 추가 */
 				if(comment.id == '[[${#authentication.name}]]'){
 					udBtns = `
-						<button class="btn btn-outline-warning">수정</button>
+						<button class="btn btn-outline-warning" onclick="changUpdateBox(this, ${comment.num})">수정</button>
 						<button class="btn btn-outline-danger" onclick="deleteComments(${comment.num})">삭제</button>
 					`
 				}
@@ -247,9 +247,9 @@
 						<hr>
 						<!-- 댓글 내용 -->
 						<pre class="comments-body">${comment.content}</pre>
-						<hr>
 						<!-- 수정,삭제,대댓글 버튼 -->
 						<div class="comments-footer">
+							<hr>
 							${replyBtn}
 							${udBtns}
 						</div>
@@ -375,6 +375,40 @@
 		}
 		
 		
+		</script>
+		
+		<!-- 댓글 수정 -->
+		<script type="text/javascript">
+		function changUpdateBox(el, coNum){
+			//기존 댓글 내용을 가져옴
+			const contentEl 
+				= el.closest(".comments-wrap")
+					.querySelector(".comments-body");
+			let content = contentEl.textContent;
+			let inputEl = `
+				<div class="comments-update-container">
+					<form class="input-group" onsubmit="updateComments(event, this ,${coNum})" >
+						<textarea name="content" class="form-control">${content}</textarea>
+						<button class="btn btn-success">수정</button>
+					</form>
+				</div>
+			`;
+			const parent = el.parentElement; //버튼들이 있는 박스
+			//수정 버튼 다음에 수정창을 추가
+			parent.insertAdjacentHTML('afterend' , inputEl);
+			
+			//버튼들을 감춤
+			parent.classList.add('d-none');
+			//기존 댓글창을 감춤
+			contentEl.classList.add('d-none');
+		}
+		
+		async function updateComments(e, el, coNum){
+			e.preventDefault();
+			
+			//댓글 번호와 수정된 댓글 내용을 가져와야 함
+			alert(coNum);
+		}
 		</script>
 		
 		<script type="text/javascript">

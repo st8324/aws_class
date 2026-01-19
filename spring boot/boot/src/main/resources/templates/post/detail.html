@@ -205,7 +205,7 @@
 				/* 댓글인 경우 : 대댓글이 보여야함 */
 				if(comment.oriNum == comment.num){
 					replyBtn = `
-						<button class="btn btn-outline-dark">대댓글</button>
+						<button class="btn btn-outline-dark" onclick="changeReplyBox(this, ${comment.num})">대댓글</button>
 					`;
 				}
 				/* 대댓인 경우 : 대댓글이 안보이고, 왼쪽 여백을 추가 */
@@ -266,8 +266,12 @@
 		
 		<!-- 댓글 등록 -->
 		<script type="text/javascript">
-			/* 댓글을 등록하는 함수 */
-			async function insertComment(event, el){
+			/* 댓글을 등록하는 함수 
+			event : 발생한 이벤트 정보
+			el : 이벤트가 발생한 요소(form태그)
+			oriNum : 참조하는 댓글번호
+			*/
+			async function insertComment(event, el, oriNum){
 				/* form태그 기본 이벤트를 막음 */
 				event.preventDefault();
 				
@@ -277,9 +281,15 @@
 				/* textarea에서 value값을 가져옴 */
 				const content = textareaEl.value;
 				
+				/* 참조 댓글번호가 없으면 0으로 설정 */
+				if(!oriNum){
+					oriNum = 0;
+				}
+				
 				// 가져온 댓글을 객체로 변환
 				let obj = {
 					content,
+					oriNum
 				};
   				
 				try{
@@ -331,6 +341,63 @@
 					console.error(error);
 				}
 			}
+		</script>
+	
+		<!-- 대댓글 등록 -->
+		<script type="text/javascript">
+		/* 대댓글을 클릭하면 대댓글 입력창이 나오게 하는 함수 
+		el : 클릭이벤트가 발생한 요소
+		*/
+		function changeReplyBox(el , oriNum){
+			//대댓글 입력창을 HTML코드로 구성
+			let inputEl = `
+				<hr>
+				<div class="comments-input-container">
+					<form class="input-group" onsubmit="insertComment(event, this, ${oriNum})" >
+						<textarea name="content" class="form-control"></textarea>
+						<button class="btn btn-success">등록</button>
+					</form>
+				</div>
+			`;
+			//원하는 위치에 HTML코드를 배치
+			//.comments-footer 다음에 대댓글 입력창을 배치
+			//.comments-footer는 대댓글 버튼의 부모 요소
+			el.parentElement.insertAdjacentHTML('afterend' , inputEl);
+			/* 
+			타겟.insertAdjacentHTML(위치, 요소) : 위치에 요소를 배치
+			- 위치
+			  - 'beforebegin' : 타겟 앞, before(요소)
+			  - 'afterbegin' : 타겟의 첫번째 자식,appendChild() 
+			  - 'beforeend' : 타겟의 마지막 자식, prepend()
+			  - 'afterend' : 타겟 뒤 , afeter(요소)
+			- after,before, appendChild, prepend는 HTML코드는 안됨
+			*/
+		}
+		
+		
+		</script>
+		
+		<script type="text/javascript">
+		/* 함수를 ()없이 사용해도 되는 경우 */
+		//매개변수로 함수를 필요 => 매개변수로 오는 함수를 콜백함수라고 함
+		function fun1(callbakcFunc){
+			//함수가 존재하면
+			if(callbakcFunc){
+				//넘겨받은 콜백함수를 호출
+				callbakcFunc();
+			}
+		}
+		
+		function test(){
+			alert("안녕?");
+		}
+		/* 
+		보통 함수를 부를 때 함수명() 형태로 사용하는데, 
+		함수명만 쓰이는 경우
+		=> 함수의 매개변수로 함수가 필요한 경우(콜백함수), 매개변수로 함수를 넘길때 ()없이
+		   함수명만 사용
+		*/
+		//fun1(test);
 		</script>
 	</main>
 </body>

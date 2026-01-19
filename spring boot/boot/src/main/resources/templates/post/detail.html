@@ -406,8 +406,37 @@
 		async function updateComments(e, el, coNum){
 			e.preventDefault();
 			
-			//댓글 번호와 수정된 댓글 내용을 가져와야 함
-			alert(coNum);
+			//수정된 댓글 내용을 가져와야 함
+			//1. 댓글 내용이 입력된 요소를 선택(textarea)
+			//   - form태그 안에 있는 name이 content인 요소를 선택하면 됨
+			const inputEl = el.querySelector("[name=content]");
+			
+			//2. 요소에서 내용을 가져옴(value)
+			const content = inputEl.value;
+			
+			try{
+				const obj = {
+					content,
+				}
+				const response = await fetch(`/api/v1/posts/${postNum}/comments/${coNum}`, {
+					method : 'put',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					//body : '{"content" : "' + content + '"}',
+					body : JSON.stringify(obj),
+				});
+				
+				if(response.ok){
+					const result = await response.text();
+					alert(result);
+					//목록 새로고침
+					getComments();
+				}
+			}catch(error){
+				console.error(error);
+			}
+			
 		}
 		</script>
 		

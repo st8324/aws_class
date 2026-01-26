@@ -1,8 +1,21 @@
 import React from "react";
 
+/* 
+이벤트 등록 시 주의사항
+- on이벤트명에서 이벤트명은 대문자로 시작(리액트)
+- on이벤트명에서 이벤트명은 소문자로 시작(js)
+
+*/
 function Btn1(){
+
+	/*function btnClick(){
+		alert("클릭");
+	}*/
+	//버튼 클릭할 때 호출될 함수
+	const btnClick = ()=>{ alert("클릭"); }
+
 	return (
-		<button>일반 버튼1</button>
+		<button onClick={btnClick}>일반 버튼1</button>
 	);
 }
 

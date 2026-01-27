@@ -30,6 +30,17 @@ function ToDoList(){
 		setNum(num+1);
 		setTodo("");
 	}
+	//num : 삭제할 할일 id
+	const delTodo = num =>{
+		//할일 목록 중 id가 num와 같지 않은 목록만 가져옴
+		const newTodos = todos.filter((item)=>{
+			return item.id !== num;
+		});
+		const newTodos2 = todos.filter(item=>item.id !== num);
+		//위에서 가져온 목록으로 수정
+		setTodos(newTodos);
+	}
+
 	return (
 		<div>
 			<form onSubmit={addTodo}>
@@ -40,9 +51,14 @@ function ToDoList(){
 			<h1>할 일 목록</h1>
 			<ul>
 				{
+					todos.length === 0 ? 
+					<li>등록된 할일이 없습니다.</li> : 
 					todos.map(item=>{
 						return (
-							<li key={"todo"+item.id}>{item.todo}</li>
+							<li key={"todo"+item.id}>
+								{item.todo}
+								<button style={{fontSize:'20px'}} onClick={e=>delTodo(item.id)}>&times;</button>
+							</li>
 						);
 					})
 				}

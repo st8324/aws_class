@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 // import App5 from './App5';
 // import App6 from './App6';
 import App7 from './App7';
+import App8 from './App8';
 
 
 // id가 root인 요소를 찾아 리액트 DOM의 루트로 만듬
@@ -18,6 +19,7 @@ root.render(
   // <App4 />
   // <App5 />
   // <App6 />
-  <App7 />
+  // <App7 />
+  <App8 />
 );
 

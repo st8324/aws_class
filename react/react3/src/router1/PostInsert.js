@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function PostInsert(){
+
+	//게시글 등록 성공 후 게시글 목록으로 이동하기 위해서
+	const navigator = useNavigate();
 	
 	let [title, setTitle] = useState("");
 	let [writer, setWriter] = useState("");
@@ -48,6 +52,8 @@ function PostInsert(){
 				const result = await response.json();
 				if(result){
 					alert("게시글을 등록했습니다.");
+					//게시글 등록 후 /posts로 이동
+					navigator("/posts");
 				}else{
 					alert("게시글을 등록하지 못했습니다.");
 				}

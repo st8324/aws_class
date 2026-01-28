@@ -2,6 +2,7 @@ package kr.hi.post.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,7 +38,11 @@ public class PostController {
 	public ResponseEntity<PostVO> postDetail(
 			@PathVariable("num") int num) {
 		PostVO 게시글 = postService.getPost(num);
-		return ResponseEntity.ok(게시글);
+		if(게시글 != null) {
+			return ResponseEntity.ok(게시글);
+		}
+		//내용이 없어서 204 전송
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping("/posts")

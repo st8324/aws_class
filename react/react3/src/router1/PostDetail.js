@@ -5,13 +5,7 @@ function PostDetail(){
 	//url에 있는 게시글 번호를 가져옴 /post/detail/:num으로 처리했기 때문에
 	//num으로 받아옴
 	let {num} = useParams();
-	let [post, setPost] = useState({
-		num : 1, 
-		title : "샘플 제목",
-		writer : "작성자", 
-		content : "샘플 내용",
-		date : "2026-01-28"
-	});
+	let [post, setPost] = useState({});
 	
 	useEffect(()=>{
 		//비동기 통신으로 게시글을 가져오는 함수를 선언
@@ -20,8 +14,8 @@ function PostDetail(){
 
 			try{
 				const response = await fetch("/api/v1/posts/" + num);
-	
-				if(response.ok){
+				
+				if(response.status == 200){
 					const result = await response.json();
 					setPost(result);
 				}
@@ -34,6 +28,20 @@ function PostDetail(){
 		getPost();
 	}, []);
 	
+	//빈 객체이면(게시글을 못가져오면)
+	//객체의 키(속성)들의 개수가 0이면 => 객체에 속성이 없으면
+	if(Object.keys(post).length == 0){
+		return (
+			<div>
+				<h1>등록되지 않거나 삭제된 게시글입니다.</h1>
+			</div>
+		)
+	}
+
+	const deletePost = ()=>{
+		
+	}
+
 	return (
 		<div>
 			<h1>게시글 상세</h1>
@@ -42,6 +50,7 @@ function PostDetail(){
 			<div>작성일 : {post.date}</div>
 			<div>내용</div>
 			<div>{post.content}</div>
+			<button onClick={deletePost}>삭제</button>
 		</div>
 	)
 }

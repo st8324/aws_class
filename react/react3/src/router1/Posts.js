@@ -37,7 +37,7 @@ function Posts(){
 					{
 						posts.map(post=>{
 							return (
-								<tr>
+								<tr key={"post" + post.num}>
 									<td>{post.num}</td>
 									<td>{post.title}</td>
 									<td>{post.writer}</td>

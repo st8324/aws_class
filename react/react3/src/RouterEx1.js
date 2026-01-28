@@ -2,6 +2,7 @@ import {BrowserRouter, Link, Route, Routes} from 'react-router-dom';
 import Main from './router1/Main';
 import Posts from './router1/Posts';
 import PostInsert from './router1/PostInsert';
+import PostDetail from './router1/PostDetail';
 
 function RouterEx1(){
 
@@ -16,6 +17,7 @@ function RouterEx1(){
 				<Route path="/" exact element={<Main/>} />
 				<Route path="/posts" element={<Posts/>} />
 				<Route path="/post/insert" element={<PostInsert/>} />
+				<Route path="/post/detail/:num" element={<PostDetail/>} />
 			</Routes>
 		</BrowserRouter>
 	)

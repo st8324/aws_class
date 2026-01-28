@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Posts(){
 	let [posts, setPosts] = useState([]);
@@ -39,7 +40,9 @@ function Posts(){
 							return (
 								<tr key={"post" + post.num}>
 									<td>{post.num}</td>
-									<td>{post.title}</td>
+									<td>
+										<Link to={"/post/detail/" + post.num} >{post.title}</Link>
+									</td>
 									<td>{post.writer}</td>
 									<td>{post.date}</td>
 								</tr>

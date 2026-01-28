@@ -33,17 +33,11 @@ public class PostController {
 		return ResponseEntity.ok(게시글목록);
 	}
 	
-	@GetMapping("/post/detail/{num}")
-	public String postDetail(
-			//화면에서 보낸 게시글번호 가져옴 
-			@PathVariable("num") int num,
-			Model model) {
-		//서비스에게 게시글번호 주면서 게시글 정보 가져오라고 요청
-		//게시글 = 서비스야.게시글가져와(번호);
+	@GetMapping("/posts/{num}")
+	public ResponseEntity<PostVO> postDetail(
+			@PathVariable("num") int num) {
 		PostVO 게시글 = postService.getPost(num);
-		//- 가져온 게시글 화면에 전달
-		model.addAttribute("post", 게시글);
-		return "post/detail";
+		return ResponseEntity.ok(게시글);
 	}
 	
 	@PostMapping("/posts")

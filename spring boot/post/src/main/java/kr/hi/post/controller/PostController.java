@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,5 +54,12 @@ public class PostController {
 			return ResponseEntity.ok(true);
 		}
 		return ResponseEntity.ok(false);
+	}
+	
+	@DeleteMapping("/posts/{num}")
+	public ResponseEntity<Boolean> postDelete(
+			@PathVariable("num") int num){
+		boolean result = postService.deletePost(num);
+		return ResponseEntity.ok(result);
 	}
 }

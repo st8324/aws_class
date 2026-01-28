@@ -38,5 +38,9 @@ public class PostService {
 		return 결과;
 	}
 
+	public boolean deletePost(int num) {
+		return postDAO.deletePost(num);
+	}
+
 	
 }

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function PostDetail(){
 	//url에 있는 게시글 번호를 가져옴 /post/detail/:num으로 처리했기 때문에
 	//num으로 받아옴
 	let {num} = useParams();
 	let [post, setPost] = useState({});
-	
+	const navigator = useNavigate();
+
 	useEffect(()=>{
 		//비동기 통신으로 게시글을 가져오는 함수를 선언
 		const getPost = async ()=>{
@@ -39,7 +40,37 @@ function PostDetail(){
 	}
 
 	const deletePost = ()=>{
-		
+		//삭제 확인 알림을 띄움
+		const isDel = window.confirm("게시글을 삭제 하겠습니까?");
+		//취소를 누르면 종료
+		if(!isDel){
+			return;
+		}
+		//확인을 누르면 삭제
+		//비동기 통신으로 게시글을 삭제하는 함수를 선언
+		const sendDelPost = async ()=>{
+			
+			try{
+				const response = await fetch("/api/v1/posts/" + num, {
+					method : "DELETE"
+				});
+
+				if(response.status == 200){
+					const result = await response.json();
+					if(result){
+						alert("게시글을 삭제했습니다.");
+						navigator("/posts");
+					} else{
+						alert("게시글을 삭제하지 못했습니다.");
+					}
+				}
+			}catch(e){
+				console.error(e);
+			}
+		}
+
+		//함수를 호출
+		sendDelPost();
 	}
 
 	return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import "./List.css";
 /* 
 비동기 통신으로 할일 목록 전체를 요청해서 가져온 후 화면에 출력
 url : /api/v1/todos
@@ -33,16 +33,24 @@ function List(){
 		//함수 호출
 		getTodos();
 	}, []);
+
+	const btnClick = (num)=>{
+		
+		//비동기 통신으로 삭제 요청하는 함수를 선언
+
+		//함수 호출
+	}
 	return(
 		<div>
 			<h1>할일 목록</h1>
-			<ul>
+			<ul className="todo-list">
 				{
 					todos.map(todo=>{
 						return (
-							<li key={todo.num}>
-								<span>{todo.date}</span>
-								<span>{todo.text}</span>
+							<li key={todo.num} className="todo-item">
+								<span className="todo-date">{todo.date}</span>
+								<span className="todo-text">{todo.text}</span>
+								<button className="todo-btn" onClick={()=>btnClick(todo.num)}>&times;</button>
 							</li>
 						)
 					})

@@ -9,3 +9,4 @@ create table todo(
     text varchar(100) not null,
     `order` int not null
 );
+insert todo(date, text, `order`) values('2026-01-29', "점심", 1);

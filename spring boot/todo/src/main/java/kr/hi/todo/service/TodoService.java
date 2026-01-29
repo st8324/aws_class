@@ -20,4 +20,13 @@ public class TodoService {
 		return todoDAO.selectTodos();
 	}
 
+	public boolean insertTodo(TodoVO todo) {
+		try {
+			return todoDAO.insertTodo(todo);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

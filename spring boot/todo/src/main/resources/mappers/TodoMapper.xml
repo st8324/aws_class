@@ -6,4 +6,14 @@
     	select * from todo 
     	order by date desc, `order` asc
     </select>
+    
+    <insert id="insertTodo">
+    	insert into todo(date, text, `order`)
+		select 
+			#{todo.date}, 
+			#{todo.text}, 
+			ifnull(max(`order`), 0) + 1 
+		from todo 
+		where date = #{todo.date}
+    </insert>
 </mapper>

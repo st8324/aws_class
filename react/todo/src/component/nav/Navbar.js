@@ -15,7 +15,7 @@ function Navbar(){
 				{
 				NAV_ITEMS.map(item=>{
 					return (
-						<li className="menu-item">
+						<li className="menu-item" key={item.path}>
 							<Link className="menu-link" to={item.path}>{item.label}</Link>
 						</li>
 					);

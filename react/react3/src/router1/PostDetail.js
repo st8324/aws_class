@@ -72,7 +72,7 @@ function PostDetail(){
 		//함수를 호출
 		sendDelPost();
 	}
-
+	
 	return (
 		<div>
 			<h1>게시글 상세</h1>

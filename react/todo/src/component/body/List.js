@@ -110,15 +110,8 @@ function Todos({todos, delBtnClick, date}){
 			<li><h3>등록된 할일이 없습니다.</h3></li>:
 			todos.map(todo=>{
 					return (
-						<li key={todo.num} className="todo-item">
-							{
-								date === "" ?
-								<span className="todo-date">{todo.date}</span> : 
-								null
-							}
-							<span className="todo-text">{todo.text}</span>
-							<button className="todo-btn" onClick={()=>delBtnClick(todo.num)}>&times;</button>
-						</li>
+						<Todo date={date} todo={todo} 
+							delBtnClick={delBtnClick} />
 					)
 				})
 			}
@@ -126,4 +119,30 @@ function Todos({todos, delBtnClick, date}){
 	);
 }
 
+function Todo({todo, date, delBtnClick}){
+	let [isUpdate, setIsUPdate] = useState(false);
+	return (
+		
+		<li key={todo.num} className="todo-item">
+			{ 
+				isUpdate ? 
+				<div>
+					수정
+				</div>
+				: 
+				<div>
+					{
+					date === "" ?
+					<span className="todo-date">{todo.date}</span> : 
+					null
+					}
+					<span className="todo-text">{todo.text}</span>
+					<button className="todo-btn" onClick={()=>delBtnClick(todo.num)}>&times;</button>
+					<button>수정</button>
+				</div>
+			}
+		</li>
+
+	);
+}
 export default List;

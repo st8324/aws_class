@@ -14,4 +14,6 @@ public interface TodoDAO {
 
 	boolean deleteTodo(@Param("num")int num);
 
+	boolean updateTodo(@Param("todo")TodoVO todo);
+
 }

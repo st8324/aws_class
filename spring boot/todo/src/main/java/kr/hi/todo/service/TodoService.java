@@ -38,4 +38,13 @@ public class TodoService {
 		}
 	}
 
+	public boolean updateTodo(TodoVO todo) {
+		try {
+			return todoDAO.updateTodo(todo);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

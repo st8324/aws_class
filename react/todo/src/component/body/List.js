@@ -17,7 +17,7 @@ function List(){
 			getTodos();
 		}
 
-	}, [todos]);
+	}, [isReload]);
 
 	//비동기 통신으로 할일 목록 전체를 요청해서 가져오는 함수 선언
 	const getTodos = async (date)=>{
@@ -91,13 +91,14 @@ function List(){
 			{/* 날짜를 선택하면 선택한 날짜에 맞는 할일을 조회 */}
 			<input type="date" onChange={e=>dateTodosClick(e.target.value)} value={date} />
 			
-			<Todos todos={todos} delBtnClick={btnClick} date={date} />
+			<Todos todos={todos} delBtnClick={btnClick} date={date} 
+				setIsReload={setIsReload} />
 			
 		</div>
 	)
 }
 
-function Todos({todos, delBtnClick, date}){
+function Todos({todos, delBtnClick, date, setIsReload}){
 	return (
 		<ul className="todo-list">
 			{
@@ -110,8 +111,12 @@ function Todos({todos, delBtnClick, date}){
 			<li><h3>등록된 할일이 없습니다.</h3></li>:
 			todos.map(todo=>{
 					return (
-						<Todo date={date} todo={todo} 
-							delBtnClick={delBtnClick} />
+						<Todo 
+							date={date} 
+							todo={todo} 
+							delBtnClick={delBtnClick} 
+							key={todo.num}
+							setIsReload={setIsReload} />
 					)
 				})
 			}
@@ -119,15 +124,47 @@ function Todos({todos, delBtnClick, date}){
 	);
 }
 
-function Todo({todo, date, delBtnClick}){
+function Todo({todo, date, delBtnClick, setIsReload}){
 	let [isUpdate, setIsUPdate] = useState(false);
+	let [text, setText] = useState(todo.text);
+
+	const fetchUpdate = async (num) =>{
+
+		try{
+
+			const response = await fetch("/api/v1/todos/"+num, {
+				method : "PUT",
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				body : JSON.stringify({ text, num })
+			});
+
+			if(response.ok){
+				const result = await response.json();
+				if(result){
+					alert("수정했습니다.");
+					setIsUPdate(false);
+					setIsReload(true);
+				}else{
+					alert("수정하지 못했습니다.");
+				}
+				
+			}
+
+		}catch(e){
+			console.error(e);
+		}
+	}
 	return (
 		
-		<li key={todo.num} className="todo-item">
+		<li className="todo-item">
 			{ 
 				isUpdate ? 
 				<div>
-					수정
+					<input type="text" value={text} onChange={(e)=>setText(e.target.value)}/>
+					<button onClick={()=>fetchUpdate(todo.num)}>수정</button>
+					<button onClick={()=>setIsUPdate(false)}>취소</button>
 				</div>
 				: 
 				<div>
@@ -138,7 +175,7 @@ function Todo({todo, date, delBtnClick}){
 					}
 					<span className="todo-text">{todo.text}</span>
 					<button className="todo-btn" onClick={()=>delBtnClick(todo.num)}>&times;</button>
-					<button>수정</button>
+					<button onClick={()=>setIsUPdate(true)}>수정</button>
 				</div>
 			}
 		</li>

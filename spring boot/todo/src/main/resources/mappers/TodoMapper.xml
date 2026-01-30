@@ -4,6 +4,9 @@
     
     <select id="selectTodos" resultType="TodoVO">
     	select * from todo 
+    	<if test='date != ""'>
+    		where date = #{date}
+    	</if>
     	order by date desc, `order` asc
     </select>
     

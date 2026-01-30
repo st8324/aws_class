@@ -9,6 +9,7 @@ function List(){
 	let [todos, setTodos] = useState([]);
 	//목록을 새로고침할 때 사용할 변수
 	let [isReload, setIsReload] = useState(true);
+	let [date, setDate] = useState("");
 
 	useEffect(()=>{
 		
@@ -19,11 +20,13 @@ function List(){
 	}, [todos]);
 
 	//비동기 통신으로 할일 목록 전체를 요청해서 가져오는 함수 선언
-	const getTodos = async ()=>{
+	const getTodos = async (date)=>{
 		try{
 			//선택한 날짜를 가져옴. 전체조회이면 빈문자열을, 날짜를 선택하면 선택한 날짜를 전송
-
-			const response = await fetch("/api/v1/todos?date=" + "선택한 날짜",{
+			if(!date){
+				date = "";
+			}
+			const response = await fetch("/api/v1/todos?date=" + date,{
 				method : "GET",
 				// headers : {
 				// 	"Content-Type" : "application/json"
@@ -31,9 +34,10 @@ function List(){
 				// body : { date : "선택한 날짜"}
 			});
 
-			if(response.status == 200){
+			if(response.ok){
 				const result = await response.json();
 				setTodos(result);
+				setDate(date);
 				setIsReload(false);
 			}
 		}catch(e){
@@ -73,32 +77,45 @@ function List(){
 		sendDeleteTodo();
 	}
 
+	const dateTodosClick = (date)=>{
+		setDate(date);
+		setIsReload(true);
+		getTodos(date);
+	}
+
 	return(
 		<div>
 			<h1>할일 목록</h1>
 			{/* 날짜와 상관없이 전체 조회 */}
-			<button>전체 조회</button>
+			<button onClick={()=>dateTodosClick("")}>전체 조회</button>
 			{/* 날짜를 선택하면 선택한 날짜에 맞는 할일을 조회 */}
-			<input type="date" />
-			{
-				todos.length == 0 
-				? 
-				<h3>등록된 할일이 없습니다.</h3>
-				: 
-				<Todos todos={todos} delBtnClick={btnClick} />
-			}
+			<input type="date" onChange={e=>dateTodosClick(e.target.value)} value={date} />
+			
+			<Todos todos={todos} delBtnClick={btnClick} date={date} />
+			
 		</div>
 	)
 }
 
-function Todos({todos, delBtnClick}){
+function Todos({todos, delBtnClick, date}){
 	return (
 		<ul className="todo-list">
 			{
+				date === "" ? 
+				<h2>전체</h2>:
+				<h2>{date}</h2>
+			}
+			{
+			todos.length === 0 ? 
+			<li><h3>등록된 할일이 없습니다.</h3></li>:
 			todos.map(todo=>{
 					return (
 						<li key={todo.num} className="todo-item">
-							<span className="todo-date">{todo.date}</span>
+							{
+								date === "" ?
+								<span className="todo-date">{todo.date}</span> : 
+								null
+							}
 							<span className="todo-text">{todo.text}</span>
 							<button className="todo-btn" onClick={()=>delBtnClick(todo.num)}>&times;</button>
 						</li>

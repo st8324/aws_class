@@ -35,11 +35,7 @@ public class TodoController {
 		//할일을 조회하도록 구현
 		
 		//빈문자열이면 전체 조회, 아니면 날짜 조회로 구현
-		System.out.println(date);
-		List<TodoVO> list = todoService.getTodos();
-		if(list.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
+		List<TodoVO> list = todoService.getTodos(date);
 		return ResponseEntity.ok(list);
 	}
 	@PostMapping("")

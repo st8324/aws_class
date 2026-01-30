@@ -16,8 +16,8 @@ public class TodoService {
 		this.todoDAO = todoDAO;
 	}
 
-	public List<TodoVO> getTodos() {
-		return todoDAO.selectTodos();
+	public List<TodoVO> getTodos(String date) {
+		return todoDAO.selectTodos(date);
 	}
 
 	public boolean insertTodo(TodoVO todo) {

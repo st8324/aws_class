@@ -29,4 +29,13 @@ public class TodoService {
 		}
 	}
 
+	public boolean deleteTodo(int num) {
+		try {
+			return todoDAO.deleteTodo(num);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

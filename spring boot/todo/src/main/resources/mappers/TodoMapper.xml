@@ -16,4 +16,8 @@
 		from todo 
 		where date = #{todo.date}
     </insert>
+    
+    <delete id="deleteTodo">
+    	delete from todo where num = #{num}
+    </delete>
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.hi.todo.model.vo.TodoVO;
@@ -27,8 +28,14 @@ public class TodoController {
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<List<TodoVO>> getTodos(){
+	public ResponseEntity<List<TodoVO>> getTodos(
+			@RequestParam("date")String date){
+		//서비스에서 date를 처리하는데, 
+		//yyyy-MM-dd 형식이 아니면 전체 조회로, yyyy-MM-dd 형식이면 날짜에 맞는
+		//할일을 조회하도록 구현
 		
+		//빈문자열이면 전체 조회, 아니면 날짜 조회로 구현
+		System.out.println(date);
 		List<TodoVO> list = todoService.getTodos();
 		if(list.isEmpty()) {
 			return ResponseEntity.noContent().build();

@@ -11,34 +11,35 @@ function List(){
 	let [isReload, setIsReload] = useState(true);
 
 	useEffect(()=>{
-		//새로고침을 안해도 되는 경우면
-		if(!isReload){
-			return;
+		
+		if(isReload){
+			getTodos();
 		}
-		console.log("목록 새로고침 중...");
-		//비동기 통신으로 할일 목록 전체를 요청해서 가져오는 함수 선언
-		const getTodos = async ()=>{
-			try{
-				const response = await fetch("/api/v1/todos",{
-					method : "GET",
-					// headers : {
-					// 	"Content-Type" : "application/json"
-					// },
-					// body : JSON.stringify({})
-				});
 
-				if(response.status == 200){
-					const result = await response.json();
-					setTodos(result);
-					setIsReload(false);
-				}
-			}catch(e){
-				console.error(e);
-			}
-		}
-		//함수 호출
-		getTodos();
 	}, [todos]);
+
+	//비동기 통신으로 할일 목록 전체를 요청해서 가져오는 함수 선언
+	const getTodos = async ()=>{
+		try{
+			//선택한 날짜를 가져옴. 전체조회이면 빈문자열을, 날짜를 선택하면 선택한 날짜를 전송
+
+			const response = await fetch("/api/v1/todos?date=" + "선택한 날짜",{
+				method : "GET",
+				// headers : {
+				// 	"Content-Type" : "application/json"
+				// },
+				// body : { date : "선택한 날짜"}
+			});
+
+			if(response.status == 200){
+				const result = await response.json();
+				setTodos(result);
+				setIsReload(false);
+			}
+		}catch(e){
+			console.error(e);
+		}
+	}
 
 	const btnClick = (num)=>{
 		

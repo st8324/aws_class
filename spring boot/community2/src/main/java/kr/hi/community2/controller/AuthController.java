@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,4 +51,20 @@ public class AuthController {
         //생성한 토큰을 화면에 전달. accessToken으로 전송
         return ResponseEntity.ok(Map.of("accessToken", token));
     }
+	
+	@PostMapping("/test")
+	public ResponseEntity<Boolean> test(
+			@AuthenticationPrincipal CustomUser user) {
+		System.out.println(user.getUser());
+		return ResponseEntity.ok(true);
+	}
+	@PostMapping("/me")
+	public ResponseEntity<Map<String, Object>> me(
+			@AuthenticationPrincipal CustomUser user) {
+		
+		return ResponseEntity.ok(Map.of(
+				"id", user.getUser().getMe_id(),
+				"email", user.getUser().getMe_email(),
+				"role", user.getUser().getMe_role()));
+	}
 }

@@ -12,8 +12,31 @@ function Login(){
 	const submitHandler = e =>{
 		e.preventDefault();
 
-		console.log(info);
+		login(info);
 	}
+
+	const login = async (info)=>{
+		try{
+			const response = await fetch("/api/v1/auth/login", {
+				method : "POST",
+				headers : {
+					"Content-Type" : "application/json",
+				},
+				body : JSON.stringify(info)
+			});
+			if(!response.ok){
+				alert("로그인 실패!");
+				return;
+			}
+			const res = await response.json();
+			localStorage.setItem("accessToken", res.accessToken);
+			alert("로그인 성공!");
+
+		}catch(e){
+			console.error(e);
+		}
+	}
+
 	return(
 		<div>
 			<h1>로그인</h1>

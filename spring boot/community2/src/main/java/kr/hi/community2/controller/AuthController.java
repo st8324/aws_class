@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,13 +53,12 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("accessToken", token));
     }
 	
-	@PostMapping("/test")
+	@GetMapping("/test")
 	public ResponseEntity<Boolean> test(
 			@AuthenticationPrincipal CustomUser user) {
-		System.out.println(user.getUser());
 		return ResponseEntity.ok(true);
 	}
-	@PostMapping("/me")
+	@GetMapping("/me")
 	public ResponseEntity<Map<String, Object>> me(
 			@AuthenticationPrincipal CustomUser user) {
 		

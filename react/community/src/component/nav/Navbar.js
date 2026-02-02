@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css"
+import { useAuth } from "../../AuthContext";
+
+
 
 const NAV_ITEMS = [
 	{ label : '메인', path : '/'},
@@ -7,8 +10,9 @@ const NAV_ITEMS = [
 	{ label : '로그인', path : '/login'},
 ];
 
-function Navbar(){
 
+function Navbar(){
+	const {user} = useAuth();
 	return (
 		<nav className="navbar">
 			<ul className="menu-list">
@@ -22,6 +26,7 @@ function Navbar(){
 				})
 				}
 			</ul>
+			<h2>{user.id}님 반갑습니다.</h2>
 		</nav>
 	);
 }

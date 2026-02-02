@@ -1,16 +1,13 @@
+import { authFetch } from "../../api/authFech";
 
 function Main(){
 
 	//로그인 했으면 로그인했습니다로 뜨고, 아니면 안했습니다로 뜨도록 작업
 	const fetchHandler = async ()=>{
-		const accessToken = localStorage.getItem("accessToken");
+		
 		try{
-			const response = await fetch("/api/v1/auth/test", {
-				method : "POST",
-				headers : {
-					"Authorization" : `Bearer ${accessToken}`
-				}
-			});
+			const response = await authFetch("/api/v1/auth/test");
+			
 			if(!response.ok){
 				alert("로그인 인증 실패!");
 				return;
@@ -25,14 +22,9 @@ function Main(){
 	}
 
 	const fetchHandler2 = async ()=>{
-		const accessToken = localStorage.getItem("accessToken");
 		try{
-			const response = await fetch("/api/v1/auth/me", {
-				method : "POST",
-				headers : {
-					"Authorization" : `Bearer ${accessToken}`
-				}
-			});
+			const response = await authFetch("/api/v1/auth/me");
+
 			if(!response.ok){
 				alert("로그인 인증 실패!");
 				return;

@@ -11,6 +11,8 @@ function Login(){
 	}
 	const submitHandler = e =>{
 		e.preventDefault();
+
+		console.log(info);
 	}
 	return(
 		<div>

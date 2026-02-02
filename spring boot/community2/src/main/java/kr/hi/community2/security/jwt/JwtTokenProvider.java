@@ -38,7 +38,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 //claim을 통해 토큰에 넣고 싶은 정보를 추가
-                .claim("userId", user.getUsername())
+                .claim("email", user.getUser().getMe_email())
                 .claim("role", user.getAuthorities().iterator().next().getAuthority())
                 //시작일
                 .setIssuedAt(new Date())

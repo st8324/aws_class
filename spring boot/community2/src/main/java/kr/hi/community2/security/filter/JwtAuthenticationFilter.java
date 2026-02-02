@@ -45,17 +45,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
         	//"Bearer "를 제외한 나머지를 추출 => 토큰
             String token = header.substring(7);
-
+            //토큰에 있는 payload 정보들을 가져옴
             Claims claims = jwtTokenProvider.parseClaims(token);
+            //가져온 정보중에 subject 정보를 가져옴 => 토큰 소유주
             String username = claims.getSubject();
 
+            //아이디(이메일)를 이용하여 db에 정보가 있는지 검증
             UserDetails userDetails =
             		userDetailsService.loadUserByUsername(username);
-
+            
+            //이 사용자는 이미 인증이 완료된 상태를 알려줌
+            //userDetails : 누구인지
+            //null : 이미 인증이 끝남
+            //userDetails.getAuthorities() : 권한 목록
             Authentication auth = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()
             );
 
+            //현재 요청에 대해 사용자는 로그인 상태라고 등록
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

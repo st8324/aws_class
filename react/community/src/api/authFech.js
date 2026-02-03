@@ -24,3 +24,14 @@ export async function authFetch(url, otions = {}) {
 	}
 	return response;
 }
+
+//토큰을 이용하여 토큰에 넣은 정보 가져오기
+export async function getMe() {
+
+	const res = await authFetch("/api/v1/auth/me");
+	
+	if(!res.ok){
+		throw new Error("인증 실패");
+	}
+	return res.json();
+}

@@ -26,7 +26,10 @@ function Navbar(){
 				})
 				}
 			</ul>
-			<h2>{user.id}님 반갑습니다.</h2>
+			{
+				user ? <h2>{user.id}님 반갑습니다.</h2> : null
+			}
+			
 		</nav>
 	);
 }

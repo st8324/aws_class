@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { getMe } from "../../api/authFech";
+import { useAuth } from "../../AuthContext";
 
 
 function Login(){
-
+	const {setUser} = useAuth();
 	let [info, setInfo] = useState({id : "", pw : ""})
 
 	const changeHandler = e =>{
@@ -31,6 +33,9 @@ function Login(){
 			const res = await response.json();
 			localStorage.setItem("accessToken", res.accessToken);
 			alert("로그인 성공!");
+			//로그인 성공 후 회원 정보를 user에 저장
+			const userData = await getMe();
+			setUser(userData);
 
 		}catch(e){
 			console.error(e);

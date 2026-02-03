@@ -16,45 +16,72 @@ import kr.hi.community2.util.CustomUser;
 
 @Component
 public class JwtTokenProvider {
-
-    private final Key key;
-    private final long validityInMilliseconds;
-
+		//application.properties에 있는 secret을 가져와서 변환해서 사용
+    private final Key key; 
+    private final long accessTokenValidity; //토큰 유지 시간(ms)
+    private final long refreshTokenValidity;//리프레시 토큰 유지 시간(ms)
 
     public JwtTokenProvider(
         @Value("${jwt.secret}") String secret,
-        @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds
+        @Value("${jwt.token-validity-in-seconds}") long accessSeconds,
+        @Value("${jwt.refresh-token-validity-in-seconds}") long refreshSeconds
     ) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.validityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.accessTokenValidity = accessSeconds * 1000;
+        this.refreshTokenValidity = refreshSeconds * 1000;
     }
 
-    public String createToken(CustomUser user) {
-    	//현재 시간을 밀리초로 환산
-    	long now = (new Date()).getTime();
-    	//현재 시간에 만료 기간을 더한 날짜를 계산
-        Date validity = new Date(now + this.validityInMilliseconds);
-        
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                //claim을 통해 토큰에 넣고 싶은 정보를 추가
-                .claim("email", user.getUser().getMe_email())
-                .claim("role", user.getAuthorities().iterator().next().getAuthority())
-                //시작일
-                .setIssuedAt(new Date())
-                //만료일
-                .setExpiration(validity)
-                //서명
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+    /* ======================
+       Access Token
+       ====================== */
+    public String createAccessToken(CustomUser user) {
+        return createToken(user, accessTokenValidity, false);
     }
 
-    //토큰에서 claim 정보들을 가져옴
+    /* ======================
+       Refresh Token
+       ====================== */
+    public String createRefreshToken(CustomUser user) {
+        return createToken(user, refreshTokenValidity, true);
+    }
+
+    /* ======================
+       공통 토큰 생성
+       ====================== */
+    private String createToken(CustomUser user, long validity, boolean isRefresh) {
+		    //유지 시간을 이용하여 만료일을 계산
+        long now = System.currentTimeMillis(); //현재 시간을 ms초로 변환
+        Date expiry = new Date(now + validity);//현재 시간 + 유지시간을 날짜 객체로 변환
+
+        var builder = Jwts.builder()
+                .setSubject(user.getUsername()) //토큰 소유자
+                .setIssuedAt(new Date(now)) //토큰 발생시간
+                .setExpiration(expiry) //토큰 만료시간
+                .signWith(key, SignatureAlgorithm.HS256); //서명
+
+        if (isRefresh) {
+            builder.claim("type", "refresh"); //리프레시 토큰임을 알려주도록 type을 설정
+        } else {
+		        //토큰에 넣고 싶은 정보를 claim을 통해 추가 
+            builder.claim("email", user.getUser().getMe_email());
+            builder.claim("role", user.getAuthorities().iterator().next().getAuthority());
+        }
+				//토큰을 반환
+        return builder.compact();
+    }
+
+    /* ======================
+       토큰 파싱 & 검증
+       ====================== */
     public Claims parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+		//토큰이 리프레쉬 토큰인지 알려줌
+    public boolean isRefreshToken(String token) {
+        return "refresh".equals(parseClaims(token).get("type"));
     }
 }

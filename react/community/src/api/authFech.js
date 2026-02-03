@@ -1,28 +1,42 @@
 
 //인증 정보를 header에 자동으로 추가하는 함수
-export async function authFetch(url, otions = {}) {
+export async function authFetch(url, options = {}) {
 	
 	const token = localStorage.getItem("accessToken");
 
 	const headers = {
+		//쿠키를 보냄. 리액트=>부트로. 리프레쉬 토큰 때문에
+		credentials: "include", 
 		"Content-type" : "application/json",
-		...(otions.headers || {})
+		...(options.headers || {})
 	};
 	//token이 있으면 
 	if(token){
 		headers.Authorization = `Bearer ${token}`
 	}
-
+	
 	const response = await fetch(url, {
-		...otions, 
+		...options, 
 		headers
 	});
-	if(response.status == 401){
-		console.log("인증 만료 또는 로그인이 필요합니다.");
-		//refresh Token 또는 로그아웃 처리 예정
 
+	if(response.ok){
+		return response;
 	}
-	return response;
+
+	//리프레쉬 토큰으로 새 토큰을 가져오는 작업
+	const refresh = await fetch("/api/v1/auth/refresh", {
+		method: "POST",
+		credentials: "include",
+	});
+	
+	if (!refresh.ok) throw new Error("로그인 만료");
+	//새 토큰을 가져옴
+	const data = await refresh.json();
+	//새 토큰을 로컬 스토리지에 저장
+	localStorage.setItem("accessToken", data.accessToken);
+	//이전에 하려던 작업을 다시 시도
+	return authFetch(url, options);
 }
 
 //토큰을 이용하여 토큰에 넣은 정보 가져오기

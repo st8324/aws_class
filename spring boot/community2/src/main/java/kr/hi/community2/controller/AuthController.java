@@ -91,6 +91,7 @@ public class AuthController {
 		//name과 일치하는 쿠기가 있으면 쿠키의 value를 가져옴
 	    @CookieValue(name = "refreshToken", required = false) String refreshToken
 	) {
+		System.out.println(refreshToken);
 		//리프레쉬 토큰이 없으면 인증 실패
 	    if (refreshToken == null) {
 	        return ResponseEntity.status(401).build();

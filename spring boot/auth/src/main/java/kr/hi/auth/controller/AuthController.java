@@ -3,13 +3,18 @@ package kr.hi.auth.controller;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.hi.auth.domain.UserDTO;
+import kr.hi.auth.security.jwt.JwtTokenProvider;
 import kr.hi.auth.service.UserService;
+import kr.hi.auth.util.CustomUser;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -18,6 +23,8 @@ import lombok.AllArgsConstructor;
 public class AuthController {
 	
 	private final UserService userService;
+	private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Boolean> signup(
@@ -30,10 +37,16 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(
 			@RequestBody UserDTO user){
-		System.out.println(user);
+		Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                user.id(), user.pw()
+            )
+        );
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        String accessToken = jwtTokenProvider.createAccessToken(customUser);
 		
 		return ResponseEntity.ok(Map.of(
-				"accessToken", "토큰값 보낼 예정"
+				"accessToken", accessToken
 		));
 	}
 }

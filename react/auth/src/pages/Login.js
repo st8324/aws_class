@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 export function Login(){
+
+	const navigate = useNavigate();
 
 	const [info, setInfo] = useState({id : '', pw : ''});
 
@@ -25,7 +28,11 @@ export function Login(){
 				return;
 			}
 			const res = await response.json();
-			console.log(res);
+			if(res.accessToken){
+				alert("로그인 성공");
+				localStorage.setItem("accessToken", res.accessToken);
+				navigate("/");
+			}
 		}catch(e){
 			console.error(e);
 		}

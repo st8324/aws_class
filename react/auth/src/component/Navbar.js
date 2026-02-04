@@ -18,7 +18,7 @@ export function Navbar(){
 					.filter(item =>{
 						return true;
 					})
-					.map(item => <li><Link to={item.path}>{item.label}</Link></li>)
+					.map(item => <li key={item.label}><Link to={item.path}>{item.label}</Link></li>)
 				}
 			</ul>
 		</nav>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 
 export function Login(){
@@ -7,6 +8,8 @@ export function Login(){
 	const navigate = useNavigate();
 
 	const [info, setInfo] = useState({id : '', pw : ''});
+
+	const {setUser, getMe} = useAuth();
 
 	const inputChange = (e)=>{
 		const {id, value} = e.target;
@@ -32,6 +35,8 @@ export function Login(){
 				alert("로그인 성공");
 				localStorage.setItem("accessToken", res.accessToken);
 				navigate("/");
+				const me = await getMe();
+				setUser(me);
 			}
 		}catch(e){
 			console.error(e);

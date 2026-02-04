@@ -11,10 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import kr.hi.auth.security.filter.JwtAuthenticationFilter;
 import kr.hi.auth.service.MemberDetailService;
 import lombok.AllArgsConstructor;
 
@@ -23,7 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SecurityConfig {
 	
-	//private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final MemberDetailService userDetailsService;
     
 	//암호화 하는 클래스
@@ -44,11 +46,11 @@ public class SecurityConfig {
             .requestMatchers("/api/v1/auth/**").permitAll()
             .anyRequest().authenticated()
         )
-        .userDetailsService(userDetailsService);
-//        .addFilterBefore(
-//            jwtAuthenticationFilter,
-//            UsernamePasswordAuthenticationFilter.class
-//        );
+        .userDetailsService(userDetailsService)
+        .addFilterBefore(
+            jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter.class
+        );
         return http.build();
     }
     

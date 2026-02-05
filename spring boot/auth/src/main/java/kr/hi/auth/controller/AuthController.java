@@ -107,4 +107,18 @@ public class AuthController {
 	        Map.of("accessToken", newAccessToken)
 	    );
 	}
+	
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletResponse response) {
+	
+	    Cookie cookie = new Cookie("refreshToken", null);
+	    cookie.setHttpOnly(true);
+	    cookie.setSecure(false); // https면 true
+	    cookie.setPath("/");
+	    cookie.setMaxAge(0); // 즉시 삭제
+	
+	    response.addCookie(cookie);
+	
+	    return ResponseEntity.ok().build();
+	}
 }

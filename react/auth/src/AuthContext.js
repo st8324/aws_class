@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { authFetch } from "./api/authFetch";
 
 const AuthContext = createContext(null);
@@ -20,8 +20,20 @@ function AuthProvider({children}){
 		return null;
 	}
 
+	//첫 렌더링할때만 실행하기 위해
+	useEffect(()=>{
+		getMeAndSetUser();
+	},[]);
+
+	const getMeAndSetUser = async ()=>{
+		//회원 정보를 가져오고 : getMe
+		const me = await getMe();
+		//가져온 회원정보를 user에 업데이트 : setUser
+		setUser(me);
+	}
+
 	return (
-		<AuthContext.Provider value={{user, setUser, getMe}} >
+		<AuthContext.Provider value={{user, getMeAndSetUser}} >
 			{children}
 		</AuthContext.Provider>
 	)

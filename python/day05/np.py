@@ -52,10 +52,33 @@ def save_nl(df:pd.DataFrame, keyword:str, start:int = 1):
 		return
 	df.to_csv(f'naver_nl_{keyword}_{start//10 + 1}.csv', encoding="utf-8-sig", index=False)	
 
+def get_naver_news_article(url):
+	"""네이버 기사에서 내용을 추출하여 반환"""
+
+	headers = {
+		'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36',
+		'Referer' : 'https://www.naver.com/'
+	}
+
+	response = requests.get(url, headers=headers)
+
+	try:
+		response.raise_for_status()
+		
+	except Exception as e:
+		print(f"예외 발생 {e}")
+
+	soup = BeautifulSoup(response.text, 'lxml')
+
+	article = soup.select_one("#dic_area")
+
+	return article.text
 
 # 모듈 테스트
 if __name__ == "__main__":
 	start = 1
 	keyword = 'ai'
 	nl_df = get_naver_news_list(keyword, start)
-	save_nl(nl_df, keyword, start)
+	for href in nl_df['href']:
+		print(get_naver_news_article(href))
+	# save_nl(nl_df, keyword, start)

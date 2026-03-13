@@ -36,7 +36,7 @@ def get_naver_news_list(keyword : str, start : int = 1):
 			href_link = link_div.select_one('.RQNKk8QZaQZble3gmgEj [data-heatmap-target=".nav"]')
 
 			# 리스트에 제목과 링크를 추가 
-			hrefs.append(href_link.get("href"))
+			hrefs.append(href_link.get("href") if href_link else None)
 			titles.append(title_link.text)
 		return pd.DataFrame({
 			'title': titles,
@@ -71,6 +71,20 @@ def get_naver_news_article(url):
 	soup = BeautifulSoup(response.text, 'lxml')
 
 	article = soup.select_one("#dic_area")
+
+	del_list = [
+		# 기사 중간에 이미지가 있는 박스 => 
+		# 박스 안에 이미지말고 이미지 설명이라든지 숨겨진 글자가 있을 수 있어서
+		'.end_photo_org', 
+		# 기사 앞 요약
+		'.media_end_summary'
+	] # 삭제하고 싶은 요소들
+	
+	for del_sel in del_list:
+		summaries = soup.select(del_sel) 
+		for summary in summaries:
+			# 원하는 요소를 제거
+			summary.decompose()
 
 	return article.text
 

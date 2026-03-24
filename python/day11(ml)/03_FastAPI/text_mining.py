@@ -1,18 +1,3 @@
-# konlpy를 import할 때 생기는 에러 처리를 위한 초기화
-def init(java_path:str):
-	import jpype
-	import os
-
-	# 켜져 있다면 완전히 끄기
-	if jpype.isJVMStarted():
-			jpype.shutdownJVM()
-
-	#환경 변수를 코드 상단에서 다시 세팅
-	os.environ['JAVA_HOME'] = java_path
-
-# init(r'C:\Users\hi6\Documents\JAVA CLASS\IDE\JDK\jdk_21')
-
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import joblib as jl

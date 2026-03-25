@@ -1,6 +1,7 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, Form
 import uvicorn
 import mnist_learning as ml
+import text_mining as tm
 import numpy as np
 import cv2
 
@@ -24,9 +25,11 @@ async def image(file:UploadFile):
 
 	return {"msg" : res}
 
+
 @app.post('/text')
-async def text():
-	return {"msg" : '긍정'}
+async def text(msg:str=Form(...)):
+	res = tm.predict(msg)
+	return {"msg" : '긍정' if res else '부정'}
 
 if __name__ == '__main__':
 	# reload=True 사용시 주의 사항.

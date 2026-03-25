@@ -1,6 +1,8 @@
 from fastapi import FastAPI, UploadFile
 import uvicorn
 import mnist_learning as ml
+import numpy as np
+import cv2
 
 app = FastAPI()
 
@@ -8,11 +10,23 @@ app = FastAPI()
 async def index():
 	return {"msg" : "Hello FastAPI"}
 
-@app.post('/text')
-async def text(file:UploadFile): 
-	print(f'URL : /text')
+@app.post('/image')
+async def image(file:UploadFile): 
+	# file을 바이너리데이터로 읽어옴
+	contents = await file.read()
+	# 바이너를 numpy 배열로 변환
+	np_arr = np.frombuffer(contents, np.uint8)
+	# 배열을 이미지로 디코딩
+	img = cv2.imdecode(np_arr, cv2.IMREAD_GRAYSCALE)
+	#예측
+	res = ml.predict_from_upload_file(img, 28, 28)
+	print(f'URL : /image')
 
-	return {"msg" : "Hello FastAPI"}
+	return {"msg" : res}
+
+@app.post('/text')
+async def text():
+	return {"msg" : '긍정'}
 
 if __name__ == '__main__':
 	# reload=True 사용시 주의 사항.

@@ -19,12 +19,26 @@ public class APIController {
 	
 	private final WebClient webClient;
 
-	@PostMapping("/text")
-	public String text(@RequestParam("image")MultipartFile file) {
+	@PostMapping("/image")
+	public String image(@RequestParam("image")MultipartFile file) {
 		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
 		//보낼 데이터를 추가
 		bodyBuilder.part("msg", "데이터 갔나요?");
 		bodyBuilder.part("file", file.getResource());
+		
+		return webClient.post().uri("/image")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters
+						.fromMultipartData(bodyBuilder.build()))
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+	}
+	@PostMapping("/text")
+	public String text(@RequestParam("msg")String msg) {
+		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+		//보낼 데이터를 추가
+		bodyBuilder.part("msg", msg);
 		
 		return webClient.post().uri("/text")
 				.contentType(MediaType.MULTIPART_FORM_DATA)

@@ -60,7 +60,7 @@ def load_model_predict(image:str, width:int, height:int, file_name:str = 'mnist_
 	img = img.astype('float32') / 255.0
 	# 예측할 때 예측 데이터를 리스트로 한번 더 감싸야 함
 	# 이걸 안하려면 reshape(1,-1)을 통해 1행짜리 2차원 리스트로 만들면 됨
-	return model.predict([img])
+	return model.predict([img])[0]
 
 def download_mnist(root_path):
 	mnist = fetch_openml('mnist_784', version=1, as_frame=False)
@@ -70,6 +70,16 @@ def download_mnist(root_path):
 		label = y[i]
 		os.makedirs(os.path.join(root_path, label), exist_ok=True)
 		cv2.imwrite(os.path.join(root_path, label, f'img_{i}.png'), image)
+
+def predict_from_upload_file(img, width:int, height:int, file_name:str = 'mnist_model.pkl'):
+
+	mode_data = jl.load(file_name)
+	model = mode_data['model']
+
+	img = cv2.resize(img, (width, height))
+	img = img.flatten()
+	img = img.astype('float32') / 255.0
+	return model.predict([img])[0]
 
 if __name__ == '__main__':
 	# download_mnist('images')

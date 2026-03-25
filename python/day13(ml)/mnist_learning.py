@@ -2,9 +2,11 @@ import os
 import glob
 import cv2
 import numpy as np
+import joblib as jl
+
 from sklearn.utils import shuffle
 from sklearn.svm import SVC
-import joblib as jl
+from sklearn.datasets import fetch_openml
 
 # 지정된 폴더에 가서 이미지를 가져오고
 # 가져온 이미지를 행열배열(독립)과 값배열(종속)로 반환
@@ -37,7 +39,6 @@ def load_image_dataset(root_path:str, width:int, height:int):
 def train_model_save_model(X, y, file_name:str = 'mnist_model.pkl'):
 	# 데이터를 섞음
 	X, y = shuffle(X,y)
-	print(X[0])
 	# 모델선정
 	model = SVC( C=1.0)
 	# 학습
@@ -57,21 +58,23 @@ def load_model_predict(image:str, width:int, height:int, file_name:str = 'mnist_
 	img = cv2.resize(img, (width, height))
 	img = img.flatten()
 	img = img.astype('float32') / 255.0
-	return model.predict(img)
+	# 예측할 때 예측 데이터를 리스트로 한번 더 감싸야 함
+	# 이걸 안하려면 reshape(1,-1)을 통해 1행짜리 2차원 리스트로 만들면 됨
+	return model.predict([img])
+
+def download_mnist(root_path):
+	mnist = fetch_openml('mnist_784', version=1, as_frame=False)
+	X, y = mnist['data'], mnist['target']
+	for i in range(10000):
+		image = X[i].reshape(28,28).astype(np.uint8)
+		label = y[i]
+		os.makedirs(os.path.join(root_path, label), exist_ok=True)
+		cv2.imwrite(os.path.join(root_path, label, f'img_{i}.png'), image)
 
 if __name__ == '__main__':
 	# images, labels = load_image_dataset('day13(ml)/images', 28, 28)
 	# train_model_save_model(images, labels)
+	print(load_model_predict('day13(ml)/6.jpg', 28, 28))
+	print(load_model_predict('day13(ml)/2.png', 28, 28))
+	print(load_model_predict('day13(ml)/5.png', 28, 28))
 	
-	from sklearn.datasets import fetch_openml
-	mnist = fetch_openml('mnist_784', version=1, as_frame=False)
-	X, y = mnist['data'], mnist['target']
-	import numpy as np
-	import cv2
-	for i in range(10000):
-		image = X[i].reshape(28,28).astype(np.uint8)
-		label = y[i]
-		os.makedirs(f'images/{label}', exist_ok=True)
-		cv2.imwrite(f'images/{label}/img_{i}.png', image)
-	print("이미지 다운로드 완료")
-	pass

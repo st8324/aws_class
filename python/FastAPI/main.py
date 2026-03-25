@@ -1,10 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 import uvicorn
+import mnist_learning as ml
 
 app = FastAPI()
 
 @app.get('/')
 async def index():
+	return {"msg" : "Hello FastAPI"}
+
+@app.post('/text')
+async def text(file:UploadFile): 
+	print(f'URL : /text')
+
 	return {"msg" : "Hello FastAPI"}
 
 if __name__ == '__main__':

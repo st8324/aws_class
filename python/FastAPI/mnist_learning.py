@@ -72,9 +72,13 @@ def download_mnist(root_path):
 		cv2.imwrite(os.path.join(root_path, label, f'img_{i}.png'), image)
 
 if __name__ == '__main__':
-	# images, labels = load_image_dataset('day13(ml)/images', 28, 28)
+	# download_mnist('images')
+	# print("이미지 다운로드 완료")
+	# images, labels = load_image_dataset('images', 28, 28)
+	# print("이미지 변환 완료")
 	# train_model_save_model(images, labels)
-	print(load_model_predict('day13(ml)/6.jpg', 28, 28))
-	print(load_model_predict('day13(ml)/2.png', 28, 28))
-	print(load_model_predict('day13(ml)/5.png', 28, 28))
-	
+	# print("학습 완료")
+	# print(load_model_predict('day13(ml)/6.jpg', 28, 28))
+	# print(load_model_predict('day13(ml)/2.png', 28, 28))
+	# print(load_model_predict('day13(ml)/5.png', 28, 28))
+	pass

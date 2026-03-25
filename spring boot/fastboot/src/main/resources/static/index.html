@@ -30,12 +30,15 @@
 					method : 'post',
 					body : formData
 				})
-				if(response.ok){
-					resultDiv.innerHTML = `<b>일단 요청 성공</b>`
+				if(!response.ok){
+					resultDiv.innerHTML = `<b>요청 실패</b>`
+					return;
 				}
+				const result = await response.json()
+				resultDiv.innerHTML = `<b>${result.msg}</b>`
 			}catch(e){
 				console.error(e)
-				resultDiv.innerHTML = `<b>요청 실패</b>`
+				resultDiv.innerHTML = `<b>예외 발생</b>`
 			}finally{
 				btn.disabled = false	
 			}

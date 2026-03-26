@@ -21,7 +21,7 @@ def get_recommendations_movies(type:str, title:str):
 	# 내용 기반 추천
 	if type == 'content':
 		cosine_sim, df = load_cosine_sim('cosin_sim_content.pkl')
-		if not df or not cosine_sim:
+		if df is None or cosine_sim is None:
 			df = load_csv_to_df('data/tmdb_5000_credits.csv', 'data/tmdb_5000_movies.csv')
 			cosine_sim = get_cosine_sim_content(df)
 			sava_cosine_sim(cosine_sim, df, 'cosin_sim_content.pkl')
@@ -30,7 +30,7 @@ def get_recommendations_movies(type:str, title:str):
 	# 감독, 장르, 배우, 키워드 추천
 	elif type == 'etc':
 		cosine_sim, df = load_cosine_sim('cosin_sim_etc.pkl')
-		if not df or not cosine_sim:
+		if df is None or cosine_sim is None:
 			df = load_csv_to_df('data/tmdb_5000_credits.csv', 'data/tmdb_5000_movies.csv')
 			cosine_sim = get_cosine_sim_etc(df)
 			sava_cosine_sim(cosine_sim, df, 'cosin_sim_etc.pkl')

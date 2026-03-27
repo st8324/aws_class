@@ -125,6 +125,10 @@ class MovieRecommender:
 	def _create_soup(self, x):
 		return f'{' '.join(x['keywords'])} {' '.join(x['cast'])} {' '.join(x['genres'])} {x['director']}'
 
+def get_movies():
+	df = pd.read_csv('tmdb_5000_credits.csv')
+	df = df[['title']].dropna()
+	return df[['title']].to_dict(orient='records')
 
 if __name__ == '__main__':
 	recommender = MovieRecommender()
@@ -138,5 +142,6 @@ if __name__ == '__main__':
 	# recommender.calculate_etc_cosine_sim()
 	# recommender.save_model('movie_model_etc.pkl')
 	recommender.load_model('movie_model_etc.pkl')
-	print(recommender.get_recommendations_movies('etc', 'Avatar'))
+	print(recommender.df)
+	# print(recommender.get_recommendations_movies('etc', 'Avatar'))
 	pass

@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile, Form
 import uvicorn
 import mnist_learning as ml
 import text_mining as tm
+import movie_learning as mo
 import numpy as np
 import cv2
 
@@ -25,6 +26,9 @@ async def image(file:UploadFile):
 
 	return {"msg" : res}
 
+@app.get('/movies')
+async def movies():
+	return mo.get_movies()
 
 @app.post('/text')
 async def text(msg:str=Form(...)):

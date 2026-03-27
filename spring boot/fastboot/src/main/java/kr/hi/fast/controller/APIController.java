@@ -59,4 +59,18 @@ public class APIController {
 				.bodyToMono(String.class)
 				.block();
 	}
+	@GetMapping("/movies/recommend")
+	public String movieRecommend(@RequestParam("title")String title) {
+		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+		//보낼 데이터를 추가
+		bodyBuilder.part("title", title);
+
+		return webClient.post().uri("/movies/recommend")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters
+						.fromMultipartData(bodyBuilder.build()))
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+	}
 }

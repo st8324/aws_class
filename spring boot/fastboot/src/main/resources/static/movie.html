@@ -17,12 +17,29 @@
 		const resultDiv = document.querySelector('#resultDiv')
 		const movieList = document.querySelector('#movieList')
 		const btn = document.querySelector('#btn')
+		const input = document.querySelector('[name=movie]')
 		
 		async function btnClick(){
 			btn.disabled = true;
-			
+			const title = input.value.trim()
 			try{
+				if(!title){
+					alert("제목을 입력하세요.")
+					throw new Error();
+				}
+				const response 
+					= await fetch(`/api/v1/movies/recommend?title=${title}`)
+				if(!response.ok){
+					resultDiv.innerHTML = '<li>연결 실패</li>'
+					throw new Error();
+				}
 				
+				const result = await response.json()
+				let str = ''
+				result.forEach(m=>{
+					str += `<li>${m.title}</li>`
+				})
+				resultDiv.innerHTML = str
 			}catch(e){
 				
 			}finally{

@@ -30,6 +30,11 @@ async def image(file:UploadFile):
 async def movies():
 	return mo.get_movies()
 
+@app.post('/movies/recommend')
+async def movies_recommend(title:str=Form(...)):
+
+	return [{"title" : "영화1"},{"title" : "영화2"} ]
+
 @app.post('/text')
 async def text(msg:str=Form(...)):
 	res = tm.predict(msg)

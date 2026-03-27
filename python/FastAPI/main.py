@@ -39,6 +39,9 @@ async def movies_recommend(title:str=Form(...), type:str=Form(...)):
 		recommender.load_model('movie_model_content.pkl')
 	elif type == 'etc':
 		recommender.load_model('movie_model_etc.pkl')
+	elif type == 'director':
+		recommender.load_model('movie_model_director.pkl')
+
 	
 	list = recommender.get_recommendations_movies(type, title)
 

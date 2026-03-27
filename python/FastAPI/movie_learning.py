@@ -132,9 +132,15 @@ def get_movies():
 
 if __name__ == '__main__':
 	recommender = MovieRecommender()
+	# 피클 만드는 방법
+	# 1~3을 주석 해제, 나머지 주석. 실행하면 pkl파일 생성
+	# 1.
 	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+	# 2.
 	# recommender.calculate_content_cosine_sim()
+	# 3.
 	# recommender.save_model('movie_model_content.pkl')
+	
 	# python movie_learning.py
 	# recommender.load_model('movie_model_content.pkl')
 	# print(recommender.get_recommendations_movies('content', 'Avatar'))

@@ -140,14 +140,14 @@ if __name__ == '__main__':
 	# recommender.calculate_content_cosine_sim()
 	# 3.
 	# recommender.save_model('movie_model_content.pkl')
-	
+
 	# python movie_learning.py
 	# recommender.load_model('movie_model_content.pkl')
 	# print(recommender.get_recommendations_movies('content', 'Avatar'))
 
-	recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
-	recommender.calculate_etc_cosine_sim()
-	recommender.save_model('movie_model_etc.pkl')
-	# recommender.load_model('movie_model_etc.pkl')
-	# print(recommender.get_recommendations_movies('etc', 'Avatar'))
+	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+	# recommender.calculate_etc_cosine_sim()
+	# recommender.save_model('movie_model_etc.pkl')
+	recommender.load_model('movie_model_etc.pkl')
+	print(recommender.get_recommendations_movies('etc', 'Avatar'))
 	pass

@@ -4,6 +4,7 @@ import mnist_learning as ml
 import text_mining as tm
 import movie_learning as mo
 import numpy as np
+import pandas as pd
 import cv2
 
 app = FastAPI()
@@ -32,8 +33,14 @@ async def movies():
 
 @app.post('/movies/recommend')
 async def movies_recommend(title:str=Form(...)):
-
-	return [{"title" : "영화1"},{"title" : "영화2"} ]
+	recommender = mo.MovieRecommender()
+	recommender.load_model('movie_model_content.pkl')
+	list = recommender.get_recommendations_movies('content', title)
+	# 영화 제목 리스트를 딕셔너리로 변환해서 전송하기 위해
+	# 제목 리스트를 데이터프레임으로 변환
+	df = pd.DataFrame({'title':list})
+	# 데이터 프레임을 제목만 딕셔너리로 변환
+	return df[['title']].to_dict(orient='records')
 
 @app.post('/text')
 async def text(msg:str=Form(...)):

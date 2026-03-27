@@ -8,6 +8,10 @@
 	<a href="/">메인페이지로</a>
 	<h1>영화 추천</h1>
 	<form>
+		<select name="type">
+			<option value="content">내용 기반 추천</option>
+			<option value="etc">정보 기반 추천</option>
+		</select>
 		<input type="text" name="movie" list="movieList" placeholder="영화제목을 입력하세요">
 		<button type="button" id="btn" onclick="btnClick()">추천받기</button>
 		<datalist id="movieList"></datalist>
@@ -35,6 +39,7 @@
 				}
 				
 				const result = await response.json()
+				console.log(result)
 				let str = ''
 				result.forEach(m=>{
 					str += `<li>${m.title}</li>`

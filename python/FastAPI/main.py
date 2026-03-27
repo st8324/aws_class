@@ -32,10 +32,16 @@ async def movies():
 	return mo.get_movies()
 
 @app.post('/movies/recommend')
-async def movies_recommend(title:str=Form(...)):
+async def movies_recommend(title:str=Form(...), type:str=Form(...)):
 	recommender = mo.MovieRecommender()
-	recommender.load_model('movie_model_content.pkl')
-	list = recommender.get_recommendations_movies('content', title)
+	
+	if type == 'content':
+		recommender.load_model('movie_model_content.pkl')
+	elif type == 'etc':
+		recommender.load_model('movie_model_etc.pkl')
+	
+	list = recommender.get_recommendations_movies(type, title)
+
 	# 영화 제목 리스트를 딕셔너리로 변환해서 전송하기 위해
 	# 제목 리스트를 데이터프레임으로 변환
 	df = pd.DataFrame({'title':list})

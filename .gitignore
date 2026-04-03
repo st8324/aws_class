@@ -28,3 +28,8 @@ java_jik/.gitignore
 .project
 
 .ipynb_checkpoints/
+
+*.keras
+*.model
+*.h5
+*.pkl

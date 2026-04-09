@@ -89,4 +89,9 @@ public class APIController {
 				.bodyToMono(String.class)
 				.block();
 	}
+	@PostMapping("/chatbot")
+	public String chatbot(@RequestParam("msg")String msg) {
+		System.out.println(msg);
+		return "{\"msg\" : \"네 비가오네요\"}";
+	}
 }

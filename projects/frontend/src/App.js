@@ -11,8 +11,8 @@ function App() {
       return;
     }
 
-    const res = await response.text()
-    console.log(res)
+    const res = await response.json()
+    console.log(res.msg)
 
   }
   test('hi')

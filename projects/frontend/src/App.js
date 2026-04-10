@@ -1,5 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
+import ChatBot from "./ChatBot";
+import Main from "./Main";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   async function test(msg){
@@ -38,20 +39,13 @@ function App() {
   }
   testPost('hi')
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          챗봇으로
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" exact element={<Main/>} />
+        <Route path="/chat" element={<ChatBot/>} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;

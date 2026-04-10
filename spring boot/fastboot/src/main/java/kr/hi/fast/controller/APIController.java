@@ -91,7 +91,16 @@ public class APIController {
 	}
 	@PostMapping("/chatbot")
 	public String chatbot(@RequestParam("msg")String msg) {
-		System.out.println(msg);
-		return "{\"msg\" : \"네 비가오네요\"}";
+		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+		//보낼 데이터를 추가
+		bodyBuilder.part("msg", msg);
+		
+		return webClient.post().uri("/chatbot")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters
+						.fromMultipartData(bodyBuilder.build()))
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
 	}
 }

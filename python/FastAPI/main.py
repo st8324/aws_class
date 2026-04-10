@@ -1,4 +1,6 @@
 from fastapi import FastAPI, UploadFile, Form
+from contextlib import asynccontextmanager
+from sentence_transformers import SentenceTransformer
 import uvicorn
 import mnist_learning as ml
 import text_mining as tm
@@ -7,8 +9,24 @@ import numpy as np
 import pandas as pd
 import cv2
 import fashion as fs
+import chatbot as chat
 
-app = FastAPI()
+# 모델들을 관리하는 전역 변수
+ml_models = {}
+
+@asynccontextmanager
+async def lifespan(app:FastAPI):
+	# 서버 시작시 무거운 모델을 미리 로드
+	print("INFO:\t  모델 로딩 시작...")
+	
+	ml_models["ret_model"] = SentenceTransformer('jhgan/ko-sroberta-multitask')
+	ml_models["ret_emb_data"] = chat.load_emb_data(
+		ml_models["ret_model"], 
+		'model/cached_emb_data.npy')
+
+	print("INFO:\t  모델 로딩 완료...")
+	yield
+app = FastAPI(lifespan=lifespan)
 
 @app.get('/')
 async def index():
@@ -23,7 +41,7 @@ async def image(file:UploadFile):
 	# 배열을 이미지로 디코딩
 	img = cv2.imdecode(np_arr, cv2.IMREAD_GRAYSCALE)
 	#예측
-	res = ml.predict_from_upload_file(img, 28, 28)
+	res = ml.predict_from_upload_file(img, 28, 28, 'model/mnist_model.pkl')
 	print(f'URL : /image')
 
 	return {"msg" : res}
@@ -37,11 +55,11 @@ async def movies_recommend(title:str=Form(...), type:str=Form(...)):
 	recommender = mo.MovieRecommender()
 	
 	if type == 'content':
-		recommender.load_model('movie_model_content.pkl')
+		recommender.load_model('model/movie_model_content.pkl')
 	elif type == 'etc':
-		recommender.load_model('movie_model_etc.pkl')
+		recommender.load_model('model/movie_model_etc.pkl')
 	elif type == 'director':
-		recommender.load_model('movie_model_director.pkl')
+		recommender.load_model('model/movie_model_director.pkl')
 
 	
 	list = recommender.get_recommendations_movies(type, title)
@@ -66,7 +84,15 @@ async def fashion(file:UploadFile=Form(...)):
 	print(f'URL : /fashion')
 	return {"msg" : res}
 
+@app.post('/chatbot')
+async def chatbot(msg:str=Form(...)):
+	msg, _ = chat.get_chatbot_response(
+		msg, 
+		ml_models["ret_model"], 
+		ml_models["ret_emb_data"],)
+	return {"msg" : msg}
+
 if __name__ == '__main__':
 	# reload=True 사용시 주의 사항.
 	# 자동으로 변경 사항을 적용하면 시간이 오래 걸리는 경우 안 쓰는 것이 좋음
-	uvicorn.run('main:app', port=8000, reload=True)
+	uvicorn.run('main:app', port=8000, reload=False)

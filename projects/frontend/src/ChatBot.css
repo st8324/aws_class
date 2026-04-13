@@ -7,6 +7,8 @@
 .chat-body{
 	border: 3px solid red;
 	padding: 10px;
+	height: 300px;
+	overflow: auto;
 }
 .chat-bot>.chat-content, .chat-me>.chat-content{
 	background: skyblue; 

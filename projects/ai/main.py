@@ -1,10 +1,11 @@
 from fastapi import FastAPI, Form
-
+import learning as lr
 
 app = FastAPI()
 
 @app.get("/")
 async def index():
+	lr.test()
 	return {"message": "Hello FastAPI"}
 
 @app.post('/test')

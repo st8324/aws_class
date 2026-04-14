@@ -53,6 +53,28 @@ async def translate(
 		"answer": response.text
 	}
 
+@app.get("/ad-copy")
+def ad_copy(
+	product:str = Query(..., description='상품명'),
+	feature:str = Query(..., description='제품 특징'),
+	target:str = Query('전연령', description='타겟'),
+	# 1과 가까울수록 창의적
+	temp:float = Query(0.8, ge=0.0, le=1.0, description='창의성 온도(0~1)')
+):
+	prompt = f"""
+
+	"""
+
+	response = client.models.generate_content(
+    model=GOOGLE_MODEL_NAME,
+    contents=types.Part.from_text(text=prompt),
+    config=types.GenerateContentConfig(
+        temperature=temp,
+        top_p=0.95,
+        top_k=20,
+    ),
+	)
+	return { 'answer' : response.text}
 
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)

@@ -1,20 +1,23 @@
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from fastapi import FastAPI, Query
-
 import uvicorn
 
 app = FastAPI()
 
+# gemini-2.5-flash-lite
 GOOGLE_API_KEY = ""
-genai.configure(api_key=GOOGLE_API_KEY)
-# 1분당 최대 15회, 일 500회
-model = genai.GenerativeModel('gemini-2.5-flash-lite')
+GOOGLE_MODEL_NAME = "gemini-2.5-flash-lite"
+client = genai.Client(api_key=GOOGLE_API_KEY)
 
 
 @app.get("/ask")
 async def ask_gemini(prompt: str):
 	
-	response = await model.generate_content_async(prompt)
+	response = client.models.generate_content(
+    model= GOOGLE_MODEL_NAME,
+    contents=types.Part.from_text(text=prompt),
+	)
 	
 	return {
 		"question": prompt,
@@ -41,10 +44,15 @@ async def translate(
 	# Have you heard of that? I was the only one who didn’t know.
 	# => "그것에 대해 들어본 적 있어요? 나만 몰랐어요."
 	# => casual : "너 그거 들어봤어? 나만 몰랐어."
-	response = await model.generate_content_async(prompt)
+	response = client.models.generate_content(
+    model=GOOGLE_MODEL_NAME,
+    contents=types.Part.from_text(text=prompt),
+	)
 
 	return {
 		"answer": response.text
 	}
+
+
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)

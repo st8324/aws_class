@@ -3,13 +3,15 @@ from google.genai import types
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
 import uvicorn
+import os
 
 app = FastAPI()
 
 # gemini-2.5-flash-lite
-GOOGLE_API_KEY = ""
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 GOOGLE_MODEL_NAME = "gemini-2.5-flash-lite"
 client = genai.Client(api_key=GOOGLE_API_KEY)
+
 
 
 @app.get("/ask")

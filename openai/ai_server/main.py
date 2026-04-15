@@ -12,19 +12,15 @@ GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 GOOGLE_MODEL_NAME = "gemini-2.5-flash-lite"
 client = genai.Client(api_key=GOOGLE_API_KEY)
 
-
-
 @app.get("/ask")
 async def ask_gemini(prompt: str):
-	
 	response = client.models.generate_content(
     model= GOOGLE_MODEL_NAME,
     contents=types.Part.from_text(text=prompt),
 	)
 	
 	return {
-		"question": prompt,
-		"answer": response.text
+		"message": response.text
 	}
 
 @app.get("/translate")

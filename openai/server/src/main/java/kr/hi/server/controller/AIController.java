@@ -30,5 +30,21 @@ public class AIController {
 			.block();
 		return result;
 	}
+	
+	@GetMapping("/translate")
+	public String translate(
+			@RequestParam("text")String text,
+			@RequestParam("style")String style) {
+		String result = webClient.get()
+				.uri(uriBuilder-> uriBuilder
+						.path("/translate")
+						.queryParam("text", text)
+						.queryParam("style", style)
+						.build())
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+		return result;
+	}
 
 }

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {sendData} from "./Ask"
+import {sendData} from "./Ai"
 
 function Ask(){
 
@@ -15,7 +15,7 @@ function Ask(){
 			return
 		}
 		
-		sendData(form, (datas)=>{
+		sendData('/api/v1/ai/ask', form, 'json', (datas)=>{
 			setResult(datas.message)
 			setForm({...form, prompt : ''})
 		})

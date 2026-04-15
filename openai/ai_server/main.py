@@ -28,7 +28,7 @@ async def translate(
 	text:str = Query(..., description='번역할 문장'),
 	style:str =  Query("formal", description='말투: formal(격식), casual(반말), business(비즈니스)')
 ):
-
+	
 	# 좋은 번역을 위하여 번역 문장을 좋은 프롬프트로 변환
 	# I am a boy => 나는 소년이다
 	# f : 문자열 안에 변수를 쉽게 넣을 때 사용
@@ -49,7 +49,7 @@ async def translate(
 	)
 
 	return {
-		"answer": response.text
+		"message": response.text
 	}
 
 @app.get("/ad-copy")

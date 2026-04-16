@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { sendData } from "./Ai"
 
 function AdCopy(){
-
+	const [isLoading, setIsLoading] = useState(false)
 	const [result, setResult] = useState('')
 	const [form, setForm] = useState({
 		product : '', 
@@ -28,10 +28,10 @@ function AdCopy(){
 			return
 		}
 		
-		// setIsLoading(true)
+		setIsLoading(true)
 		sendData('/api/v1/ai/ad-copy', form, 'json', (res) =>{
 			setResult(res.message)
-		//	setIsLoading(false)
+			setIsLoading(false)
 		})
 	}
 	return(
@@ -75,10 +75,12 @@ function AdCopy(){
 						<span>창의적</span>
 					</div>
 				</div>
-				<button style={{width:'100%', margin: '10px 0'}}>광고 문구 생성</button>
+				<button style={{width:'100%', margin: '10px 0'}} disabled={isLoading}>광고 문구 생성</button>
 			</form>
 			<h2>생성된 광고 문구</h2>
-			<div style={{border : '1px solid black', minHeight : '200px'}}>{result}</div>
+			<pre style={{border : '1px solid black', minHeight : '200px'}}>
+				{ isLoading ? "입력한 내용을 토대로 광고 문구 생성중입니다...\n잠시만 기다려주세요..." : result}
+			</pre>
 		</div>
 	)
 }

@@ -57,9 +57,12 @@ public class AIController {
 		
 		String result = webClient.get()
 				.uri(uriBuilder-> uriBuilder
-						.path("/translate")
-						.queryParam("text", text)
-						.queryParam("style", style)
+						.path("/ad-copy")
+						.queryParam("product", product)
+						.queryParam("feature", feature)
+						.queryParam("target", target)
+						.queryParam("temp", temp)
+						.queryParam("count", count)
 						.build())
 				.retrieve()
 				.bodyToMono(String.class)

@@ -46,5 +46,24 @@ public class AIController {
 				.block();
 		return result;
 	}
-
+	@GetMapping("/ad-copy")
+	public String adCopy(
+			@RequestParam("product")String product,
+			@RequestParam("feature")String feature,
+			@RequestParam("target")String target,
+			@RequestParam("temp")String temp,
+			@RequestParam("count")String count
+			) {
+		
+		String result = webClient.get()
+				.uri(uriBuilder-> uriBuilder
+						.path("/translate")
+						.queryParam("text", text)
+						.queryParam("style", style)
+						.build())
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+		return result;
+	}
 }

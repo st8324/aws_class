@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { sendData } from "./Ai"
+import { Link } from "react-router-dom"
 
 function Translate(){
 
@@ -30,6 +31,7 @@ function Translate(){
 	}
 	return(
 		<div>
+			<Link to="/list">뒤로가기</Link>
 			<h1>번역</h1>
 
 			<form onSubmit={formSubmit}>

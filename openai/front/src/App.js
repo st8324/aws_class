@@ -3,6 +3,7 @@ import List from "./List";
 import Main from "./Main";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Translate from "./Translate";
+import AdCopy from "./AdCopy";
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/list" element={<List/>} />
         <Route path="/ask" element={<Ask/>} />
         <Route path="/translate" element={<Translate/>} />
+        <Route path="/ad-copy" element={<AdCopy/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -61,6 +61,8 @@ def ad_copy(
 	temp:float = Query(0.8, ge=0.0, le=1.0, description='창의성 온도(0~1)'),
 	count:int = Query(50, description='광고문구 글자제한'),
 ):
+	print(product, feature, target, temp, count)
+	return {"message" : "ai 서버 연결 성공"}
 	prompt = f"""
 	너는 창의적인 카피라이터야. 
 	{product}의 광고 문구를 {target}을 타겟으로 맞춰 {count}자 내외로 작성해줘.

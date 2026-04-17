@@ -120,5 +120,16 @@ async def summarize(summary:Summary):
 	)
 	return { 'message' : response.text}
 
+@app.get("/chatbot")
+async def ask_gemini(prompt: str):
+	response = client.models.generate_content(
+    model= GOOGLE_MODEL_NAME,
+    contents=types.Part.from_text(text=prompt),
+	)
+	
+	return {
+		"message": response.text
+	}
+
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)

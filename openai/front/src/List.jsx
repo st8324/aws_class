@@ -14,6 +14,9 @@ function List(){
 				<li>
 					<Link to={"/ad-copy"}>광고</Link>
 				</li>
+				<li>
+					<Link to={"/summarize"}>요약</Link>
+				</li>
 			</ul>
 		</div>
 	)

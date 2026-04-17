@@ -4,6 +4,7 @@ import Main from "./Main";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Translate from "./Translate";
 import AdCopy from "./AdCopy";
+import Summarize from "./Summarize";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/ask" element={<Ask/>} />
         <Route path="/translate" element={<Translate/>} />
         <Route path="/ad-copy" element={<AdCopy/>} />
+        <Route path="/summarize" element={<Summarize/>} />
       </Routes>
     </BrowserRouter>
   );

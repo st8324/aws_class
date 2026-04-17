@@ -86,7 +86,7 @@ class Summary(BaseModel):
 
 @app.post("/summarize")
 async def summarize(summary:Summary):
-
+	
 	prompt = f"""
 	너는 복잡한 정보를 명료하게 정리하는 전문 편집자야.
 	아래 텍스트를 분석해서 {summary.target_lan}로 요약해줘	
@@ -101,6 +101,7 @@ async def summarize(summary:Summary):
 
 	[출력형식]
 	- 요약 : (내용)
+	======================
 	- 키워드 : #키워드1, #키워드2, #키워드3
 	"""
 	"""
@@ -117,7 +118,7 @@ async def summarize(summary:Summary):
     contents=types.Part.from_text(text=prompt),
     config=types.GenerateContentConfig(temperature=0.2),
 	)
-	return { 'answer' : response.text}
+	return { 'message' : response.text}
 
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)

@@ -1,12 +1,11 @@
 package kr.hi.server.controller;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.AllArgsConstructor;
@@ -69,4 +68,21 @@ public class AIController {
 				.block();
 		return result;
 	}
+	@PostMapping("/summarize")
+	public String summarize(@RequestBody Summary dto){
+		System.out.println(dto);
+		String result = 
+				webClient.post()
+					.uri("/summarize")
+					.bodyValue(dto)
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();
+
+		return result;
+	}
 }
+record Summary(
+	String text,
+	String target_lan,
+	int max_sentence) {}

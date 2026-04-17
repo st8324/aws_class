@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { sendDataPost } from "./Ai"
+import { Link } from "react-router-dom"
 
 function Summarize(){
 
@@ -55,6 +56,7 @@ function Summarize(){
 	}
 	return (
 		<div>
+			<Link to="/list">뒤로가기</Link>
 			<h1>요약</h1>
 			{/* text, target_lan,	max_sentence */}
 			<form onSubmit={formSubmit}>

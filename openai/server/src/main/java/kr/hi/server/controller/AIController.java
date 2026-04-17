@@ -18,10 +18,12 @@ public class AIController {
 	private final WebClient webClient;
 	
 	@GetMapping("/ask")
-	public String ask(@RequestParam("prompt")String prompt) {
+	public String ask(
+			@RequestParam("prompt")String prompt,
+			@RequestParam("endpoint")String endpoint) {
 		String result = webClient.get()
 			.uri(uriBuilder-> uriBuilder
-					.path("/ask")
+					.path(endpoint)
 					.queryParam("prompt", prompt)
 					.build())
 			.retrieve()

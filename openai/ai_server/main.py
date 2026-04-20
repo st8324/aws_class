@@ -281,8 +281,7 @@ async def ingest_pdf(file:UploadFile, size : int):
 # pdf를 주면 임베딩해서 저장
 @app.post("/ingest-pdf")
 async def ingest_pdf_get(file:UploadFile = File(...)):
-	print(file.filename)
-	return {"message" : "ai 연결성공"}
+	
 	try:
 		await ingest_pdf(file, 100)
 		return { "message" : "규정집이 등록 됐습니다."}
@@ -330,6 +329,8 @@ def rag_ask(prompt : str):
 
 @app.get("/rag-chatbot")
 async def rag_chatbot(prompt:str=Query(...,description='질문')):
+	print(prompt)
+	return {"message" : "ai연결"}
 	result = rag_ask(prompt)
 	return {"message" : result}
 

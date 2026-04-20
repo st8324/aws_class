@@ -329,10 +329,9 @@ def rag_ask(prompt : str):
 
 @app.get("/rag-chatbot")
 async def rag_chatbot(prompt:str=Query(...,description='질문')):
-	print(prompt)
-	return {"message" : "ai연결"}
-	result = rag_ask(prompt)
-	return {"message" : result}
+
+	
+	return rag_ask(prompt)
 
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)

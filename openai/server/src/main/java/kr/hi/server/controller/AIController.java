@@ -101,6 +101,21 @@ public class AIController {
 				.bodyToMono(String.class)
 				.block();
 	}
+	@GetMapping("/rag-ask")
+	public String ragAsk(
+			@RequestParam("prompt")String prompt
+			) {
+		
+		String result = webClient.get()
+				.uri(uriBuilder-> uriBuilder
+						.path("/rag-chatbot")
+						.queryParam("prompt", prompt)
+						.build())
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+		return result;
+	}
 }
 record Summary(
 	String text,

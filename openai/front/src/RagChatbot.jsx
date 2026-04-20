@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { fetchPost } from "./Ai"
+import { fetchPost, sendData } from "./Ai"
 
 function RagChatBot(){
 	return(
@@ -43,9 +43,33 @@ function IngestPdf(){
 }
 //규정집에 있는 내용 질문
 function RagAsk(){
+	const [form , setForm] = useState({prompt : ''})
+	const [result, setResult] = useState("")
+	const submitHandler = async (e)=>{
+		e.preventDefault()
+		
+		if(form.prompt.trim() === ''){
+			alert('내용을 입력하세요')
+			return
+		}
+
+		await sendData('/api/v1/ai/rag-ask', form, "json", (res)=>{
+			console.log(res)
+			setResult(res.message)
+		})
+
+	}
+	const inputChange = (e)=>{
+		const {name, value} = e.target
+		setForm({...form, [name] : value})
+	}
 	return(
 		<div>
-
+			<form onSubmit={submitHandler}>
+				<input type="text" name="prompt" onChange={inputChange}/>
+				<button>질문하기</button>
+			</form>
+			<pre style={{minHeight:'200px', border: '1px solid black', whiteSpace:'pre-wrap'}}>{result}</pre>
 		</div>
 	)
 }

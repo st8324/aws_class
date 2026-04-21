@@ -24,7 +24,14 @@ function ImageText(){
 			method : 'post',
 			body : formData
 		},'json', (res)=>{
-			setResult(res.message)
+			let detections = res.detections
+			let str = '' 
+			for (let label in detections){
+				str += `${label}의 개수 : ${detections[label]}\n`
+			}
+			res.detections = str
+			setResult(res)
+
 		})
 	}
 
@@ -37,7 +44,7 @@ function ImageText(){
 					<input type="file" name="img" accept="image/*" onChange={fileChange} />
 				</div>
 				<div>
-					<label>질문</label>
+					<label>찾을 객체는? </label>
 					<input type="text" name="query" onChange={inputChange} />
 				</div>
 				<button>전송</button>
@@ -46,7 +53,8 @@ function ImageText(){
 			<pre style={{
 				whiteSpace:'pre-wrap', 
 				minHeight:'200px', 
-				border:'1px solid black'}}>{result}</pre>
+				border:'1px solid black'}}>{result.detections}</pre>
+			<img src={result.image_data} alt="" />
 		</div>
 	)
 }

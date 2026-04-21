@@ -356,34 +356,38 @@ async def get_ai_vision_result(image_bytes, user_prompt):
 	)
 	return response.text
 
-async def save_dection_result(image_bytes, ai_response):
+async def save_detection_result(image_bytes, ai_response):
+	detections = {}
+	image_data = None
+
 	
-	nparr = np.frombuffer(image_bytes, np.uint8)
-	img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-	height, width, _ = img.shape
-
-	if img is None:
-		raise Exception("원본 이미지 파일을 찾을 수 없습니다.")
-
 	try:
-		# ai_response에서 JSON 추출
+		nparr = np.frombuffer(image_bytes, np.uint8)
+		img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+		height, width, _ = img.shape
+		if img is None:
+			raise Exception("원본 이미지 파일을 찾을 수 없습니다.")
+		
 		json_match = re.search(r'\[.*\]',ai_response,re.DOTALL)
 		if not json_match :
-			return 0, _
+			raise Exception("찾을 객체가 없습니다.")
+		
 		json_str = json_match.group()
-		detections = json.loads(json_str)
-		res_count = {}
+		detections_json = json.loads(json_str)
+		
 		# 찾은 객체들을 그림
-		for item in detections:
+		
+		for item in detections_json:
 			# 위에서 box_2d로 설정함. 
 			ymin, xmin, ymax, xmax = item['box_2d']
 			label = item['label']
-			if res_count.get(label):
-				res_count[label] += 1
+			if detections.get(label):
+				detections[label] += 1
 			else:
-				res_count[label] = 1
-
+				detections[label] = 1
+		
+			
 			# 좌표 변환. 
 			# 제미나이 ai는 이미지 해상도와 관계없이 
 			# 이미지 전체 크기를 1000x1000규격의 가상 좌표계로 변환하여 결과를 반환
@@ -397,15 +401,16 @@ async def save_dection_result(image_bytes, ai_response):
 				cv2.FONT_HERSHEY_SIMPLEX, 1.0, 
 				(255, 0, 0), 2)
 		
-		_, encoded_img = cv2.imencode(".jpg", img)
-		if encoded_img:
-			print("성공!")
-			return res_count, encoded_img
+		success, encoded_img = cv2.imencode(".jpg", img)
+		if success:
+			log("성공!")
+			image_data = encoded_img
 		else :
-			print("실패")
-			return res_count, _
+			log("실패")
 	except Exception as e:
-		print(f"예외 발생 : {e}")
+		log(f"예외 발생 : {e}")
+	finally:
+		return detections, image_data
 
 @app.post("/image-text")
 async def image_text(
@@ -414,21 +419,14 @@ async def image_text(
 	# log(query)
 	# log(file.filename)
 	image_bytes = await file.read()
-	# ai_response = await get_ai_vision_result(image_bytes, query)
-	ai_response = """
-	```json
-	[
-		{"box_2d": [270, 237, 693, 473], "label": "apple"},
-		{"box_2d": [20, 400, 436, 640], "label": "apple"}
-	]
-	```
-	"""
-	res_count, encoded_img = save_dection_result(image_bytes, ai_response)
+	ai_response = await get_ai_vision_result(image_bytes, query)
+
+	detections, encoded_img = await save_detection_result(image_bytes, ai_response)
 	base64_image = base64.b64encode(encoded_img).decode('utf-8')
 
 	return {
-		"res_count" : res_count, 
-		"image_data" : f"data:image/jpeg:base64,{base64_image}"
+		"detections" : detections, 
+		"image_data" : f"data:image/jpeg;base64,{base64_image}"
 	}
 
 if __name__ == '__main__':

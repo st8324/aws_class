@@ -6,6 +6,7 @@ function ImageText(){
 
 	const [form, setForm] = useState({query:''})
 	const [file, setFile] = useState(null)
+	const [result, setResult] = useState('')
 
 	const inputChange = (e)=>{
 		const {name, value} = e.target 
@@ -19,13 +20,11 @@ function ImageText(){
 		const formData = new FormData()
 		formData.append("img", file)
 		formData.append("query", form.query)
-		console.log(form)
-		console.log(file)
 		await fetchPost('/api/v1/ai/image-text',{
 			method : 'post',
 			body : formData
 		},'json', (res)=>{
-			console.log(res)
+			setResult(res.message)
 		})
 	}
 
@@ -47,7 +46,7 @@ function ImageText(){
 			<pre style={{
 				whiteSpace:'pre-wrap', 
 				minHeight:'200px', 
-				border:'1px solid black'}}></pre>
+				border:'1px solid black'}}>{result}</pre>
 		</div>
 	)
 }

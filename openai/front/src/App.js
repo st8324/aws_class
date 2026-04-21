@@ -6,6 +6,7 @@ import Translate from "./Translate";
 import AdCopy from "./AdCopy";
 import Summarize from "./Summarize";
 import RagChatBot from "./RagChatbot";
+import ImageText from "./ImageText";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/ad-copy" element={<AdCopy/>} />
         <Route path="/summarize" element={<Summarize/>} />
         <Route path="/rag-chatbot" element={<RagChatBot/>} />
+        <Route path="/image-text" element={<ImageText/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -116,6 +116,24 @@ public class AIController {
 				.block();
 		return result;
 	}
+	
+	@PostMapping("/image-text")
+	public String imageText(
+		@RequestParam("query")String query,
+		@RequestParam("img")MultipartFile file) {
+		
+		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+		bodyBuilder.part("file", file.getResource());
+		bodyBuilder.part("query", query);
+		
+		return webClient.post().uri("/image-text")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters
+						.fromMultipartData(bodyBuilder.build()))
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+	}
 }
 record Summary(
 	String text,
